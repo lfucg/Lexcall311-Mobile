@@ -4,22 +4,23 @@ import { StyleSheet, Text, View } from 'react-native';
 export default class HeaderTitle extends React.Component {
   render() {
     return (
-      <View style={styles.title_container}>
-        <Text style={styles.title}>LexCall 311</Text>
+      <View style={styles.menu_option}>
+        <Text style={styles.text}>Menu Option</Text>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  title_container: {
+  menu_option: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems:'center',
-    paddingTop: 50,
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#585858',
   },
-  title: {
-    fontWeight: '600',
-    fontSize: 20,
+  text: {
+    color: '#585858',
+    fontSize: 16,
+    paddingLeft: 20,
   },
 });

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import HeaderImg from './src/components/HeaderImg.js';
 import HeaderTitle from './src/components/HeaderTitle.js';
+import IndexMenuOption from './src/components/IndexMenuOption.js';
 
 export default class App extends React.Component {
   render() {
@@ -12,11 +13,11 @@ export default class App extends React.Component {
           <HeaderImg />
         </View>
         <View style={styles.loading_menu}>
-          <Text>Menu Option</Text>
-          <Text>Menu Option</Text>
-          <Text>Menu Option</Text>
-          <Text>Menu Option</Text>
-          <Text>Menu Option</Text>
+          <IndexMenuOption />
+          <IndexMenuOption />
+          <IndexMenuOption />
+          <IndexMenuOption />
+          <IndexMenuOption />
         </View>
       </View>
     );
