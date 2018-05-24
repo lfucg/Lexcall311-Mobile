@@ -4,8 +4,11 @@ import HeaderImg from './src/components/HeaderImg.js';
 import HeaderTitle from './src/components/HeaderTitle.js';
 import IndexMenuOption from './src/components/IndexMenuOption.js';
 import IndexCreateReport from './src/components/IndexCreateReport.js';
-
 import search_img from './src/assets/images/search.png';
+import phone_img from './src/assets/images/phone.png';
+import user_plus_img from './src/assets/images/user-plus.png';
+import car_img from './src/assets/images/car.png';
+import external_link_alt_img from './src/assets/images/external-link-alt.png';
 
 export default class App extends React.Component {
   render() {
@@ -18,10 +21,10 @@ export default class App extends React.Component {
         </View>
         <View style={styles.loading_menu}>
           <IndexMenuOption img={search_img} text={"Look up a 311 Report"} />
-          <IndexMenuOption img={search_img} text={"Call LexCall 311"} />
-          <IndexMenuOption img={search_img} text={"Sign up for 311 Alerts"} />
-          <IndexMenuOption img={search_img} text={"Traffic Info"} />
-          <IndexMenuOption img={search_img} text={"Visit lexingtonky.gov"} />
+          <IndexMenuOption img={phone_img} text={"Call LexCall 311"} />
+          <IndexMenuOption img={user_plus_img} text={"Sign up for 311 Alerts"} />
+          <IndexMenuOption img={car_img} text={"Traffic Info"} />
+          <IndexMenuOption img={external_link_alt_img} text={"Visit lexingtonky.gov"} />
         </View>
       </View>
     );
