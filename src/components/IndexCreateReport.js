@@ -8,17 +8,13 @@ export default class IndexCreateReport extends React.Component {
     return (
       <View style={styles.create_report}>
         <View style={styles.wrap}>
-        
-          <View>
-            <Image source={pencil_img} style={styles.pencil_img} />
-          </View>
-         
-          <View>
-            <Text style={styles.text}>
-              Create a 311 Report
-            </Text>
-          </View>
-        
+      
+          <Image source={pencil_img} style={styles.pencil_img} />
+       
+          <Text style={styles.text}>
+            Create a 311 Report
+          </Text>
+      
         </View>
       </View>
     );
