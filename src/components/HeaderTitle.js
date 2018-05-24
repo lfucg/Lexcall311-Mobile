@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default class HeaderTitle extends React.Component {
   render() {
@@ -13,20 +13,14 @@ export default class HeaderTitle extends React.Component {
 
 const styles = StyleSheet.create({
   title_container: {
-    flex: 2,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems:'center',
   },
   title: {
-    ...Platform.select({
-      ios: {
-        paddingTop: 40,
-      },
-      android: {
-        marginTop: 25,
-      },
-    }),
+    height: 40,
     fontWeight: '600',
     fontSize: 20,
+    paddingTop: 10,
   },
 });

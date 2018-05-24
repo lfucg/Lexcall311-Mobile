@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
 import HeaderTitle from './HeaderTitle.js';
 import IndexMenuOption from './IndexMenuOption.js';
+import search_img from '../assets/images/search.png';
 
-export default class Categories extends React.Component {
+export default class CategoryScreen extends React.Component {
+  static navigationOptions = {
+    headerTitle: <HeaderTitle text={"Categories"} />,
+  };
+
   render() {
     return (
       <View style={styles.categories}>
