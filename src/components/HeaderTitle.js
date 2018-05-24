@@ -5,7 +5,7 @@ export default class HeaderTitle extends React.Component {
   render() {
     return (
       <View style={styles.title_container}>
-        <Text style={styles.title}>LexCall 311</Text>
+        <Text style={styles.title}>{this.props.text}</Text>
       </View>
     );
   }

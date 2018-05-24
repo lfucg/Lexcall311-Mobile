@@ -15,11 +15,11 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <HeaderTitle />
+          <HeaderTitle text={"LexCall 311"} />
           <HeaderImg />
           <IndexCreateReport />
         </View>
-        <View style={styles.loading_menu}>
+        <View style={styles.menu}>
           <IndexMenuOption img={search_img} text={"Look up a 311 Report"} />
           <IndexMenuOption img={phone_img} text={"Call LexCall 311"} />
           <IndexMenuOption img={user_plus_img} text={"Sign up for 311 Alerts"} />
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  loading_menu: {
+  menu: {
     flex: 5,
   },
   header: {
