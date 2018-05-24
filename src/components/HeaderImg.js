@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, Image, StyleSheet, View } from 'react-native';
 
-import header_pic from '../styles/images/lincoln.jpg';
+import header_pic from '../assets/images/lincoln.jpg';
 
 export default class HeaderImg extends Component {
   render() {

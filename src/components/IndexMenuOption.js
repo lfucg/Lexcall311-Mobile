@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   menu_option: {
     flex: 1,
     justifyContent: 'center',
-    borderBottomWidth: 1,
+    borderTopWidth: 1,
     borderColor: '#585858',
   },
   text: {

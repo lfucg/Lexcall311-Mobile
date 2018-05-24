@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import HeaderImg from './src/components/HeaderImg.js';
 import HeaderTitle from './src/components/HeaderTitle.js';
 import IndexMenuOption from './src/components/IndexMenuOption.js';
+import IndexCreateReport from './src/components/IndexCreateReport.js';
 
 export default class App extends React.Component {
   render() {
@@ -11,6 +12,7 @@ export default class App extends React.Component {
         <View style={styles.header}>
           <HeaderTitle />
           <HeaderImg />
+          <IndexCreateReport />
         </View>
         <View style={styles.loading_menu}>
           <IndexMenuOption />
@@ -30,10 +32,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   loading_menu: {
-    flex: 6,
+    flex: 5,
   },
   header: {
-    flex: 4,
+    flex: 5,
   },
 });
 
