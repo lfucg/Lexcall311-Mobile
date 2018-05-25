@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Platform } from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  Image, 
+  TouchableOpacity,
+} from 'react-native';
 
 export default class HeaderTitle extends React.Component {
-  
 
 
   render() {
 
     return (
-      <View style={styles.menu_option}>
+      <TouchableOpacity 
+        style={styles.menu_option}
+        activeOpacity={.6}
+        onPress={() => this.props.navigation.navigate('Category')}
+      >
         <View style={styles.wrap}>  
           <Image source={this.props.img} style={styles.icon} resizeMode='cover'/>
           
@@ -16,7 +25,7 @@ export default class HeaderTitle extends React.Component {
             {this.props.text}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 

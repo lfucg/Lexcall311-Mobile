@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import HeaderTitle from './HeaderTitle.js';
-import IndexMenuOption from './IndexMenuOption.js';
+import MenuOption from './MenuOption.js';
 import NineOneOne from './NineOneOne.js';
+import Summary from './Summary.js';
 import search_img from '../assets/images/search.png';
 
 
@@ -16,12 +17,78 @@ export default class CategoryScreen extends React.Component {
     return (
       <View style={styles.container}>
         <NineOneOne />
-        <View>
-          <Text>Select a Category</Text>
-          <Text>Select which type of issue you are reporting.</Text>
-        </View>
+        <Summary 
+          icon={search_img} 
+          heading={"Select a Category"}
+          content={"Select which type of issue you are reporting."}
+        />
         <View style={styles.menu}>
-          <IndexMenuOption img={search_img} text={"Bulky Trash Pickup"} />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Bulky Trash Pickup"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Dead Animal Removal"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Garbage Collection"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Nuisance Complaint"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Park Maintenance"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Pothole Repair"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Questions and/or Comments"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Recycling Collection"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Traffic Light/Sign"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Yard Waste Collection"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Other"}
+          />
         </View>
       </View>
     );
@@ -34,10 +101,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   menu: {
-    flex: 5,
+    flex: 6,
   },
   header: {
-    flex: 5,
+    flex: 4,
   },
 });
 

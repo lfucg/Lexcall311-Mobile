@@ -13,7 +13,7 @@ const Root = createStackNavigator(
     Category: CategoryScreen,
   },
   {
-    initialRouteName: 'Category',
+    initialRouteName: 'Home',
     navigationOptions: {
       headerStyle: {
         elevation: 1,

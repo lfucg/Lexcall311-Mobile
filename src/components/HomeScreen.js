@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 
 import HeaderImg from './HeaderImg.js';
 import HeaderTitle from './HeaderTitle.js';
-import IndexMenuOption from './IndexMenuOption.js';
+import MenuOption from './MenuOption.js';
 import IndexCreateReport from './IndexCreateReport.js';
 import search_img from '../assets/images/search.png';
 import phone_img from '../assets/images/phone.png';
@@ -25,11 +25,36 @@ export default class HomeScreen extends React.Component {
           <IndexCreateReport navigation={this.props.navigation} />
         </View>
         <View style={styles.menu}>
-          <IndexMenuOption img={search_img} text={"Look up a 311 Report"} />
-          <IndexMenuOption img={phone_img} text={"Call LexCall 311"} />
-          <IndexMenuOption img={user_plus_img} text={"Sign up for 311 Alerts"} />
-          <IndexMenuOption img={car_img} text={"Traffic Info"} />
-          <IndexMenuOption img={external_link_alt_img} text={"Visit lexingtonky.gov"} />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={search_img} 
+            text={"Look up a 311 Report"} 
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={phone_img} 
+            text={"Call LexCall 311"} 
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={user_plus_img} 
+            text={"Sign up for 311 Alerts"} 
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={car_img} 
+            text={"Traffic Info"} 
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_screen={'Category'} 
+            img={external_link_alt_img} 
+            text={"Visit lexingtonky.gov"} 
+          />
         </View>
       </View>
     );
