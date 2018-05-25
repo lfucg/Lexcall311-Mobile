@@ -22,11 +22,7 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <HeaderImg />
-          <IndexCreateReport />
-          <Button
-            title="Go To Category Screen"
-            onPress={() => this.props.navigation.navigate('Category')}
-          />
+          <IndexCreateReport navigation={this.props.navigation} />
         </View>
         <View style={styles.menu}>
           <IndexMenuOption img={search_img} text={"Look up a 311 Report"} />
