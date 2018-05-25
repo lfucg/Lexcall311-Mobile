@@ -1,5 +1,8 @@
 import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { 
+  createStackNavigator,
+  Platform,
+} from 'react-navigation';
 
 import HomeScreen from './src/components/HomeScreen.js';
 import CategoryScreen from './src/components/CategoryScreen.js';
@@ -10,9 +13,10 @@ const Root = createStackNavigator(
     Category: CategoryScreen,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Category',
     navigationOptions: {
       headerStyle: {
+        elevation: 1,
         backgroundColor: '#fff',
       },
       headerBackTitle: 'Back',

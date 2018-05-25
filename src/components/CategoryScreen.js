@@ -3,7 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import HeaderTitle from './HeaderTitle.js';
 import IndexMenuOption from './IndexMenuOption.js';
+import NineOneOne from './NineOneOne.js';
 import search_img from '../assets/images/search.png';
+
 
 export default class CategoryScreen extends React.Component {
   static navigationOptions = {
@@ -12,7 +14,8 @@ export default class CategoryScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.categories}>
+      <View style={styles.container}>
+        <NineOneOne />
         <View>
           <Text>Select a Category</Text>
           <Text>Select which type of issue you are reporting.</Text>
@@ -26,7 +29,7 @@ export default class CategoryScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  categories: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
   },
