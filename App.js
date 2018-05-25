@@ -13,13 +13,12 @@ const Root = createStackNavigator(
     Category: CategoryScreen,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Category',
     navigationOptions: {
       headerStyle: {
         elevation: 1,
         backgroundColor: '#fff',
       },
-      headerBackTitle: 'Back',
     },
   },
 );

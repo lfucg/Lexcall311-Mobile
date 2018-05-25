@@ -14,7 +14,13 @@ import external_link_alt_img from '../assets/images/external-link-alt.png';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    headerTitle: <HeaderTitle text={"LexCall 311"} />,
+    headerTitle: (
+      <HeaderTitle 
+        back={""}
+        text={"LexCall 311"}
+        next={""}
+      />
+    ),
   };
 
   render() {

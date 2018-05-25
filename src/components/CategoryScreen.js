@@ -1,16 +1,30 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { 
+  StyleSheet,
+  Text,
+  View 
+} from 'react-native';
 
 import HeaderTitle from './HeaderTitle.js';
 import MenuOption from './MenuOption.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
+
 import search_img from '../assets/images/search.png';
 
 
 export default class CategoryScreen extends React.Component {
   static navigationOptions = {
-    headerTitle: <HeaderTitle text={"Create a Report"} />,
+    headerTitle: (
+      <HeaderTitle 
+        // navigation={this.props.navigation}
+        back={"Home"}
+        back_nav={'Home'}
+        text={"Create A Report"}
+        next={"Next"}
+        nex_nav={'Home'}
+      />
+    ),
   };
 
   render() {
