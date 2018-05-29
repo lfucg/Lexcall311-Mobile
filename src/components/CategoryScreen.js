@@ -6,6 +6,9 @@ import {
 } from 'react-native';
 
 import HeaderTitle from './HeaderTitle.js';
+import HeaderLeft from './HeaderLeft.js';
+import HeaderRight from './HeaderRight.js';
+
 import MenuOption from './MenuOption.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
@@ -14,18 +17,28 @@ import search_img from '../assets/images/search.png';
 
 
 export default class CategoryScreen extends React.Component {
-  static navigationOptions = {
-    headerTitle: (
-      <HeaderTitle 
-        // navigation={this.props.navigation}
-        back={"Home"}
-        back_nav={'Home'}
-        text={"Create A Report"}
-        next={"Next"}
-        nex_nav={'Home'}
-      />
-    ),
-  };
+
+ static navigationOptions = ({navigation}) => {
+    return {
+      headerLeft: (
+        <HeaderLeft
+          navigation={navigation}
+          text={"< Home"}
+          nav_link={"Home"}
+        />
+      ),
+      headerTitle: (
+        <HeaderTitle text={"Create A Report"}/>
+      ),
+      headerRight: (
+        <HeaderRight
+          navigation={navigation}
+          text={"Next >"}
+          nav_link={"Home"}
+        />
+      ),
+    };
+  }
 
   render() {
     return (

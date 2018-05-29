@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+
+import HeaderTitle from './HeaderTitle.js';
+import HeaderLeft from './HeaderLeft.js';
+import HeaderRight from './HeaderRight.js';
 
 import HeaderImg from './HeaderImg.js';
-import HeaderTitle from './HeaderTitle.js';
 import MenuOption from './MenuOption.js';
 import IndexCreateReport from './IndexCreateReport.js';
 import search_img from '../assets/images/search.png';
@@ -13,15 +15,20 @@ import car_img from '../assets/images/car.png';
 import external_link_alt_img from '../assets/images/external-link-alt.png';
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    headerTitle: (
-      <HeaderTitle 
-        back={""}
-        text={"LexCall 311"}
-        next={""}
-      />
-    ),
-  };
+
+ static navigationOptions = ({navigation}) => {
+    return {
+      headerLeft: (
+        <HeaderLeft />
+      ),
+      headerTitle: (
+        <HeaderTitle text={"LexCall 311"}/>
+      ),
+      headerRight: (
+        <HeaderRight />
+      ),
+    };
+  }
 
   render() {
     return (

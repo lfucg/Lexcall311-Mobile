@@ -1,11 +1,11 @@
 import React from 'react';
 import { 
   createStackNavigator,
-  Platform,
 } from 'react-navigation';
 
 import HomeScreen from './src/components/HomeScreen.js';
 import CategoryScreen from './src/components/CategoryScreen.js';
+
 
 const Root = createStackNavigator(
   {
@@ -13,7 +13,7 @@ const Root = createStackNavigator(
     Category: CategoryScreen,
   },
   {
-    initialRouteName: 'Category',
+    initialRouteName: 'Home',
     navigationOptions: {
       headerStyle: {
         elevation: 1,
