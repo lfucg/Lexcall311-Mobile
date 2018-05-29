@@ -7,8 +7,23 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { web, phonecall } from 'react-native-communications';
+// e.g. onPress={() => { web('http://www.github.com') }}
+
+
 export default class HeaderTitle extends React.Component {
 
+  link_logic () {
+    if (this.props.nav_link == 'Phone') {
+      phonecall('311', true);
+    }
+    else if (this.props.nav_link == 'WebReport') {
+      web('http://jason@jasonmize.com');
+    }
+    else {
+      this.props.navigation.navigate(this.props.nav_link);
+    } 
+  };
 
   render() {
 
@@ -16,7 +31,7 @@ export default class HeaderTitle extends React.Component {
       <TouchableOpacity 
         style={styles.menu_option}
         activeOpacity={.6}
-        onPress={() => this.props.navigation.navigate('Category')}
+        onPress={this.link_logic.bind(this)}
       >
         <View style={styles.wrap}>  
           <Image source={this.props.img} style={styles.icon} resizeMode='cover'/>
