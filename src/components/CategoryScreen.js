@@ -48,67 +48,67 @@ export default class CategoryScreen extends React.Component {
         <View style={styles.menu}>
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Bulky Trash Pickup"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Dead Animal Removal"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Garbage Collection"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Nuisance Complaint"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Park Maintenance"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Pothole Repair"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Questions and/or Comments"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Recycling Collection"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Traffic Light/Sign"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Yard Waste Collection"}
           />
           <MenuOption 
             navigation={this.props.navigation}
-            nav_screen={'Category'} 
+            nav_link={'Location'} 
             img={search_img} 
             text={"Other"}
           />
@@ -125,9 +125,6 @@ const styles = StyleSheet.create({
   },
   menu: {
     flex: 6,
-  },
-  header: {
-    flex: 4,
   },
 });
 

@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 2,
     backgroundColor: '#fff',
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   wrap: {
     flex: 1,
