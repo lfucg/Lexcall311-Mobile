@@ -63,19 +63,19 @@ export default class HomeScreen extends React.Component {
           }
           <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Category'} 
+            nav_link={'SignUp'} 
             img={user_plus_img} 
             text={"Sign up for 311 Alerts"} 
           />
           <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Category'} 
+            nav_link={'TrafficInfo'} 
             img={car_img} 
             text={"Traffic Info"} 
           />
           <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Category'} 
+            nav_link={'LexingtonWebsite'} 
             img={external_link_alt_img} 
             text={"Visit lexingtonky.gov"} 
           />

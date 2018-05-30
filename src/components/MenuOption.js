@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import { web, phonecall } from 'react-native-communications';
-// e.g. onPress={() => { web('http://www.github.com') }}
 
 
 export default class HeaderTitle extends React.Component {
@@ -18,9 +17,18 @@ export default class HeaderTitle extends React.Component {
       phonecall('311', true);
     }
     else if (this.props.nav_link == 'WebReport') {
-      web('http://jason@jasonmize.com');
+      web('https://www.lexingtonky.gov/lexcall');
     }
-    else {
+    else if (this.props.nav_link == 'SignUp') {
+      web('https://www.lexingtonky.gov/lexcall');
+    }
+    else if (this.props.nav_link == 'TrafficInfo') {
+      web('https://www.lexingtonky.gov/traffic-ticker');
+    }
+    else if (this.props.nav_link == 'LexingtonWebsite') {
+      web('https://www.lexingtonky.gov');
+    }
+    else { // internal screen
       this.props.navigation.navigate(this.props.nav_link);
     } 
   };

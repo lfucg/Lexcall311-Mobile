@@ -31,11 +31,7 @@ export default class CategoryScreen extends React.Component {
         <HeaderTitle text={"Create A Report"}/>
       ),
       headerRight: (
-        <HeaderRight
-          navigation={navigation}
-          text={"Next >"}
-          nav_link={"Home"}
-        />
+        <HeaderRight />
       ),
     };
   }
