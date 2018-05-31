@@ -35,7 +35,7 @@ export default class Summary extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     backgroundColor: '#fff',
     paddingLeft: 10,
     paddingRight: 10,
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 3,
     fontSize: 16,
+    paddingBottom: 10,
   },
 })
 

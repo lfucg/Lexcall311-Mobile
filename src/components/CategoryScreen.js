@@ -39,12 +39,14 @@ export default class CategoryScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <NineOneOne />
-        <Summary 
-          icon={search_img} 
-          heading={"Select a Category"}
-          content={"Select which type of issue you are reporting."}
-        />
+        <View style={styles.header}>
+          <NineOneOne />
+          <Summary 
+            icon={search_img} 
+            heading={"Select a Category"}
+            content={"Select which type of issue you are reporting."}
+          />
+        </View>
         <View style={styles.menu}>
           <MenuOption 
             navigation={this.props.navigation}
@@ -122,6 +124,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  header: {
+    flex: 2,
   },
   menu: {
     flex: 6,
