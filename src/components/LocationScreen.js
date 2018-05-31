@@ -27,12 +27,14 @@ export default class LocationScreen extends React.Component {
     super(props);
     this.state = {
       map: {},
+      aerial_layer: {},
       transportation_layer: {},
-      bbox_xmax: -9428175.245577637,
-      bbox_xmin: 4580475.59411816,
-      bbox_ymax: -9378804.567160327,
-      bbox_ymin: 4599457.540949435,
-      map_scale: 1500000,
+      bbox_xmax: -9428175.25,
+      bbox_xmin: 4580475.59,
+      bbox_ymax: -9378804.57,
+      bbox_ymin: 4599457.54,
+      // map_scale: 1500000,
+      map_scale: 500000,
     };
   }
 
@@ -67,7 +69,7 @@ export default class LocationScreen extends React.Component {
     const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?";
     let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
 
-    // const transportation_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/1/export?f=json";
+    // const transportation_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?f=json";
     // fetch(transportation_url)
     // .then(response => response.json())
     // .then(response => {
@@ -112,6 +114,20 @@ export default class LocationScreen extends React.Component {
         map: response,
       });
     });
+
+
+    const aerial_base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/aerial2016/MapServer/export?";
+    let aerial_url = aerial_base_url + map_params;
+
+    fetch(aerial_url)
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        aerial_layer: response,
+      });
+    });
+
+
   };
 
   zoomIn() {
@@ -149,13 +165,25 @@ export default class LocationScreen extends React.Component {
         <View style={styles.map_wrap}>
 {
 
-          <Image 
-            source={{ uri: this.state.map['href'] }} 
-            style={styles.map}
-            resizeMode='cover'
-          />
+          // <Image 
+          //   source={{ uri: this.state.map['href'] }} 
+          //   style={styles.map}
+          //   resizeMode='cover'
+          // />
+          
 }
         </View>
+
+        <View style={styles.aerial_layer_wrap}>
+
+          <Image 
+            source={{ uri: this.state.aerial_layer['href'] }} 
+            style={styles.aerial_layer}
+            resizeMode='cover'
+          />
+        </View>
+
+
         <View style={styles.zoom_button_wrap}>
           <TouchableOpacity 
             style={styles.zoom_button}
@@ -191,6 +219,18 @@ const styles = StyleSheet.create({
     borderColor: '#585858',
   },
   map: {
+    flex: 1,
+  },
+  aerial_layer_wrap: {
+    flex: 1,
+    // position: 'absolute',
+    opacity: .3,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  aerial_layer: {
     flex: 1,
   },
   zoom_button_wrap: {
