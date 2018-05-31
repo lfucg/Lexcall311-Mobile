@@ -3,7 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  Button,
+  TouchableOpacity,
 } from 'react-native';
 
 import HeaderTitle from './HeaderTitle.js';
@@ -18,27 +20,27 @@ import search_img from '../assets/images/search.png';
 
 
 
+
 export default class LocationScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       map: {},
-      bbox_xmax: -9420000,  // -9428175.245577637
-      bbox_xmin: 4580000,   // 4580475.59411816
-      bbox_ymax: -9370000,  // -9378804.567160327
-      bbox_ymin: 4590000,   // 4599457.540949435
-      map_scale: 200000,
+      transportation_layer: {},
+      bbox_xmax: -9428175.245577637,
+      bbox_xmin: 4580475.59411816,
+      bbox_ymax: -9378804.567160327,
+      bbox_ymin: 4599457.540949435,
+      map_scale: 1500000,
     };
   }
-
-
 
   componentDidMount() {
     this.fetchMapFromAPI();
   }
 
- static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({navigation}) => {
     return {
       headerLeft: (
         <HeaderLeft
@@ -60,20 +62,33 @@ export default class LocationScreen extends React.Component {
     };
   };
 
-  fetchMapFromAPI = () => {
+  fetchMapFromAPI(map_scale=undefined) {
     console.log('MAP BEING FETCHED');
-    const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
+    const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?";
     let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
+
+    // const transportation_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/1/export?f=json";
+    // fetch(transportation_url)
+    // .then(response => response.json())
+    // .then(response => {
+    //   this.setState({
+    //     transportation_layer: response,
+    //   });
+    // });
+    if (map_scale==undefined) {
+      map_scale = this.state.map_scale;
+    } 
 
     let map_params = (
       "bbox=" + bbox + 
-      "&mapScale=" + this.state.map_scale +
+      "&mapScale=" + map_scale +
+      // "&layers=" + this.state.transportation_layer +
+      "&layers=" +
       "&bboxSR=" + 
-      "&layers=1" +
       "&layerDefs=" +
       "&size=" +
       "&imageSR=" +
-      "&dpi=" +
+      "&dpi=600" +
       "&time=" +
       "&layerTimeOptions=" +
       "&dynamicLayers=" +
@@ -88,6 +103,7 @@ export default class LocationScreen extends React.Component {
       "&f=json" 
     );
     let url = base_url + map_params;
+    console.log('URL: ', map_params);
 
     fetch(url)
     .then(response => response.json())
@@ -98,8 +114,26 @@ export default class LocationScreen extends React.Component {
     });
   };
 
+  zoomIn() {
+    let map_scale = this.state.map_scale - 80000;
+    this.setState({
+      map_scale: map_scale,
+    })
+    this.fetchMapFromAPI(map_scale);
+  }
+
+  zoomOut() {
+    let map_scale = this.state.map_scale + 80000;
+    this.setState({
+      map_scale: map_scale,
+    })
+    this.fetchMapFromAPI(map_scale);
+  }
+
   render() {
-    console.log('MAP: ', this.state.map)
+    // console.log('MAP: ', this.state.map);
+    // console.log('TRANSPORATION LAYER: ', this.state.transportation_layer);
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -111,14 +145,32 @@ export default class LocationScreen extends React.Component {
           />
           <LocationInput />
         </View>
+
         <View style={styles.map_wrap}>
 {
+
           <Image 
             source={{ uri: this.state.map['href'] }} 
             style={styles.map}
             resizeMode='cover'
           />
 }
+        </View>
+        <View style={styles.zoom_button_wrap}>
+          <TouchableOpacity 
+            style={styles.zoom_button}
+            disabled={this.state.map_scale > 50000 ? false : true}
+            onPress={this.state.map_scale > 50000 ? this.zoomIn.bind(this) : null}
+          >
+            <Text>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.zoom_button}
+            disabled={this.state.map_scale < 2000000 ? false : true}
+            onPress={this.state.map_scale < 2000000 ? this.zoomOut.bind(this) : null}
+          >
+            <Text>-</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -140,6 +192,21 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
-  }
+  },
+  zoom_button_wrap: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    width: 35,
+  },
+  zoom_button: {
+    backgroundColor: '#fff',
+    borderColor: '#585858',
+    borderWidth: 1,
+    elevation: 1,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
