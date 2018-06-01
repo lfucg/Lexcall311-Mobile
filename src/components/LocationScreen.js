@@ -162,27 +162,30 @@ export default class LocationScreen extends React.Component {
           <LocationInput />
         </View>
 
-        <View style={styles.map_wrap}>
-{
+        <View style={styles.map_and_layers_wrap}>
 
-          // <Image 
-          //   source={{ uri: this.state.map['href'] }} 
-          //   style={styles.map}
-          //   resizeMode='cover'
-          // />
-          
-}
+          <View style={styles.map_wrap}>
+  {
+
+            <Image 
+              source={{ uri: this.state.map['href'] }} 
+              style={styles.map}
+              resizeMode='cover'
+            />
+            
+          // <View style={styles.aerial_layer_wrap}>
+          // </View>
+  }
+          </View>
+
+
+            <Image 
+              source={{ uri: this.state.aerial_layer['href'] }} 
+              style={styles.aerial_layer}
+              resizeMode='cover'
+            />
+
         </View>
-
-        <View style={styles.aerial_layer_wrap}>
-
-          <Image 
-            source={{ uri: this.state.aerial_layer['href'] }} 
-            style={styles.aerial_layer}
-            resizeMode='cover'
-          />
-        </View>
-
 
         <View style={styles.zoom_button_wrap}>
           <TouchableOpacity 
@@ -213,25 +216,43 @@ const styles = StyleSheet.create({
   header: {
     flex: .6,
   },
-  map_wrap: {
+  map_and_layers_wrap: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 400,
+    height: 400,
+  },
+  map_wrap: {
+    // flex: 1,
+    width: 400,
+    height: 400,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderTopWidth: 1,
     borderColor: '#585858',
   },
   map: {
-    flex: 1,
+    // flex: 1,
+    width: 400,
+    height: 400,
   },
   aerial_layer_wrap: {
-    flex: 1,
+    // flex: 1,
+    // width: 400,
+    // height: 400,
+
     // position: 'absolute',
     opacity: .3,
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    // top: 0,
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
   },
   aerial_layer: {
-    flex: 1,
+    // flex: 1,
+    width: 400,
+    height: 400,
   },
   zoom_button_wrap: {
     position: 'absolute',
