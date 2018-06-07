@@ -15,7 +15,7 @@ const Root = createStackNavigator(
     Location: LocationScreen,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Location',
     navigationOptions: {
       headerStyle: {
         elevation: 1,

@@ -8,16 +8,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+// components
 import HeaderTitle from './HeaderTitle.js';
 import HeaderLeft from './HeaderLeft.js';
 import HeaderRight from './HeaderRight.js';
-
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
 import LocationInput from './LocationInput.js';
 
-import search_img from '../assets/images/icon_search.png';
-
+// images
+import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
 
 
 export default class LocationScreen extends React.Component {
@@ -156,7 +156,7 @@ export default class LocationScreen extends React.Component {
         <View style={styles.header}>
           <NineOneOne />
           <Summary 
-            icon={search_img} 
+            icon={marker_img} 
             heading={"Set Location of Issue"}
             content={"Enter the address, use your current location or tap and hold on the map to place a marker near the issue."} 
           />

@@ -5,16 +5,27 @@ import {
   View 
 } from 'react-native';
 
+// components
 import HeaderTitle from './HeaderTitle.js';
 import HeaderLeft from './HeaderLeft.js';
 import HeaderRight from './HeaderRight.js';
-
 import MenuOption from './MenuOption.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
 
-import search_img from '../assets/images/icon_search.png';
+// images
 import check_img from '../assets/images/summary_icon_check-circle.png';
+import trash_img from '../assets/images/icon_trash-alt.png';
+import road_img from '../assets/images/icon_road.png';
+import truck_img from '../assets/images/icon_truck.png';
+import volume_img from '../assets/images/icon_volume-up.png';
+import wrench_img from '../assets/images/icon_wrench.png';
+import car_img from '../assets/images/icon_car.png';
+import question_img from '../assets/images/icon_question.png';
+import recycle_img from '../assets/images/icon_recycle.png';
+import sign_img from '../assets/images/icon_map-signs.png';
+import tree_img from '../assets/images/icon_tree.png';
+import ellipsis_img from '../assets/images/icon_ellipsis-h.png';
 
 export default class CategoryScreen extends React.Component {
 
@@ -51,67 +62,67 @@ export default class CategoryScreen extends React.Component {
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={trash_img} 
             text={"Bulky Trash Pickup"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={road_img} 
             text={"Dead Animal Removal"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={truck_img} 
             text={"Garbage Collection"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={volume_img} 
             text={"Nuisance Complaint"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={wrench_img} 
             text={"Park Maintenance"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={car_img} 
             text={"Pothole Repair"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={question_img} 
             text={"Questions and/or Comments"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={recycle_img} 
             text={"Recycling Collection"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={sign_img} 
             text={"Traffic Light/Sign"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={tree_img} 
             text={"Yard Waste Collection"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={search_img} 
+            img={ellipsis_img} 
             text={"Other"}
           />
         </View>
