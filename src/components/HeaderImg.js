@@ -8,16 +8,10 @@ export default class HeaderImg extends Component {
 
 
   getRandomInt(max) {
-    console.log('random int');
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-  // console.log(getRandomInt(3));
-  // // expected output: 0, 1 or 2
-
-
   randomImage() {
-    console.log('random image');
     let number = this.getRandomInt(2);
     if (number == 0) {
       return header_pic;
@@ -29,7 +23,6 @@ export default class HeaderImg extends Component {
   render() {
     return (
       <Image source={this.randomImage()} style={styles.header_pic} resizeMode='cover' />
-      // <Image source={header_pic} style={styles.header_pic} resizeMode='cover' />
     );
   }
 }

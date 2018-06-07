@@ -14,7 +14,7 @@ export default class HeaderTitle extends React.Component {
 
   link_logic () {
     if (this.props.nav_link == 'Phone') {
-      phonecall('311', true);
+      phonecall('8594252255', true);
     }
     else if (this.props.nav_link == 'WebReport') {
       web('https://www.lexingtonky.gov/lexcall');
