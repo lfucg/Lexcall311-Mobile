@@ -16,7 +16,7 @@ import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
 import LocationInput from './LocationInput.js';
 
-import search_img from '../assets/images/search.png';
+import search_img from '../assets/images/icon_search.png';
 
 
 

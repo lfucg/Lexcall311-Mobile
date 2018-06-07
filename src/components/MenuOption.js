@@ -16,11 +16,14 @@ export default class HeaderTitle extends React.Component {
     if (this.props.nav_link == 'Phone') {
       phonecall('8594252255', true);
     }
+    else if (this.props.nav_link == 'SignUp') {
+      web('https://www.lexingtonky.gov/lexcall');
+    }
     else if (this.props.nav_link == 'WebReport') {
       web('https://www.lexingtonky.gov/lexcall');
     }
-    else if (this.props.nav_link == 'SignUp') {
-      web('https://www.lexingtonky.gov/lexcall');
+    else if (this.props.nav_link == 'MapOfReports') {
+      web('https://www.lexingtonky.gov');
     }
     else if (this.props.nav_link == 'TrafficInfo') {
       web('https://www.lexingtonky.gov/traffic-ticker');

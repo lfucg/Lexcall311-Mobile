@@ -5,10 +5,12 @@ import {
   View, 
   Platform,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 
 import { StackActions, NavigationActions } from 'react-navigation';
 
+import horse from '../assets/images/header_logo-horse-blue.png';
 
 export default class HeaderTitle extends React.Component {
   render() {
@@ -16,6 +18,7 @@ export default class HeaderTitle extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.wrap}>
+          <Image source={horse} style={styles.horse} />
           <Text style={styles.title}>{this.props.text}</Text>
         </View>
       </View>
@@ -36,9 +39,13 @@ const styles = StyleSheet.create({
         paddingTop: 10,
       },
       android: {
-        paddingTop: 15,
+        paddingTop: 20,
       },
     }),
+  },
+  horse: {
+    marginTop: -12,
+    marginRight: 10,
   },
   title: {
     fontWeight: '600',

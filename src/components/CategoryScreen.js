@@ -13,8 +13,8 @@ import MenuOption from './MenuOption.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
 
-import search_img from '../assets/images/search.png';
-
+import search_img from '../assets/images/icon_search.png';
+import check_img from '../assets/images/summary_icon_check-circle.png';
 
 export default class CategoryScreen extends React.Component {
 
@@ -42,7 +42,7 @@ export default class CategoryScreen extends React.Component {
         <View style={styles.header}>
           <NineOneOne />
           <Summary 
-            icon={search_img} 
+            icon={check_img} 
             heading={"Select a Category"}
             content={"Select which type of issue you are reporting."}
           />

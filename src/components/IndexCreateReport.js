@@ -7,7 +7,7 @@ import {
   Platform, 
   TouchableOpacity,
 } from 'react-native';
-import pencil_img from '../assets/images/pencil-alt.png';
+import pencil_img from '../assets/images/icon_pencil-alt.png';
 
 export default class IndexCreateReport extends React.Component {
 

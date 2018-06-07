@@ -13,15 +13,15 @@ import HeaderLeft from './HeaderLeft.js';
 import HeaderRight from './HeaderRight.js';
 import MenuOption from './MenuOption.js';
 import IndexCreateReport from './IndexCreateReport.js';
+import HeaderImg from './HeaderImg.js';
 
 // images
-import HeaderImg from './HeaderImg.js';
-import search_img from '../assets/images/search.png';
-import phone_img from '../assets/images/phone.png';
-import user_plus_img from '../assets/images/user-plus.png';
-import car_img from '../assets/images/car.png';
-import external_link_alt_img from '../assets/images/external-link-alt.png';
-
+import search_img from '../assets/images/icon_search.png';
+import phone_img from '../assets/images/icon_phone.png';
+import car_img from '../assets/images/icon_car.png';
+import external_link_alt_img from '../assets/images/icon_external-link-alt.png';
+import bell_img from '../assets/images/icon_bell.png';
+import map_img from '../assets/images/icon_map.png';
 
 export default class HomeScreen extends React.Component {
 
@@ -58,7 +58,7 @@ export default class HomeScreen extends React.Component {
           <MenuOption
             navigation={this.props.navigation}
             nav_link={'SignUp'} 
-            img={user_plus_img} 
+            img={bell_img} 
             text={"Sign up for 311 Alerts"} 
           />
           <MenuOption
@@ -66,6 +66,12 @@ export default class HomeScreen extends React.Component {
             nav_link={'WebReport'} 
             img={search_img} 
             text={"Look up a 311 Report"} 
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_link={'MapOfReports'} 
+            img={map_img} 
+            text={"View Map of Current Reports"} 
           />
           <MenuOption
             navigation={this.props.navigation}

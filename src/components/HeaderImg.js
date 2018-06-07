@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { AppRegistry, Image, StyleSheet, View } from 'react-native';
 
-import header_pic from '../assets/images/sunrise.jpg';
-import header_pic2 from '../assets/images/thoroughbred.jpg';
+import header_pic from '../assets/images/home_sunrise.jpg';
+import header_pic2 from '../assets/images/home_thoroughbred.jpg';
 
 export default class HeaderImg extends Component {
 
