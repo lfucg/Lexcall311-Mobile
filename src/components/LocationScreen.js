@@ -20,7 +20,6 @@ import search_img from '../assets/images/search.png';
 
 
 
-
 export default class LocationScreen extends React.Component {
 
   constructor(props) {
@@ -66,6 +65,9 @@ export default class LocationScreen extends React.Component {
 
   fetchMapFromAPI(map_scale=undefined) {
     console.log('MAP BEING FETCHED');
+    
+
+    
     const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?";
     let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
 
@@ -84,23 +86,22 @@ export default class LocationScreen extends React.Component {
     let map_params = (
       "bbox=" + bbox + 
       "&mapScale=" + map_scale +
-      // "&layers=" + this.state.transportation_layer +
-      "&layers=" +
-      "&bboxSR=" + 
+      "&layers=27" +
       "&layerDefs=" +
+      "&layerTimeOptions=" +
+      "&layerRangeValues=" +
+      "&dynamicLayers=" +
+      "&layerParameterValues=" +
+      "&bboxSR=" + 
       "&size=" +
       "&imageSR=" +
-      "&dpi=600" +
       "&time=" +
-      "&layerTimeOptions=" +
-      "&dynamicLayers=" +
       "&gdbVersion=" +
       "&rotation=" +
       "&datumTransformations=" +
-      "&layerParameterValues=" +
       "&mapRangeValues=" +
-      "&layerRangeValues=" +
-      "&format=jpg" +
+      "&dpi=600" +
+      "&format=png" +
       "&transparent=false" +
       "&f=json" 
     );
@@ -116,16 +117,16 @@ export default class LocationScreen extends React.Component {
     });
 
 
-    const aerial_base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/aerial2016/MapServer/export?";
-    let aerial_url = aerial_base_url + map_params;
+    // const aerial_base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/aerial2016/MapServer/export?";
+    // let aerial_url = aerial_base_url + map_params;
 
-    fetch(aerial_url)
-    .then(response => response.json())
-    .then(response => {
-      this.setState({
-        aerial_layer: response,
-      });
-    });
+    // fetch(aerial_url)
+    // .then(response => response.json())
+    // .then(response => {
+    //   this.setState({
+    //     aerial_layer: response,
+    //   });
+    // });
 
 
   };
@@ -148,7 +149,7 @@ export default class LocationScreen extends React.Component {
 
   render() {
     // console.log('MAP: ', this.state.map);
-    // console.log('TRANSPORATION LAYER: ', this.state.transportation_layer);
+
 
     return (
       <View style={styles.container}>
@@ -165,7 +166,7 @@ export default class LocationScreen extends React.Component {
         <View style={styles.map_and_layers_wrap}>
 
           <View style={styles.map_wrap}>
-  {
+{
 
             <Image 
               source={{ uri: this.state.map['href'] }} 
@@ -175,16 +176,16 @@ export default class LocationScreen extends React.Component {
             
           // <View style={styles.aerial_layer_wrap}>
           // </View>
-  }
+
+
+            // <Image 
+            //   source={{ uri: this.state.aerial_layer['href'] }} 
+            //   style={styles.aerial_layer}
+            //   resizeMode='cover'
+            // />
+
+}
           </View>
-
-
-            <Image 
-              source={{ uri: this.state.aerial_layer['href'] }} 
-              style={styles.aerial_layer}
-              resizeMode='cover'
-            />
-
         </View>
 
         <View style={styles.zoom_button_wrap}>

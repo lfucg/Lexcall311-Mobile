@@ -47,12 +47,6 @@ export default class HomeScreen extends React.Component {
           <IndexCreateReport navigation={this.props.navigation} />
         </View>
         <View style={styles.menu}>
-          <MenuOption
-            navigation={this.props.navigation}
-            nav_link={'WebReport'} 
-            img={search_img} 
-            text={"Look up a 311 Report"} 
-          />
           {
           <MenuOption
             navigation={this.props.navigation}
@@ -66,6 +60,12 @@ export default class HomeScreen extends React.Component {
             nav_link={'SignUp'} 
             img={user_plus_img} 
             text={"Sign up for 311 Alerts"} 
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_link={'WebReport'} 
+            img={search_img} 
+            text={"Look up a 311 Report"} 
           />
           <MenuOption
             navigation={this.props.navigation}
