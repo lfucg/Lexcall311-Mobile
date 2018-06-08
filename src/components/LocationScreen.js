@@ -149,7 +149,7 @@ export default class LocationScreen extends React.Component {
 
   render() {
     // console.log('MAP: ', this.state.map);
-
+    console.log('CATEGORY ON LOCATION SCREEN: ', this.props.navigation.state.params);
 
     return (
       <View style={styles.container}>

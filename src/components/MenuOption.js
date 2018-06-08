@@ -31,9 +31,11 @@ export default class HeaderTitle extends React.Component {
     else if (this.props.nav_link == 'LexingtonWebsite') {
       web('https://www.lexingtonky.gov');
     }
-    else { // internal screen
-      this.props.navigation.navigate(this.props.nav_link);
-    } 
+    else { // internal screen + params
+      this.props.navigation.navigate(this.props.nav_link, {
+        category: this.props.category,
+      });
+    }
   };
 
   render() {

@@ -64,66 +64,77 @@ export default class CategoryScreen extends React.Component {
             nav_link={'Location'} 
             img={trash_img} 
             text={"Bulky Trash Pickup"}
+            category={"trash_pickup"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={road_img} 
             text={"Dead Animal Removal"}
+            category={"dead_animal"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={truck_img} 
             text={"Garbage Collection"}
+            category={"garbage_collection"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={volume_img} 
             text={"Nuisance Complaint"}
+            category={"nuisance_complaint"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={wrench_img} 
             text={"Park Maintenance"}
+            category={"park_maintenance"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={car_img} 
             text={"Pothole Repair"}
+            category={"pothole"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={question_img} 
             text={"Questions and/or Comments"}
+            category={"question"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={recycle_img} 
             text={"Recycling Collection"}
+            category={"recycling"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={sign_img} 
             text={"Traffic Light/Sign"}
+            category={"traffic_light"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={tree_img} 
             text={"Yard Waste Collection"}
+            category={"yard_waste"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={ellipsis_img} 
             text={"Other"}
+            category={"other"}
           />
         </View>
       </View>

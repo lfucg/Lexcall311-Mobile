@@ -20,11 +20,12 @@ export default class LocationInput extends React.Component {
       <View style={styles.container}>
         <Image source={search_img} style={styles.search_img} />
         <TextInput
-          onFocus= {() => this.setState({location : ''})}
+          // onSubmitEditing={}
+          onFocus={() => this.setState({location : ''})}
           style={styles.location}
           onChangeText={(location) => this.setState({location})}
           value={this.state.location}
-          underlineColorAndroid = 'transparent'
+          underlineColorAndroid='transparent'
         />
       </View>
     );
