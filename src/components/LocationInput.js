@@ -4,16 +4,28 @@ import {
   Text, 
   View, 
   Image,
+  TextInput,
 } from 'react-native';
 
 import search_img from '../assets/images/icon_search.png';
 
 export default class LocationInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { location: 'Enter address or describe location' };
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Image source={search_img} style={styles.search_img} />
-        <Text style={styles.text}>Enter address or describe location</Text>
+        <TextInput
+          onFocus= {() => this.setState({location : ''})}
+          style={styles.location}
+          onChangeText={(location) => this.setState({location})}
+          value={this.state.location}
+          underlineColorAndroid = 'transparent'
+        />
       </View>
     );
   }
@@ -34,7 +46,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  text: {
+  location: {
     fontSize: 18,
   },
 });
