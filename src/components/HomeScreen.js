@@ -9,8 +9,8 @@ import {
 
 // components
 import HeaderTitle from './HeaderTitle.js';
-import HeaderLeft from './HeaderLeft.js';
-import HeaderRight from './HeaderRight.js';
+import HeaderBack from './HeaderBack.js';
+import HeaderNext from './HeaderNext.js';
 import MenuOption from './MenuOption.js';
 import IndexCreateReport from './IndexCreateReport.js';
 import HeaderImg from './HeaderImg.js';
@@ -27,14 +27,14 @@ export default class HomeScreen extends React.Component {
 
  static navigationOptions = ({navigation}) => {
     return {
-      headerLeft: (
-        <HeaderLeft />
+      headerBack: (
+        <HeaderBack />
       ),
       headerTitle: (
         <HeaderTitle text={"LexCall 311"}/>
       ),
-      headerRight: (
-        <HeaderRight />
+      headerNext: (
+        <HeaderNext />
       ),
     };
   }

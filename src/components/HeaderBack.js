@@ -7,10 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-// import { StackActions, NavigationActions } from 'react-navigation';
 
-
-export default class HeaderLeft extends React.Component {
+export default class HeaderBack extends React.Component {
   render() {
 
     return (

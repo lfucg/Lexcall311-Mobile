@@ -7,8 +7,8 @@ import {
 
 // components
 import HeaderTitle from './HeaderTitle.js';
-import HeaderLeft from './HeaderLeft.js';
-import HeaderRight from './HeaderRight.js';
+import HeaderBack from './HeaderBack.js';
+import HeaderNext from './HeaderNext.js';
 import MenuOption from './MenuOption.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
@@ -31,8 +31,8 @@ export default class CategoryScreen extends React.Component {
 
  static navigationOptions = ({navigation}) => {
     return {
-      headerLeft: (
-        <HeaderLeft
+      headerBack: (
+        <HeaderBack
           navigation={navigation}
           text={"< Home"}
           nav_link={"Home"}
@@ -41,8 +41,8 @@ export default class CategoryScreen extends React.Component {
       headerTitle: (
         <HeaderTitle text={"Create A Report"}/>
       ),
-      headerRight: (
-        <HeaderRight />
+      headerNext: (
+        <HeaderNext />
       ),
     };
   }

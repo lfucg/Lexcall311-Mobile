@@ -6,16 +6,17 @@ import {
 import HomeScreen from './src/components/HomeScreen.js';
 import CategoryScreen from './src/components/CategoryScreen.js';
 import LocationScreen from './src/components/LocationScreen.js';
-
+import DescriptionScreen from './src/components/DescriptionScreen.js';
 
 const Root = createStackNavigator(
   {
     Home:  HomeScreen,
     Category: CategoryScreen,
     Location: LocationScreen,
+    Description: DescriptionScreen,
   },
   {
-    initialRouteName: 'Location',
+    initialRouteName: 'Category',
     navigationOptions: {
       headerStyle: {
         elevation: 1,

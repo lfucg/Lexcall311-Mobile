@@ -10,8 +10,8 @@ import {
 
 // components
 import HeaderTitle from './HeaderTitle.js';
-import HeaderLeft from './HeaderLeft.js';
-import HeaderRight from './HeaderRight.js';
+import HeaderBack from './HeaderBack.js';
+import HeaderNext from './HeaderNext.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
 import LocationInput from './LocationInput.js';
@@ -25,6 +25,8 @@ export default class LocationScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      category: this.props.navigation.state.category,
+
       map: {},
       aerial_layer: {},
       transportation_layer: {},
@@ -43,8 +45,8 @@ export default class LocationScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => {
     return {
-      headerLeft: (
-        <HeaderLeft
+      headerBack: (
+        <HeaderBack
           navigation={navigation}
           text={"< Back"}
           nav_link={"Category"}
@@ -53,11 +55,11 @@ export default class LocationScreen extends React.Component {
       headerTitle: (
         <HeaderTitle text={"Create A Report"}/>
       ),
-      headerRight: (
-        <HeaderRight 
+      headerNext: (
+        <HeaderNext 
           navigation={navigation}
           text={"Next >"}
-          nav_link={"Home"}
+          nav_link={"Description"}
         />
       ),
     };
@@ -65,9 +67,7 @@ export default class LocationScreen extends React.Component {
 
   fetchMapFromAPI(map_scale=undefined) {
     console.log('MAP BEING FETCHED');
-    
 
-    
     const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?";
     let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
 
@@ -149,7 +149,7 @@ export default class LocationScreen extends React.Component {
 
   render() {
     // console.log('MAP: ', this.state.map);
-    console.log('CATEGORY ON LOCATION SCREEN: ', this.props.navigation.state.params);
+    console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
 
     return (
       <View style={styles.container}>
