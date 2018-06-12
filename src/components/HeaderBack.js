@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+// import { StackActions, NavigationActions } from 'react-navigation';
+
 
 export default class HeaderBack extends React.Component {
   render() {
-
+    console.log('HEADER BACK: ');
     return (
       <TouchableOpacity 
         style={styles.container}

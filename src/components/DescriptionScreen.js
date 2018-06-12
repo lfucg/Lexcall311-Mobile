@@ -20,7 +20,7 @@ export default class DescriptionScreen extends React.Component {
 
  static navigationOptions = ({navigation}) => {
     return {
-      headerBack: (
+      headerLeft: (
         <HeaderBack
           navigation={navigation}
           text={"< Back"}
@@ -30,7 +30,7 @@ export default class DescriptionScreen extends React.Component {
       headerTitle: (
         <HeaderTitle text={"Create A Report"}/>
       ),
-      headerNext: (
+      headerRight: (
         <HeaderNext 
           navigation={navigation}
           text={"Next"}

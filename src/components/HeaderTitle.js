@@ -8,17 +8,17 @@ import {
   Image,
 } from 'react-native';
 
-import { StackActions, NavigationActions } from 'react-navigation';
-
 import horse from '../assets/images/header_logo-horse-blue.png';
 
 export default class HeaderTitle extends React.Component {
   render() {
-
+    console.log('TITLE');
     return (
       <View style={styles.container}>
         <View style={styles.wrap}>
-          <Image source={horse} style={styles.horse} />
+        {
+          // <Image source={horse} style={styles.horse} />
+        }
           <Text style={styles.title}>{this.props.text}</Text>
         </View>
       </View>

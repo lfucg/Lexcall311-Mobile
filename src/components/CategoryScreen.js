@@ -29,9 +29,10 @@ import ellipsis_img from '../assets/images/icon_ellipsis-h.png';
 
 export default class CategoryScreen extends React.Component {
 
- static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({navigation}) => {
+    console.log('Navigation Options----------------', navigation);
     return {
-      headerBack: (
+      headerLeft: (
         <HeaderBack
           navigation={navigation}
           text={"< Home"}
@@ -41,13 +42,14 @@ export default class CategoryScreen extends React.Component {
       headerTitle: (
         <HeaderTitle text={"Create A Report"}/>
       ),
-      headerNext: (
+      headerRight: (
         <HeaderNext />
       ),
     };
   }
 
   render() {
+    console.log('category screen');
     return (
       <View style={styles.container}>
         <View style={styles.header}>

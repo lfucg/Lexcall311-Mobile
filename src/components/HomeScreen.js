@@ -27,13 +27,13 @@ export default class HomeScreen extends React.Component {
 
  static navigationOptions = ({navigation}) => {
     return {
-      headerBack: (
+      headerLeft: (
         <HeaderBack />
       ),
       headerTitle: (
         <HeaderTitle text={"LexCall 311"}/>
       ),
-      headerNext: (
+      headerRight: (
         <HeaderNext />
       ),
     };

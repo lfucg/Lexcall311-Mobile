@@ -32,6 +32,7 @@ export default class HeaderTitle extends React.Component {
       web('https://www.lexingtonky.gov');
     }
     else { // internal screen + params
+      console.log('MENU OPTION SELECTED: ', this.props.category);
       this.props.navigation.navigate(this.props.nav_link, {
         category: this.props.category,
       });
