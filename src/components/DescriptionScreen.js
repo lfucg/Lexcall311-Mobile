@@ -18,13 +18,24 @@ import check_img from '../assets/images/summary_icon_check-circle.png';
 
 export default class DescriptionScreen extends React.Component {
 
- static navigationOptions = ({navigation}) => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      category: this.props.navigation.state.category,
+      description: 'Add description here...', 
+    };
+  }
+
+  static navigationOptions = ({navigation}) => {
     return {
       headerLeft: (
         <HeaderBack
           navigation={navigation}
           text={"< Back"}
           nav_link={"Location"}
+          category={navigation.getParam('category')}
+          location={navigation.getParam('location')}
+          description={navigation.getParam('description')}
         />
       ),
       headerTitle: (
@@ -35,15 +46,11 @@ export default class DescriptionScreen extends React.Component {
           navigation={navigation}
           text={"Next"}
           nav_link={"Home"}
+          category={navigation.getParam('category')}
+          location={navigation.getParam('location')}
+          description={navigation.getParam('description')}
         />
       ),
-    };
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      description: 'Add description here...', 
     };
   }
 

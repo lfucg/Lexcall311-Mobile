@@ -12,7 +12,6 @@ import horse from '../assets/images/header_logo-horse-blue.png';
 
 export default class HeaderTitle extends React.Component {
   render() {
-    console.log('TITLE');
     return (
       <View style={styles.container}>
         <View style={styles.wrap}>

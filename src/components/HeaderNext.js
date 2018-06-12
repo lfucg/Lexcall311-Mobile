@@ -15,7 +15,11 @@ export default class HeaderNext extends React.Component {
       <TouchableOpacity 
         style={styles.container}
         activeOpacity={.6}
-        onPress={() => this.props.navigation.navigate(this.props.nav_link)}
+        onPress={() => this.props.navigation.navigate(this.props.nav_link, {
+          category: this.props.category,
+          location: this.props.location,
+          description: this.props.description,
+        })}
       >
         <View style={styles.wrap}>
 

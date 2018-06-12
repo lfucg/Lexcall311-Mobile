@@ -25,8 +25,6 @@ export default class LocationScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: this.props.navigation.state.category,
-
       map: {},
       aerial_layer: {},
       transportation_layer: {},
@@ -41,6 +39,19 @@ export default class LocationScreen extends React.Component {
 
   componentDidMount() {
     this.fetchMapFromAPI();
+    this.setState({
+      category: this.props.navigation.getParam('category'),
+      // location: 
+    });
+  }
+
+  updateLocation(location) {
+    this.setState({
+      location: location,
+    });
+    this.props.navigation.navigate('Location', {
+      location: location,
+    });
   }
 
   static navigationOptions = ({navigation}) => {
@@ -50,6 +61,9 @@ export default class LocationScreen extends React.Component {
           navigation={navigation}
           text={"< Back"}
           nav_link={"Category"}
+          category={navigation.getParam('category')}
+          location={navigation.getParam('location')}
+          description={navigation.getParam('description')}
         />
       ),
       headerTitle: (
@@ -60,13 +74,18 @@ export default class LocationScreen extends React.Component {
           navigation={navigation}
           text={"Next >"}
           nav_link={"Description"}
+          category={navigation.getParam('category')}
+          location={navigation.getParam('location')}
+          description={navigation.getParam('description')}
         />
       ),
     };
   };
 
+
+
   fetchMapFromAPI(map_scale=undefined) {
-    console.log('MAP BEING FETCHED');
+    // console.log('MAP BEING FETCHED');
 
     const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?";
     let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
@@ -160,7 +179,10 @@ export default class LocationScreen extends React.Component {
             heading={"Set Location of Issue"}
             content={"Enter the address, use your current location or tap and hold on the map to place a marker near the issue."} 
           />
-          <LocationInput />
+          <LocationInput 
+            navigation={this.props.navigation}
+            updateLocation={this.updateLocation.bind(this)}
+          />
         </View>
 
         <View style={styles.map_and_layers_wrap}>

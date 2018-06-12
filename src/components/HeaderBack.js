@@ -12,12 +12,15 @@ import {
 
 export default class HeaderBack extends React.Component {
   render() {
-    console.log('HEADER BACK: ');
     return (
       <TouchableOpacity 
         style={styles.container}
         activeOpacity={.6}
-        onPress={() => this.props.navigation.navigate(this.props.nav_link)}
+        onPress={() => this.props.navigation.navigate(this.props.nav_link, {
+          category: this.props.category,
+          location: this.props.location,
+          description: this.props.description,
+        })}
       >
         <View style={styles.wrap}>
 

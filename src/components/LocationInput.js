@@ -10,9 +10,28 @@ import {
 import search_img from '../assets/images/icon_search.png';
 
 export default class LocationInput extends React.Component {
+
   constructor(props) {
     super(props);
-    this.state = { location: 'Enter address or describe location' };
+    this.state = { 
+      location: this.startingLocation(),
+    };
+  }
+
+  startingLocation() {
+    currentLocation = this.props.navigation.getParam('location');
+    if (currentLocation) {
+      return currentLocation;
+    } else {
+      return 'Enter address or describe location';
+    }
+  }
+
+  locationChange(location) {
+    this.setState({
+      location: location,
+    });
+    this.props.updateLocation(location);
   }
 
   render() {
@@ -20,10 +39,9 @@ export default class LocationInput extends React.Component {
       <View style={styles.container}>
         <Image source={search_img} style={styles.search_img} />
         <TextInput
-          // onSubmitEditing={}
           onFocus={() => this.setState({location : ''})}
           style={styles.location}
-          onChangeText={(location) => this.setState({location})}
+          onChangeText={(location) => this.locationChange(location)}
           value={this.state.location}
           underlineColorAndroid='transparent'
         />
