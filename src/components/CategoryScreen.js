@@ -36,9 +36,6 @@ export default class CategoryScreen extends React.Component {
           navigation={navigation}
           text={"< Home"}
           nav_link={"Home"}
-          category={navigation.getParam('category')}
-          location={navigation.getParam('location')}
-          description={navigation.getParam('description')}
         />
       ),
       headerTitle: (
@@ -47,8 +44,6 @@ export default class CategoryScreen extends React.Component {
       headerRight: (
         <HeaderNext 
           category={navigation.getParam('category')}
-          location={navigation.getParam('location')}
-          description={navigation.getParam('description')}
         />
       ),
     };
@@ -73,8 +68,6 @@ export default class CategoryScreen extends React.Component {
             img={trash_img} 
             text={"Bulky Trash Pickup"}
             category={"trash_pickup"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -82,8 +75,6 @@ export default class CategoryScreen extends React.Component {
             img={road_img} 
             text={"Dead Animal Removal"}
             category={"dead_animal"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -91,8 +82,6 @@ export default class CategoryScreen extends React.Component {
             img={truck_img} 
             text={"Garbage Collection"}
             category={"garbage_collection"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -100,8 +89,6 @@ export default class CategoryScreen extends React.Component {
             img={volume_img} 
             text={"Nuisance Complaint"}
             category={"nuisance_complaint"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -109,8 +96,6 @@ export default class CategoryScreen extends React.Component {
             img={wrench_img} 
             text={"Park Maintenance"}
             category={"park_maintenance"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -118,8 +103,6 @@ export default class CategoryScreen extends React.Component {
             img={car_img} 
             text={"Pothole Repair"}
             category={"pothole"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -127,8 +110,6 @@ export default class CategoryScreen extends React.Component {
             img={question_img} 
             text={"Questions and/or Comments"}
             category={"question"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -136,8 +117,6 @@ export default class CategoryScreen extends React.Component {
             img={recycle_img} 
             text={"Recycling Collection"}
             category={"recycling"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -145,8 +124,6 @@ export default class CategoryScreen extends React.Component {
             img={sign_img} 
             text={"Traffic Light/Sign"}
             category={"traffic_light"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -154,8 +131,6 @@ export default class CategoryScreen extends React.Component {
             img={tree_img} 
             text={"Yard Waste Collection"}
             category={"yard_waste"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -163,8 +138,6 @@ export default class CategoryScreen extends React.Component {
             img={ellipsis_img} 
             text={"Other"}
             category={"other"}
-            location={this.props.navigation.getParam('location')}
-            description={this.props.navigation.getParam('description')}
           />
         </View>
       </View>

@@ -61,9 +61,6 @@ export default class LocationScreen extends React.Component {
           navigation={navigation}
           text={"< Back"}
           nav_link={"Category"}
-          category={navigation.getParam('category')}
-          location={navigation.getParam('location')}
-          description={navigation.getParam('description')}
         />
       ),
       headerTitle: (
