@@ -16,31 +16,14 @@ import Summary from './Summary.js';
 // images
 import check_img from '../assets/images/summary_icon_check-circle.png';
 
-export default class DescriptionScreen extends React.Component {
+export default class PhotoScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      description: this.startingDescription(),
+      category: this.props.navigation.state.category,
+      description: 'Add description here...', 
     };
-  }
-
-  startingDescription() {
-    currentDescription = this.props.navigation.getParam('description');
-    if (currentDescription) {
-      return currentDescription;
-    } else {
-      return 'Add description here...';
-    }
-  }
-
-  updateDescription(description) {
-    this.setState({
-      description: description,
-    });
-    this.props.navigation.navigate('Description', {
-      description: description,
-    });
   }
 
   static navigationOptions = ({navigation}) => {
@@ -49,7 +32,7 @@ export default class DescriptionScreen extends React.Component {
         <HeaderBack
           navigation={navigation}
           text={"< Back"}
-          nav_link={"Location"}
+          nav_link={"Description"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
@@ -62,7 +45,7 @@ export default class DescriptionScreen extends React.Component {
         <HeaderNext 
           navigation={navigation}
           text={"Next"}
-          nav_link={"Photo"}
+          nav_link={"Home"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
@@ -72,7 +55,7 @@ export default class DescriptionScreen extends React.Component {
   }
 
   render() {
-    console.log('DESCRIPTION SCREEN PARAMS: ', this.props.navigation.state.params);
+    console.log('PHOTO SCREEN PARAMS: ', this.props.navigation.state.params);
 
     return (
       <View style={styles.container}>
@@ -82,15 +65,6 @@ export default class DescriptionScreen extends React.Component {
             icon={check_img} 
             heading={"Add Description of Issue"}
             content={"Add notes, comments, license number, etc."}
-          />
-        </View>
-        <View style={styles.description_wrap}>
-          <TextInput
-            onFocus={() => this.setState({description : ''})}
-            style={styles.description}
-            onChangeText={(description) => this.updateDescription(description)}
-            value={this.state.description}
-            underlineColorAndroid='transparent'
           />
         </View>
       </View>
@@ -107,12 +81,6 @@ const styles = StyleSheet.create({
     flex: 2,
     borderBottomWidth: 1,
     borderColor: '#585858',
-  },
-  description_wrap: {
-    flex: 6,
-  },
-  description: {
-    margin: 10,
   },
 });
 

@@ -41,7 +41,6 @@ export default class LocationScreen extends React.Component {
     this.fetchMapFromAPI();
     this.setState({
       category: this.props.navigation.getParam('category'),
-      // location: 
     });
   }
 
