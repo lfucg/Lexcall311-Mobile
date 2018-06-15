@@ -17,7 +17,7 @@ export default class HeaderTitle extends React.Component {
       phonecall('8594252255', true);
     }
     else if (this.props.nav_link == 'SignUp') {
-      web('https://www.lexingtonky.gov/lexcall');
+      web('https://arcg.is/0SPWPG');
     }
     else if (this.props.nav_link == 'WebReport') {
       web('https://www.lexingtonky.gov/lexcall');

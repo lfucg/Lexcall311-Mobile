@@ -18,7 +18,7 @@ const Root = createStackNavigator(
     Photo: PhotoScreen,
   },
   {
-    initialRouteName: 'Description',
+    initialRouteName: 'Photo',
     navigationOptions: {
       headerStyle: {
         elevation: 1,

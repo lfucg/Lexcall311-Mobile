@@ -4,7 +4,7 @@
             "outputFile": "/Users/jasonmize/apax/lexcall/android/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "/Users/jasonmize/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/b36ed840fe3c4c0cc00a3caecf876471/res/values-v16/values-v16.xml",
+                    "source": "/Users/jasonmize/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/b573b363fc391f81914fa9277a1ce16b/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/Users/jasonmize/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/a5137fbb3c9dc6ec04148146b1285ebb/res/values-v16/values-v16.xml",
+                    "source": "/Users/jasonmize/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/ebb54b8688e99ab74aaf6377b5804dfa/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

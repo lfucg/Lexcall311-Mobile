@@ -65,6 +65,13 @@ export default class CategoryScreen extends React.Component {
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
+            img={truck_img} 
+            text={"Garbage Collection"}
+            category={"garbage_collection"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_link={'Location'} 
             img={trash_img} 
             text={"Bulky Trash Pickup"}
             category={"trash_pickup"}
@@ -72,16 +79,23 @@ export default class CategoryScreen extends React.Component {
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={road_img} 
-            text={"Dead Animal Removal"}
-            category={"dead_animal"}
+            img={tree_img} 
+            text={"Yard Waste Collection"}
+            category={"yard_waste"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={truck_img} 
-            text={"Garbage Collection"}
-            category={"garbage_collection"}
+            img={recycle_img} 
+            text={"Recycling Collection"}
+            category={"recycling"}
+          />
+          <MenuOption 
+            navigation={this.props.navigation}
+            nav_link={'Location'} 
+            img={car_img} 
+            text={"Pothole Repair"}
+            category={"pothole"}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -100,23 +114,9 @@ export default class CategoryScreen extends React.Component {
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={car_img} 
-            text={"Pothole Repair"}
-            category={"pothole"}
-          />
-          <MenuOption 
-            navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={question_img} 
-            text={"Questions and/or Comments"}
-            category={"question"}
-          />
-          <MenuOption 
-            navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={recycle_img} 
-            text={"Recycling Collection"}
-            category={"recycling"}
+            img={road_img} 
+            text={"Dead Animal Removal"}
+            category={"dead_animal"}
           />
           <MenuOption 
             navigation={this.props.navigation}
@@ -128,16 +128,16 @@ export default class CategoryScreen extends React.Component {
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={tree_img} 
-            text={"Yard Waste Collection"}
-            category={"yard_waste"}
+            img={ellipsis_img} 
+            text={"Other"}
+            category={"other"}
           />
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
-            img={ellipsis_img} 
-            text={"Other"}
-            category={"other"}
+            img={question_img} 
+            text={"Questions and/or Comments"}
+            category={"question"}
           />
         </View>
       </View>
