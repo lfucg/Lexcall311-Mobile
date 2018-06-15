@@ -71,7 +71,7 @@ export default class PhotoScreen extends React.Component {
         <HeaderNext 
           navigation={navigation}
           text={"Next >"}
-          nav_link={"Home"}
+          nav_link={"Contact"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
