@@ -19,6 +19,7 @@ export default class HeaderNext extends React.Component {
           category: this.props.category,
           location: this.props.location,
           description: this.props.description,
+          image: this.props.image,
         })}
       >
         <View style={styles.wrap}>

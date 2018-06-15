@@ -26,13 +26,29 @@ export default class PhotoScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: this.props.navigation.state.category,
-      description: 'Add description here...', 
-      image: null,
+      image: this.startingImage(),
       uploading: false,
       hasCameraPermission: null,
       hasCameraRollPermission: null,
     };
+  }
+
+  startingImage() {
+    currentImage = this.props.navigation.getParam('image');
+    if (currentImage) {
+      return currentImage;
+    } else {
+      return null;
+    }
+  }
+
+  updateImage(image) {
+    this.setState({
+      image: image,
+    });
+    this.props.navigation.navigate('Photo', {
+      image: image,
+    });
   }
 
   static navigationOptions = ({navigation}) => {
@@ -45,6 +61,7 @@ export default class PhotoScreen extends React.Component {
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
+          image={navigation.getParam('image')}
         />
       ),
       headerTitle: (
@@ -53,11 +70,12 @@ export default class PhotoScreen extends React.Component {
       headerRight: (
         <HeaderNext 
           navigation={navigation}
-          text={"Next"}
+          text={"Next >"}
           nav_link={"Home"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
+          image={navigation.getParam('image')}
         />
       ),
     };
@@ -76,6 +94,7 @@ export default class PhotoScreen extends React.Component {
       base64: true,
     });
     this.setState({ image });
+    this.updateImage(image);
   }
 
   askCameraRollPermission = async () => {
@@ -91,6 +110,7 @@ export default class PhotoScreen extends React.Component {
       base64: true,
     });
     this.setState({ image });
+    this.updateImage(image);
   };
 
   render() {
@@ -146,74 +166,8 @@ export default class PhotoScreen extends React.Component {
       </View>
     );
   }
-
-  // _pickImage = async () => {
-  //   const { cameraRollStatus } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-  //   this.setState({ hasCameraRollPermission: cameraRollStatus === 'granted' });
-  //   const { hasCameraRollPermission } = this.state;
-  //   console.log('PICK IMAGE: ');
-  //   if (hasCameraRollPermission === null) {
-  //     console.log('CAMERA ROLL PERMISSION IS NULL');
-  //     // <View />
-  //   } else if (hasCameraRollPermission === false) {
-  //     console.log('CAMERA ROLL PERMISSION IS FALSE');
-  //     // return <Text>No access to camera roll.</Text>
-  //     const { cameraRollStatus } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-  //   } else {
-  //     console.log('PICKER?');
-  //     let pickerResult = await ImagePicker.launchImageLibraryAsync({
-  //       allowsEditing: false,
-  //       aspect: [4,4],
-  //     });
-
-  //     this._handleImagePicked(pickerResult);
-  //   }
-  // };
-
-  // _handleImagePicked = async pickerResult => {
-  //   let uploadResponse, uploadResult;
-
-  //   try {
-  //     this.setState({ uploading: true });
-
-  //     if (!pickerResult.cancelled) {
-  //       uploadResponse = await uploadImageAsync(pickerResult.uri);
-  //       uploadResult = await uploadResponse.json();
-  //       this.setState({ image: uploadResult.location });
-  //     }
-  //   } catch (e) {
-  //     console.log('uploadResponse: ', uploadResponse);
-  //     console.log('uploadResult: ', uploadResult);
-  //     console.log({ e });
-  //     alert('Upload failed');
-  //   } finally {
-  //     this.setState({ uploading: false });
-  //   }
-  // };
 }
 
-// async function uploadImageAsync(uri) {
-//   let uriParts = uri.split('.');
-//   let fileType = uriParts[uriParts.length - 1];
-
-//   let formData = new FormData();
-//   formData.append('photo', {
-//     uri,
-//     name: `photo.${fileType}`,
-//     type: `image/${fileType}`,
-//   });
-
-//   let options = {
-//     method: 'POST',
-//     body: formData,
-//     headers: {
-//       Accept: 'application/json',
-//       'Content-Type': 'multipart/form-data',
-//     },
-//   };
-
-//   return fetch(apiUrl, options);
-// }
 
 const styles = StyleSheet.create({
   container: {

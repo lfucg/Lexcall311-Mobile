@@ -53,6 +53,7 @@ export default class DescriptionScreen extends React.Component {
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
+          image={navigation.getParam('image')}
         />
       ),
       headerTitle: (
@@ -61,11 +62,12 @@ export default class DescriptionScreen extends React.Component {
       headerRight: (
         <HeaderNext 
           navigation={navigation}
-          text={"Next"}
+          text={"Next >"}
           nav_link={"Photo"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
+          image={navigation.getParam('image')}
         />
       ),
     };

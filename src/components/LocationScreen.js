@@ -40,7 +40,7 @@ export default class LocationScreen extends React.Component {
   componentDidMount() {
     this.fetchMapFromAPI();
     this.setState({
-      category: this.props.navigation.getParam('category'),
+      category: this.props.navigation.getParam('category'),  // TODO - handle street light category
     });
   }
 
@@ -73,6 +73,7 @@ export default class LocationScreen extends React.Component {
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
+          image={navigation.getParam('image')}
         />
       ),
     };

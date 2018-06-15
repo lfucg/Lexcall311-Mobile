@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-// import { StackActions, NavigationActions } from 'react-navigation';
-
 
 export default class HeaderBack extends React.Component {
   render() {
@@ -20,6 +18,7 @@ export default class HeaderBack extends React.Component {
           category: this.props.category,
           location: this.props.location,
           description: this.props.description,
+          image: this.props.image,
         })}
       >
         <View style={styles.wrap}>
