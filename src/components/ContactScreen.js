@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   Button,
   Image,
-  TextInput,
-  KeyboardAvoidingView,
+  TextInput, 
+  Keyboard,
+  ScrollView,
 } from 'react-native';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 // components
 import HeaderTitle from './HeaderTitle.js';
@@ -29,8 +31,41 @@ export default class ContactScreen extends React.Component {
       lastName: this.startingLastName(),
       email: this.startingEmail(),
       phone: this.startingPhone(),
+      headerMarginBottom: 30,
+      contactMarginBottom: 10,
+      contactPaddingTop: 20,
+      contactPaddingBottom: 20,
     };
   }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowSub.remove();
+    this.keyboardDidHideSub.remove();
+  }
+
+  keyboardDidShow = (event) => {
+    this.setState({
+      headerMarginBottom: 5,
+      contactMarginBottom: 5,
+      contactPaddingTop: 10,
+      contactPaddingBottom: 10,
+    });
+  };
+
+  keyboardDidHide = (event) => {
+    this.setState({
+      headerMarginBottom: 30,
+      contactMarginBottom: 10,
+      contactPaddingTop: 20,
+      contactPaddingBottom: 20,
+    });
+  };
+
 
   startingFirstName() {
     currentFirstName = this.props.navigation.getParam('firstName');
@@ -146,29 +181,30 @@ export default class ContactScreen extends React.Component {
     console.log('CONTACT SCREEN PARAMS: ', this.props.navigation.state.params);
 
     return (
-      <KeyboardAvoidingView 
-        style={styles.container} 
-        behavior='padding'
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        scrollEnabled={false}
+      <View 
+        style={[styles.container, { paddingBottom: this.keyboardHeight }]} 
       >
-        <View style={styles.header}>
-          <NineOneOne />
-          <Summary 
-            icon={summary_pencil} 
-            heading={"Enter Contact Info"}
-            content={"Add your contact info so we can follow up with you if needed.  Email is required to receive alerts."}
-          />
-        </View>
-        <View 
-          style={styles.all_contact_wrap} 
-        >
+        <ScrollView scrollEnabled={false}>
 
+          <View style={[styles.header, { marginBottom: this.state.headerMarginBottom }]}>
+            <NineOneOne />
+            <Summary 
+              icon={summary_pencil} 
+              heading={"Enter Contact Info"}
+              content={"Add your contact info so we can follow up with you if needed.  Email is required to receive alerts."}
+            />
+          </View>
+          
+          <View style={styles.all_contact_wrap}>
 
             <View style={styles.contact_wrap}>
               <TextInput 
                 onFocus={() => this.setState({firstName: ''})}
-                style={styles.contact}
+                style={[styles.contact, { 
+                  marginBottom: this.state.contactMarginBottom,
+                  paddingTop: this.state.contactPaddingTop,
+                  paddingBottom: this.state.contactPaddingBottom,
+                }]}
                 onChangeText={(firstName) => this.updateFirstName(firstName)}
                 value={this.state.firstName}
                 underlineColorAndroid='transparent'
@@ -177,7 +213,11 @@ export default class ContactScreen extends React.Component {
             <View style={styles.contact_wrap}>
               <TextInput 
                 onFocus={() => this.setState({lastName: ''})}
-                style={styles.contact}
+                style={[styles.contact, { 
+                  marginBottom: this.state.contactMarginBottom,
+                  paddingTop: this.state.contactPaddingTop,
+                  paddingBottom: this.state.contactPaddingBottom,
+                }]}
                 onChangeText={(lastName) => this.updateLastName(lastName)}
                 value={this.state.lastName}
                 underlineColorAndroid='transparent'
@@ -186,7 +226,11 @@ export default class ContactScreen extends React.Component {
             <View style={styles.contact_wrap}>
               <TextInput 
                 onFocus={() => this.setState({email: ''})}
-                style={styles.contact}
+                style={[styles.contact, { 
+                  marginBottom: this.state.contactMarginBottom,
+                  paddingTop: this.state.contactPaddingTop,
+                  paddingBottom: this.state.contactPaddingBottom,
+                }]}
                 onChangeText={(email) => this.updateEmail(email)}
                 value={this.state.email}
                 underlineColorAndroid='transparent'
@@ -196,7 +240,11 @@ export default class ContactScreen extends React.Component {
             <View style={styles.contact_wrap}>
               <TextInput 
                 onFocus={() => this.setState({phone: ''})}
-                style={styles.contact}
+                style={[styles.contact, { 
+                  marginBottom: this.state.contactMarginBottom,
+                  paddingTop: this.state.contactPaddingTop,
+                  paddingBottom: this.state.contactPaddingBottom,
+                }]}
                 onChangeText={(phone) => this.updatePhone(phone)}
                 value={this.state.phone}
                 underlineColorAndroid='transparent'
@@ -204,10 +252,12 @@ export default class ContactScreen extends React.Component {
               />
             </View>
 
+          </View>
+        </ScrollView>
 
-        </View>
-        <View style={{ height: 20 }} />
-      </KeyboardAvoidingView>
+        <KeyboardSpacer/>
+
+      </View>
     );
   }
 }
@@ -222,7 +272,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 1,
     borderColor: '#585858',
-    marginBottom: 30,
   },
   all_contact_wrap: {
     flex: 2,
@@ -232,8 +281,8 @@ const styles = StyleSheet.create({
   contact: {
     marginLeft: 10,
     marginRight: 10,
-    marginBottom: 10,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
     borderColor: '#585858',
     borderWidth: 1,
   },
