@@ -74,6 +74,10 @@ export default class LocationScreen extends React.Component {
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
           image={navigation.getParam('image')}
+          firstName={navigation.getParam('firstName')}
+          lastName={navigation.getParam('lastName')}
+          email={navigation.getParam('email')}
+          phone={navigation.getParam('phone')}
         />
       ),
     };

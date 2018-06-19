@@ -14,7 +14,7 @@ import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
 
 // images
-import check_img from '../assets/images/summary_icon_check-circle.png';
+import summary_pencil from '../assets/images/summary_icon_pencil-alt.png';
 
 export default class DescriptionScreen extends React.Component {
 
@@ -54,6 +54,10 @@ export default class DescriptionScreen extends React.Component {
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
           image={navigation.getParam('image')}
+          firstName={navigation.getParam('firstName')}
+          lastName={navigation.getParam('lastName')}
+          email={navigation.getParam('email')}
+          phone={navigation.getParam('phone')}
         />
       ),
       headerTitle: (
@@ -68,6 +72,10 @@ export default class DescriptionScreen extends React.Component {
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
           image={navigation.getParam('image')}
+          firstName={navigation.getParam('firstName')}
+          lastName={navigation.getParam('lastName')}
+          email={navigation.getParam('email')}
+          phone={navigation.getParam('phone')}
         />
       ),
     };
@@ -81,7 +89,7 @@ export default class DescriptionScreen extends React.Component {
         <View style={styles.header}>
           <NineOneOne />
           <Summary 
-            icon={check_img} 
+            icon={summary_pencil} 
             heading={"Add Description of Issue"}
             content={"Add notes, comments, license number, etc."}
           />

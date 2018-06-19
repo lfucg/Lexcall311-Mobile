@@ -20,6 +20,10 @@ export default class HeaderNext extends React.Component {
           location: this.props.location,
           description: this.props.description,
           image: this.props.image,
+          firstName: this.props.firstName,
+          lastName: this.props.lastName,
+          email: this.props.email,
+          phone: this.props.phone,
         })}
       >
         <View style={styles.wrap}>
