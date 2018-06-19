@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 
 // components
@@ -145,7 +146,12 @@ export default class ContactScreen extends React.Component {
     console.log('CONTACT SCREEN PARAMS: ', this.props.navigation.state.params);
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView 
+        style={styles.container} 
+        behavior='padding'
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        scrollEnabled={false}
+      >
         <View style={styles.header}>
           <NineOneOne />
           <Summary 
@@ -154,45 +160,54 @@ export default class ContactScreen extends React.Component {
             content={"Add your contact info so we can follow up with you if needed.  Email is required to receive alerts."}
           />
         </View>
-        <View style={styles.all_contact_wrap}>
-          <View style={styles.contact_wrap}>
-            <TextInput 
-              onFocus={() => this.setState({firstName: ''})}
-              style={styles.contact}
-              onChangeText={(firstName) => this.updateFirstName(firstName)}
-              value={this.state.firstName}
-              underlineColorAndroid='transparent'
-            />
-          </View>
-          <View style={styles.contact_wrap}>
-            <TextInput 
-              onFocus={() => this.setState({lastName: ''})}
-              style={styles.contact}
-              onChangeText={(lastName) => this.updateLastName(lastName)}
-              value={this.state.lastName}
-              underlineColorAndroid='transparent'
-            />
-          </View>
-          <View style={styles.contact_wrap}>
-            <TextInput 
-              onFocus={() => this.setState({email: ''})}
-              style={styles.contact}
-              onChangeText={(email) => this.updateEmail(email)}
-              value={this.state.email}
-              underlineColorAndroid='transparent'
-            />
-          </View>
-          <View style={styles.contact_wrap}>
-            <TextInput 
-              onFocus={() => this.setState({phone: ''})}
-              style={styles.contact}
-              onChangeText={(phone) => this.updatePhone(phone)}
-              value={this.state.phone}
-              underlineColorAndroid='transparent'
-            />
-          </View>
+        <View 
+          style={styles.all_contact_wrap} 
+        >
+
+
+            <View style={styles.contact_wrap}>
+              <TextInput 
+                onFocus={() => this.setState({firstName: ''})}
+                style={styles.contact}
+                onChangeText={(firstName) => this.updateFirstName(firstName)}
+                value={this.state.firstName}
+                underlineColorAndroid='transparent'
+              />
+            </View>
+            <View style={styles.contact_wrap}>
+              <TextInput 
+                onFocus={() => this.setState({lastName: ''})}
+                style={styles.contact}
+                onChangeText={(lastName) => this.updateLastName(lastName)}
+                value={this.state.lastName}
+                underlineColorAndroid='transparent'
+              />
+            </View>
+            <View style={styles.contact_wrap}>
+              <TextInput 
+                onFocus={() => this.setState({email: ''})}
+                style={styles.contact}
+                onChangeText={(email) => this.updateEmail(email)}
+                value={this.state.email}
+                underlineColorAndroid='transparent'
+                keyboardType='email-address'
+              />
+            </View>
+            <View style={styles.contact_wrap}>
+              <TextInput 
+                onFocus={() => this.setState({phone: ''})}
+                style={styles.contact}
+                onChangeText={(phone) => this.updatePhone(phone)}
+                value={this.state.phone}
+                underlineColorAndroid='transparent'
+                keyboardType='phone-pad'
+              />
+            </View>
+
+
         </View>
-      </View>
+        <View style={{ height: 20 }} />
+      </KeyboardAvoidingView>
     );
   }
 }
