@@ -16,7 +16,7 @@ export default class HeaderTitle extends React.Component {
       <View style={styles.container}>
         <View style={styles.wrap}>
         {
-          // <Image source={horse} style={styles.horse} />
+          <Image source={horse} style={styles.horse} />
         }
           <Text style={styles.title}>{this.props.text}</Text>
         </View>
@@ -38,13 +38,14 @@ const styles = StyleSheet.create({
         paddingTop: 10,
       },
       android: {
-        paddingTop: 20,
+        paddingTop: 16,
       },
     }),
   },
   horse: {
-    marginTop: -12,
+    marginTop: -8,
     marginRight: 10,
+    marginLeft: -15,
   },
   title: {
     fontWeight: '600',

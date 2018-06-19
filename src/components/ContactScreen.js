@@ -138,6 +138,35 @@ export default class ContactScreen extends React.Component {
       phone: phone,
     });
   }
+  
+  firstNameCheck() {
+    if (this.state.firstName == "") {
+      this.setState({
+        firstName: 'First Name',
+      });
+    }
+  }
+  lastNameCheck() {
+    if (this.state.lastName == "") {
+      this.setState({
+        lastName: 'Last Name',
+      });
+    }
+  }
+  emailCheck() {
+    if (this.state.email == "") {
+      this.setState({
+        email: 'Email Address',
+      });
+    }
+  }
+  phoneCheck() {
+    if (this.state.phone == "") {
+      this.setState({
+        phone: 'Phone Number',
+      });
+    }
+  }
 
   static navigationOptions = ({navigation}) => {
     return {
@@ -162,7 +191,7 @@ export default class ContactScreen extends React.Component {
       headerRight: (
         <HeaderNext 
           navigation={navigation}
-          text={"Next >"}
+          text={"Submit >"}
           nav_link={"Home"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
@@ -184,7 +213,7 @@ export default class ContactScreen extends React.Component {
       <View 
         style={[styles.container, { paddingBottom: this.keyboardHeight }]} 
       >
-        <ScrollView scrollEnabled={false}>
+        <ScrollView scrollEnabled={false} keyboardShouldPersistTaps='handled'>
 
           <View style={[styles.header, { marginBottom: this.state.headerMarginBottom }]}>
             <NineOneOne />
@@ -208,6 +237,7 @@ export default class ContactScreen extends React.Component {
                 onChangeText={(firstName) => this.updateFirstName(firstName)}
                 value={this.state.firstName}
                 underlineColorAndroid='transparent'
+                onBlur={() => this.firstNameCheck()}
               />
             </View>
             <View style={styles.contact_wrap}>
@@ -221,6 +251,7 @@ export default class ContactScreen extends React.Component {
                 onChangeText={(lastName) => this.updateLastName(lastName)}
                 value={this.state.lastName}
                 underlineColorAndroid='transparent'
+                onBlur={() => this.lastNameCheck()}
               />
             </View>
             <View style={styles.contact_wrap}>
@@ -235,6 +266,7 @@ export default class ContactScreen extends React.Component {
                 value={this.state.email}
                 underlineColorAndroid='transparent'
                 keyboardType='email-address'
+                onBlur={() => this.emailCheck()}
               />
             </View>
             <View style={styles.contact_wrap}>
@@ -249,6 +281,7 @@ export default class ContactScreen extends React.Component {
                 value={this.state.phone}
                 underlineColorAndroid='transparent'
                 keyboardType='phone-pad'
+                onBlur={() => this.phoneCheck()}
               />
             </View>
 
@@ -274,7 +307,7 @@ const styles = StyleSheet.create({
     borderColor: '#585858',
   },
   all_contact_wrap: {
-    flex: 2,
+    flex: 1,
   },
   contact_wrap: {
   },
