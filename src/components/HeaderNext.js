@@ -9,22 +9,40 @@ import {
 
 
 export default class HeaderNext extends React.Component {
-  render() {
+  nextPageOrSubmit() {
+    if (this.props.text == 'Submit >') {
+      console.log('SUBMIT TO API');
+    } else {
+      this.props.navigation.navigate(this.props.nav_link, {
+        category: this.props.category,
+        location: this.props.location,
+        description: this.props.description,
+        image: this.props.image,
+        firstName: this.props.firstName,
+        lastName: this.props.lastName,
+        email: this.props.email,
+        phone: this.props.phone,        
+      })
+    }
+  }
 
+
+  render() {
     return (
       <TouchableOpacity 
         style={styles.container}
         activeOpacity={.6}
-        onPress={() => this.props.navigation.navigate(this.props.nav_link, {
-          category: this.props.category,
-          location: this.props.location,
-          description: this.props.description,
-          image: this.props.image,
-          firstName: this.props.firstName,
-          lastName: this.props.lastName,
-          email: this.props.email,
-          phone: this.props.phone,
-        })}
+        onPress={() => this.nextPageOrSubmit()}
+        // onPress={() => this.props.navigation.navigate(this.props.nav_link, {
+        //   category: this.props.category,
+        //   location: this.props.location,
+        //   description: this.props.description,
+        //   image: this.props.image,
+        //   firstName: this.props.firstName,
+        //   lastName: this.props.lastName,
+        //   email: this.props.email,
+        //   phone: this.props.phone,
+        // })}
       >
         <View style={styles.wrap}>
 
