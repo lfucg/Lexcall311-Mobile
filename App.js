@@ -9,6 +9,7 @@ import LocationScreen from './src/components/LocationScreen.js';
 import DescriptionScreen from './src/components/DescriptionScreen.js';
 import PhotoScreen from './src/components/PhotoScreen.js';
 import ContactScreen from './src/components/ContactScreen.js';
+import ConfirmationScreen from './src/components/ConfirmationScreen.js';
 
 const Root = createStackNavigator(
   {
@@ -18,9 +19,10 @@ const Root = createStackNavigator(
     Description: DescriptionScreen,
     Photo: PhotoScreen,
     Contact: ContactScreen,
+    Confirmation: ConfirmationScreen,
   },
   {
-    initialRouteName: 'Contact',
+    initialRouteName: 'Confirmation',
     navigationOptions: {
       headerStyle: {
         elevation: 1,

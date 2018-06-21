@@ -20,8 +20,6 @@ export default class HeaderNext extends React.Component {
         anonymous = false;
       }
 
-      console.log('ENV VAR: ', env.data);
-
       const base_url = "https://test.salesforce.com/services/oauth2/token";
 
       let params = (
@@ -31,6 +29,7 @@ export default class HeaderNext extends React.Component {
         "&username=" + env.data.username +
         "&password=" + env.data.password +
 
+        "&RecordTypeId=01241000001IK5KAAW" + // RecordTypeId (Id): '01241000001IK5KAAW' 
         "&Subject=" + this.props.category + // Subject (text/255): Main subject or summary of the request. In our current web-to-case form, we are mapping a picklist of "concern" values to this Subject field.
         "&Description=" + this.props.description +  // Description (text/32000): Details of the request.
         "&Status=Open" +  // Status (picklist): 'Open'
@@ -54,10 +53,21 @@ export default class HeaderNext extends React.Component {
       }).then(response => response.json())
       .then((responseJson) => {
         console.log('RESPONSE: ', responseJson);
+
+        this.props.navigation.navigate('Confirmation', {
+          category: this.props.category,
+          location: this.props.location,
+          description: this.props.description,
+          image: this.props.image,
+          firstName: this.props.firstName,
+          lastName: this.props.lastName,
+          email: this.props.email,
+          phone: this.props.phone,        
+        });
+
       });
 
 
-      //     // RecordTypeId (Id): '01241000001IK5KAAW' 
       //     // Case_Contact_Role__c (picklist): This field has not fully been defined. Will have values like 'Resident', 'Owner', and 'Neighbor'. Full list TBD.
       //     // Override_Address_Validation__c (true/false): Set to false. 
       //     // Location_Description__c (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
@@ -99,7 +109,7 @@ export default class HeaderNext extends React.Component {
         lastName: this.props.lastName,
         email: this.props.email,
         phone: this.props.phone,        
-      })
+      });
     }
   }
 
