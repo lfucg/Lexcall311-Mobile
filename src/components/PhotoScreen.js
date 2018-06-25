@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Button,
   Image,
+  ImageBackground,
+  Dimensions,
 } from 'react-native';
 
 // components
@@ -26,30 +28,50 @@ export default class PhotoScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: this.startingImage(),
+      image1: this.startingImage1(),
+      image2: this.startingImage2(),
       uploading: false,
       hasCameraPermission: null,
       hasCameraRollPermission: null,
     };
   }
 
-  startingImage() {
-    currentImage = this.props.navigation.getParam('image');
-    if (currentImage) {
-      return currentImage;
+  startingImage1() {
+    currentImage1 = this.props.navigation.getParam('image1');
+    if (currentImage1) {
+      return currentImage1;
     } else {
       return null;
     }
   }
 
-  updateImage(image) {
+  updateImage1(image1) {
     this.setState({
-      image: image,
+      image1: image1,
     });
     this.props.navigation.navigate('Photo', {
-      image: image,
+      image1: image1,
     });
   }
+
+  startingImage2() {
+    currentImage2 = this.props.navigation.getParam('image2');
+    if (currentImage2) {
+      return currentImage2;
+    } else {
+      return null;
+    }
+  }
+
+  updateImage2(image2) {
+    this.setState({
+      image2: image2,
+    });
+    this.props.navigation.navigate('Photo', {
+      image2: image2,
+    });
+  }
+
 
   static navigationOptions = ({navigation}) => {
     return {
@@ -61,7 +83,8 @@ export default class PhotoScreen extends React.Component {
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
-          image={navigation.getParam('image')}
+          image1={navigation.getParam('image1')}
+          image2={navigation.getParam('image2')}
           firstName={navigation.getParam('firstName')}
           lastName={navigation.getParam('lastName')}
           email={navigation.getParam('email')}
@@ -79,7 +102,8 @@ export default class PhotoScreen extends React.Component {
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
-          image={navigation.getParam('image')}
+          image1={navigation.getParam('image1')}
+          image2={navigation.getParam('image2')}
           firstName={navigation.getParam('firstName')}
           lastName={navigation.getParam('lastName')}
           email={navigation.getParam('email')}
@@ -99,10 +123,15 @@ export default class PhotoScreen extends React.Component {
     let image = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
       aspect: [1,1],
-      base64: true,
+      // base64: true,
     });
-    this.setState({ image });
-    this.updateImage(image);
+    if (!this.state.image1) {
+      this.setState({ image1: image });
+      this.updateImage1(image);
+    } else {
+      this.setState({ image2: image });
+      this.updateImage2(image);
+    }
   }
 
   askCameraRollPermission = async () => {
@@ -115,18 +144,29 @@ export default class PhotoScreen extends React.Component {
     let image = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: false,
       aspect: [1,1],
-      base64: true,
+      // base64: true,
     });
-    this.setState({ image });
-    this.updateImage(image);
+    if (!this.state.image1) {
+      this.setState({ image1: image });
+      this.updateImage1(image);
+    } else {
+      this.setState({ image2: image });
+      this.updateImage2(image);
+    }
   };
+
 
   render() {
     console.log('PHOTO SCREEN PARAMS: ', this.props.navigation.state.params);
-
-    let { image } = this.state;
+    
+    let { image1 } = this.state;
+    let { image2 } = this.state;
     const { hasCameraPermission } = this.state;
     const { hasCameraRollPermission } = this.state;
+
+    const dimensions = Dimensions.get('window');
+    const imageWidth = dimensions.width / 2 - 10;
+    const imageHeight = imageWidth;
 
     return (
       <View style={styles.container}>
@@ -160,15 +200,62 @@ export default class PhotoScreen extends React.Component {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.img_display}>
-            {
-              image && <Image source={image} style={styles.img_in_display} />
-              // image && <Image source={{ uri: image }} style={styles.img_in_display} />
-            }
-            {
-              !image && <Image source={camera_img} style={styles.img_in_display} resizeMode='cover'/>
-            }  
-          </View>
+          { !image1 &&
+            <View style={styles.img_display}>
+              <Image source={camera_img} style={styles.img_in_display} resizeMode='cover' />
+            </View>
+          }
+          { image1 && !image2 &&
+            <View style={styles.img_display}>
+              <ImageBackground source={image1} style={styles.img_in_display} resizeMode='cover'>
+                <TouchableOpacity
+                  onPress={() => this.setState({ image1: null })}
+                  style={styles.img_remove}
+                >
+                  <Text style={styles.img_remove_text}>Remove</Text>
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          }
+          { image1 && image2 &&
+            <View style={styles.img_multiple_display}>
+              <ImageBackground
+                source={image1} 
+                style={[styles.img_multiple_in_display, 
+                  { 
+                    width: imageWidth, 
+                    height: imageHeight
+                  }]} 
+                resizeMode='cover' 
+              >
+                <TouchableOpacity
+                  onPress={() => this.setState({
+                    image1: image2,
+                    image2: null,
+                  })}
+                  style={styles.img_remove}
+                >
+                  <Text style={styles.img_remove_text}>Remove</Text>
+                </TouchableOpacity>
+              </ImageBackground>
+              <ImageBackground 
+                source={image2} 
+                style={[styles.img_multiple_in_display, 
+                  { 
+                    width: imageWidth, 
+                    height: imageHeight
+                  }]} 
+                resizeMode='cover' 
+              >
+                <TouchableOpacity
+                  onPress={() => this.setState({ image2: null })}
+                  style={styles.img_remove}
+                >
+                  <Text style={styles.img_remove_text}>Remove</Text>
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          }  
 
         </View>
       </View>
@@ -208,12 +295,36 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   img_display: {
+    padding: 5,
     backgroundColor: '#ddd',
     alignItems: 'center', 
   },
   img_in_display: {
+    margin: 5,
     width: 300,
     height: 300,
+  },
+  img_multiple_display: {
+    padding: 5,
+    backgroundColor: '#ddd',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center', 
+  },
+  img_multiple_in_display: {
+    margin: 5,
+  },
+  img_remove: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center', 
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    height: 30,
+  },
+  img_remove_text: {
+    color: '#fff',
   },
 });
 
