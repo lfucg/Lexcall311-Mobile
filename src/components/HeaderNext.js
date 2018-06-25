@@ -20,39 +20,56 @@ export default class HeaderNext extends React.Component {
         anonymous = false;
       }
 
+      const auth_params = (
+        'username=' + env.data.username +
+        '&password=' + env.data.password +
+        '&grant_type=password' + 
+        '&client_id=' + env.data.client_id +
+        '&client_secret=' + env.data.client_secret
+      )
 
-// https://yourInstance.salesforce.com/services/data/v20.0/sobjects/Account/customExtIdField__c/11999
-// -H "Authorization: Bearer token" -H "Content-Type: application/json" -d @newrecord.json
-
-      fetch("https://lexcall--devlex311.cs20.my.salesforce.com/services/data/v20.0/sobjects/Account/", {
-        method: 'PATCH',
+      fetch("https://test.salesforce.com/services/oauth2/token", {
+        method: 'POST',
         headers: {
-          // 'Accept': 'application/json',
-          // "Authorization": "Bearer token",
-          "Content-Type": "application/json",
+          "Accept": 'application/json',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({
-          username: `${env.data.username}`,
-          password: `${env.data.password}`,
-
-          RecordTypeId: "01241000001IK5KAAW",   // RecordTypeId (Id): '01241000001IK5KAAW' 
-          Status: "Open",   // Status (picklist): 'Open'
-          Origin: "Mobile App",   // Origin (picklist): 'Mobile App'
-          Priority: "Normal",   // Priority (picklist): 'Normal'
-          Anonymous__c: "true",
-        
-          Subject: "Dead Animal Pickup",   
-          Description: "Trash",
-          Street_Number__c: "625",   // (text/10)
-          Street_Name__c: "HILL N DALE RD",   // (text/100)
-          Location__Latitude__s: "38.0168302600",
-          Location__Longitude__s: "-84.5403933100"
-        })
+        body: auth_params,
       }).then(res => res.json())
-      .catch(error => console.error('ERROR: ', error))
-      .then(response => {
-        console.log('SUCCESS: ', response)
+        .catch(error => console.error('ERROR: ', error))
+        .then(response => {
+          console.log('SUCCESS: ', response)
       });
+
+      // fetch("https://lexcall--devlex311.cs20.my.salesforce.com/services/data/v20.0/sobjects/Account/", {
+      //   method: 'POST',
+      //   headers: {
+      //     // 'Accept': 'application/json',
+      //     // "Authorization": "Bearer token",
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     username: `${env.data.username}`,
+      //     password: `${env.data.password}`,
+
+      //     RecordTypeId: "01241000001IK5KAAW",   // RecordTypeId (Id): '01241000001IK5KAAW' 
+      //     Status: "Open",   // Status (picklist): 'Open'
+      //     Origin: "Mobile App",   // Origin (picklist): 'Mobile App'
+      //     Priority: "Normal",   // Priority (picklist): 'Normal'
+      //     Anonymous__c: "true",
+        
+      //     Subject: "Dead Animal Pickup",   
+      //     Description: "Trash",
+      //     Street_Number__c: "625",   // (text/10)
+      //     Street_Name__c: "HILL N DALE RD",   // (text/100)
+      //     Location__Latitude__s: "38.0168302600",
+      //     Location__Longitude__s: "-84.5403933100"
+      //   })
+      // }).then(res => res.json())
+      // .catch(error => console.error('ERROR: ', error))
+      // .then(response => {
+      //   console.log('SUCCESS: ', response)
+      // });
 
 
 // NOT NEEDED? 
@@ -95,12 +112,13 @@ export default class HeaderNext extends React.Component {
 
 
 
-
+        // PASS CONFIRMATION ID BACK TO USER
         // this.props.navigation.navigate('Confirmation', {
-        //   // category: this.props.category,
+        //   category: this.props.category,
         //   location: this.props.location,
         //   description: this.props.description,
-        //   image: this.props.image,
+        //   image1: this.props.image1,
+        //   image2: this.props.image2,
         //   firstName: this.props.firstName,
         //   lastName: this.props.lastName,
         //   email: this.props.email,

@@ -4,8 +4,10 @@ import {
   Text,
   View,
   Image,
+  ImageBackground,
   Button,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 // components
@@ -25,15 +27,13 @@ export default class LocationScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      map: {},
-      aerial_layer: {},
-      transportation_layer: {},
-      bbox_xmax: -9428175.25,
-      bbox_xmin: 4580475.59,
-      bbox_ymax: -9378804.57,
-      bbox_ymin: 4599457.54,
-      // map_scale: 1500000,
-      map_scale: 500000,
+      base_map: {},
+      layer_map: {},
+      bbox_xmax: -9414495.222138507,
+      bbox_xmin: 4574321.311047046,
+      bbox_ymax: -9398863.84985421,
+      bbox_ymin: 4598093.2268437045,
+      map_scale: 800000,
     };
   }
 
@@ -90,102 +90,91 @@ export default class LocationScreen extends React.Component {
     console.log('MAP BEING FETCHED');
 
     const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
+    const layer_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer/export?";
     let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
 
     if (map_scale==undefined) {
       map_scale = this.state.map_scale;
     } 
 
-    let map_params = (
+    let base_params = (
+      // "&layerDefs=" +
+      // "&layerTimeOptions=" +
+      // "&layerRangeValues=" +
+      // "&dynamicLayers=" +
+      // "&layerParameterValues=" +
+      // "&time=" +
+      // "&gdbVersion=" +
+      // "&rotation=" +
+      // "&datumTransformations=" +
+      // "&mapRangeValues=" +
+      // "&layers=show:4,20" +
       "bbox=" + bbox + 
       "&mapScale=" + map_scale +
-      "&layers=27" +
-      "&layerDefs=" +
-      "&layerTimeOptions=" +
-      "&layerRangeValues=" +
-      "&dynamicLayers=" +
-      "&layerParameterValues=" +
-      "&bboxSR=" + 
-      "&size=" +
-      "&imageSR=" +
-      "&time=" +
-      "&gdbVersion=" +
-      "&rotation=" +
-      "&datumTransformations=" +
-      "&mapRangeValues=" +
+      "&bboxSR=102100" + 
+      "&size=409,622" +
+      "&imageSR=102100" +
       "&dpi=600" +
-      "&format=png" +
-      "&transparent=false" +
+      "&format=png32" +
+      "&transparent=true" +
       "&f=json" 
     );
-    let url = base_url + map_params;
+    let base_map_url = base_url + base_params;
     // console.log('URL: ', map_params);
 
-// lexcall example
-// bbox=-9412469.640888954%2C4574321.311047046%2C-9400889.431103764%2C4598093.2268437045&bboxSR=102100&imageSR=102100&size=303%2C622&dpi=96&format=png32&transparent=true&layers=show%3A0%2C1&f=image
 
-    // fetch(url)
-    // .then(response => response.json())
-    // .then(response => {
-    //   console.log(response);
-    //   // console.log(response.headers.map)
-    //   this.setState({
-    //     map: response,
-    //   });
-    // });
-
-    // fetch(url).then(response => {
-      // console.log(response);
-    // });
-
-
-    // fetch("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?", {
-    //   method: 'GET',
-    //   params: {
-    //     bbox: bbox,
-    //     format: 'png',
-    //     map_scale: map_scale,
-    //     transparent: 'false',
-    //     f: 'image',
-    //   }
-    // }).then(res => res.json())
-    // .catch(error => console.error('ERROR: ', error))
-    // .then(response => {
-    //   console.log('SUCCESS: ', response)
-    // });
-
-    // }).then(response => {
-    //   console.log(response.headers.map);
-    // });
+    let layer_params = (
+      // "&layerDefs=" +
+      // "&layerTimeOptions=" +
+      // "&layerRangeValues=" +
+      // "&dynamicLayers=" +
+      // "&layerParameterValues=" +
+      // "&time=" +
+      // "&gdbVersion=" +
+      // "&rotation=" +
+      // "&datumTransformations=" +
+      // "&mapRangeValues=" +
+      "bbox=" + bbox + 
+      // "&layers=show:4" +
+      "&mapScale=" + map_scale +
+      "&bboxSR=102100" + 
+      "&size=409,622" +
+      "&imageSR=102100" +
+      "&dpi=600" +
+      "&format=png32" +
+      "&transparent=true" +
+      "&f=json" 
+    );
+    let layer_map_url = layer_url + layer_params;
 
 
-
-    fetch(base_url, {
-      method: 'GET',
-      headers: {
-        // 'Accept': 'application/json',
-        // "Authorization": "Bearer token",
-        "Content-Type": "application/json",
-      },
-      params: JSON.stringify({
-        bbox: bbox,
-        format: 'png',
-        map_scale: map_scale,
-        transparent: 'false',
-        f: 'json',
-      })
-    }).then(res => res.json())
-    .catch(error => console.error('ERROR: ', error))
+    fetch(base_map_url)
+    .then(response => response.json())
     .then(response => {
-      console.log('SUCCESS: ', response)
+      console.log(response);
+      this.setState({
+        base_map: response,
+      });
     });
 
-
+    fetch(layer_map_url)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      this.setState({
+        layer_map: response,
+      });
+    });
 
   };
 
   zoomIn() {
-    let map_scale = this.state.map_scale - 80000;
+    let map_scale = this.state.map_scale;
+    if (map_scale > 500000) {
+      map_scale = map_scale - 60000;
+    } else {
+      map_scale = map_scale - 20000;
+    }
     this.setState({
       map_scale: map_scale,
     })
@@ -193,7 +182,7 @@ export default class LocationScreen extends React.Component {
   }
 
   zoomOut() {
-    let map_scale = this.state.map_scale + 80000;
+    let map_scale = this.state.map_scale + 20000;
     this.setState({
       map_scale: map_scale,
     })
@@ -201,8 +190,11 @@ export default class LocationScreen extends React.Component {
   }
 
   render() {
-    // console.log('MAP: ', this.state.map);
     console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
+    const dimensions = Dimensions.get('window');
+    const mapWidth = dimensions.width;
+    const mapHeight = mapWidth;
+
 
     return (
       <View style={styles.container}>
@@ -219,26 +211,42 @@ export default class LocationScreen extends React.Component {
           />
         </View>
 
-        <View style={styles.map_and_layers_wrap}>
+        <View 
+          style={[styles.map_and_layers_wrap, { 
+            width: mapWidth, 
+            height: mapHeight, 
+          }]}
+        >
 
-          <View style={styles.map_wrap}>
-{
+          <View 
+          >
 
-            <Image 
-              source={{ uri: this.state.map['href'] }} 
-              style={styles.map}
+            <ImageBackground
+              source={{ uri: this.state.base_map['href'] }} 
+              style={[styles.map, {
+                width: mapWidth,
+                height: mapHeight,
+              }]}
               resizeMode='cover'
-            />
+            >
+              <Image 
+                source={{ uri: this.state.layer_map['href'] }} 
+                style={[styles.map, {
+                  width: mapWidth,
+                  height: mapHeight,
+                }]}
+                resizeMode='cover'                
+              />
+            </ImageBackground>
 
-}
           </View>
         </View>
 
         <View style={styles.zoom_button_wrap}>
           <TouchableOpacity 
             style={styles.zoom_button}
-            disabled={this.state.map_scale > 50000 ? false : true}
-            onPress={this.state.map_scale > 50000 ? this.zoomIn.bind(this) : null}
+            disabled={this.state.map_scale > 20000 ? false : true}
+            onPress={this.state.map_scale > 20000 ? this.zoomIn.bind(this) : null}
           >
             <Text>+</Text>
           </TouchableOpacity>
@@ -265,25 +273,21 @@ const styles = StyleSheet.create({
   },
   map_and_layers_wrap: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 400,
-    height: 400,
+    backgroundColor: 'pink',
   },
-  map_wrap: {
-    // flex: 1,
-    width: 400,
-    height: 400,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderColor: '#585858',
-  },
-  map: {
-    // flex: 1,
-    width: 400,
-    height: 400,
-  },
+  // map_wrap: {
+  //   position: 'absolute',
+  //   backgroundColor: 'blue',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   borderWidth: 1,
+  //   borderColor: '#585858',
+  // },
+  // map: {
+  // },
   zoom_button_wrap: {
     position: 'absolute',
     bottom: 20,
