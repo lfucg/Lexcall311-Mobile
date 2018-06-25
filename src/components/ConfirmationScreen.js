@@ -27,7 +27,8 @@ export default class ConfirmationScreen extends React.Component {
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
-          image={navigation.getParam('image')}
+          image1={navigation.getParam('image1')}
+          image2={navigation.getParam('image2')}
           firstName={navigation.getParam('firstName')}
           lastName={navigation.getParam('lastName')}
           email={navigation.getParam('email')}

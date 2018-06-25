@@ -73,7 +73,8 @@ export default class LocationScreen extends React.Component {
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
           description={navigation.getParam('description')}
-          image={navigation.getParam('image')}
+          image1={navigation.getParam('image1')}
+          image2={navigation.getParam('image2')}
           firstName={navigation.getParam('firstName')}
           lastName={navigation.getParam('lastName')}
           email={navigation.getParam('email')}
@@ -166,7 +167,7 @@ export default class LocationScreen extends React.Component {
         // "Authorization": "Bearer token",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      params: JSON.stringify({
         bbox: bbox,
         format: 'png',
         map_scale: map_scale,
