@@ -20,54 +20,53 @@ export default class HeaderNext extends React.Component {
         anonymous = false;
       }
 
-      const base_url = "https://test.salesforce.com/services/oauth2/token";
 
-      let params = (
-        "?grant_type=password" +
-        "&client_id=" + env.data.client_id +
-        "&client_secret=" + env.data.client_secret +
-        "&username=" + env.data.username +
-        "&password=" + env.data.password +
+// https://yourInstance.salesforce.com/services/data/v20.0/sobjects/Account/customExtIdField__c/11999
+// -H "Authorization: Bearer token" -H "Content-Type: application/json" -d @newrecord.json
 
-        "&RecordTypeId=01241000001IK5KAAW" + // RecordTypeId (Id): '01241000001IK5KAAW' 
-        "&Subject=" + this.props.category + // Subject (text/255): Main subject or summary of the request. In our current web-to-case form, we are mapping a picklist of "concern" values to this Subject field.
-        "&Description=" + this.props.description +  // Description (text/32000): Details of the request.
-        "&Status=Open" +  // Status (picklist): 'Open'
-        "&Origin=Mobile App" +  // Origin (picklist): 'Mobile App'
-        "&Priority=Normal" +  // Priority (picklist): 'Normal'
-        "&Case_Contact_First_Name__c=" + this.props.firstName +  // Case_Contact_First_Name__c (text/50): First name of the requestor
-        "&Case_Contact_Last_Name__c=" + this.props.lastName +  // Case_Contact_Last_Name__c (text/50): Last name of the requestor
-        "&Case_Contact_Email__c=" + this.props.email +  // Case_Contact_Email__c (email): Email address of the requestor
-        "&Case_Contact_Phone__c=" + this.props.phone +  // Case_Contact_Phone__c (phone): Phone number of the requestor
-        "&Anonymous__c=" + anonymous    // Anonymous__c (true/false): Set to true if the requestor does not wish to furnish their name. Set to false otherwise. There is validation to ensure that this field must be set to true if first and last name are blank, and it must be set to false if either first or last name is not blank. Email and phone are optional either way.
-      );
-      let url = base_url + params;
-      console.log('URL PARAMS: ', url);
-
-      fetch(url, {
-        method: 'POST',
+      fetch("https://lexcall--devlex311.cs20.my.salesforce.com/services/data/v20.0/sobjects/Account/", {
+        method: 'PATCH',
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+          // 'Accept': 'application/json',
+          // "Authorization": "Bearer token",
+          "Content-Type": "application/json",
         },
-      }).then(response => response.json())
-      .then((responseJson) => {
-        console.log('RESPONSE: ', responseJson);
+        body: JSON.stringify({
+          username: `${env.data.username}`,
+          password: `${env.data.password}`,
 
-        this.props.navigation.navigate('Confirmation', {
-          category: this.props.category,
-          location: this.props.location,
-          description: this.props.description,
-          image: this.props.image,
-          firstName: this.props.firstName,
-          lastName: this.props.lastName,
-          email: this.props.email,
-          phone: this.props.phone,        
-        });
-
+          RecordTypeId: "01241000001IK5KAAW",   // RecordTypeId (Id): '01241000001IK5KAAW' 
+          Status: "Open",   // Status (picklist): 'Open'
+          Origin: "Mobile App",   // Origin (picklist): 'Mobile App'
+          Priority: "Normal",   // Priority (picklist): 'Normal'
+          Anonymous__c: "true",
+        
+          Subject: "Dead Animal Pickup",   
+          Description: "Trash",
+          Street_Number__c: "625",   // (text/10)
+          Street_Name__c: "HILL N DALE RD",   // (text/100)
+          Location__Latitude__s: "38.0168302600",
+          Location__Longitude__s: "-84.5403933100"
+        })
+      }).then(res => res.json())
+      .catch(error => console.error('ERROR: ', error))
+      .then(response => {
+        console.log('SUCCESS: ', response)
       });
 
 
+// NOT NEEDED? 
+// grant_type: 'password',
+// "&client_id=" + env.data.client_id +
+// "&client_secret=" + env.data.client_secret +
+
+          // Description: `${this.props.description}`,   // Description (text/32000): Details of the request.
+          // Case_Contact_First_Name__c: `${this.props.firstName}`,   // Case_Contact_First_Name__c (text/50): First name of the requestor
+          // Case_Contact_Last_Name__c: `${this.props.lastName}`,   // Case_Contact_Last_Name__c (text/50): Last name of the requestor
+          // Anonymous__c: `${anonymous}`,   // Anonymous__c (true/false): Set to true if the requestor does not wish to furnish their name. Set to false otherwise. There is validation to ensure that this field must be set to true if first and last name are blank, and it must be set to false if either first or last name is not blank. Email and phone are optional either way.
+          // Subject: `${this.props.category}`,   // Subject (text/255): Main subject or summary of the request. In our current web-to-case form, we are mapping a picklist of "concern" values to this Subject field.
+          // Case_Contact_Email__c: `${this.props.email}`,   // Case_Contact_Email__c (email): Email address of the requestor
+          // Case_Contact_Phone__c: `${this.props.phone}`,   // Case_Contact_Phone__c (phone): Phone number of the requestor
       //     // Case_Contact_Role__c (picklist): This field has not fully been defined. Will have values like 'Resident', 'Owner', and 'Neighbor'. Full list TBD.
       //     // Override_Address_Validation__c (true/false): Set to false. 
       //     // Location_Description__c (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
@@ -78,8 +77,6 @@ export default class HeaderNext extends React.Component {
       //     // Location_Type__c (picklist): 'Address', 'Intersection', 'Landmark', 'Range of Addresses'
       //     // Parcel_ID__c (text/20)
       //     // Intersection__c (text/255): The name of the intersection (e.g. 'Main St / Elm St').
-      //     // Street_Number__c (text/10)
-      //     // Street_Name__c (text/100)
       //     // Unit_Number__c (text/10)
       //     // City__c (text/100)
       //     // State__c (text/2)
@@ -99,6 +96,16 @@ export default class HeaderNext extends React.Component {
 
 
 
+        // this.props.navigation.navigate('Confirmation', {
+        //   // category: this.props.category,
+        //   location: this.props.location,
+        //   description: this.props.description,
+        //   image: this.props.image,
+        //   firstName: this.props.firstName,
+        //   lastName: this.props.lastName,
+        //   email: this.props.email,
+        //   phone: this.props.phone,        
+        // });
     } else {
       this.props.navigation.navigate(this.props.nav_link, {
         category: this.props.category,

@@ -86,19 +86,11 @@ export default class LocationScreen extends React.Component {
 
 
   fetchMapFromAPI(map_scale=undefined) {
-    // console.log('MAP BEING FETCHED');
+    console.log('MAP BEING FETCHED');
 
-    const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?";
+    const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
     let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
 
-    // const transportation_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?f=json";
-    // fetch(transportation_url)
-    // .then(response => response.json())
-    // .then(response => {
-    //   this.setState({
-    //     transportation_layer: response,
-    //   });
-    // });
     if (map_scale==undefined) {
       map_scale = this.state.map_scale;
     } 
@@ -126,27 +118,67 @@ export default class LocationScreen extends React.Component {
       "&f=json" 
     );
     let url = base_url + map_params;
-    console.log('URL: ', map_params);
+    // console.log('URL: ', map_params);
 
-    fetch(url)
-    .then(response => response.json())
-    .then(response => {
-      this.setState({
-        map: response,
-      });
-    });
+// lexcall example
+// bbox=-9412469.640888954%2C4574321.311047046%2C-9400889.431103764%2C4598093.2268437045&bboxSR=102100&imageSR=102100&size=303%2C622&dpi=96&format=png32&transparent=true&layers=show%3A0%2C1&f=image
 
-
-    // const aerial_base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/aerial2016/MapServer/export?";
-    // let aerial_url = aerial_base_url + map_params;
-
-    // fetch(aerial_url)
+    // fetch(url)
     // .then(response => response.json())
     // .then(response => {
+    //   console.log(response);
+    //   // console.log(response.headers.map)
     //   this.setState({
-    //     aerial_layer: response,
+    //     map: response,
     //   });
     // });
+
+    // fetch(url).then(response => {
+      // console.log(response);
+    // });
+
+
+    // fetch("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_grayscale/MapServer/export?", {
+    //   method: 'GET',
+    //   params: {
+    //     bbox: bbox,
+    //     format: 'png',
+    //     map_scale: map_scale,
+    //     transparent: 'false',
+    //     f: 'image',
+    //   }
+    // }).then(res => res.json())
+    // .catch(error => console.error('ERROR: ', error))
+    // .then(response => {
+    //   console.log('SUCCESS: ', response)
+    // });
+
+    // }).then(response => {
+    //   console.log(response.headers.map);
+    // });
+
+
+
+    fetch(base_url, {
+      method: 'GET',
+      headers: {
+        // 'Accept': 'application/json',
+        // "Authorization": "Bearer token",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bbox: bbox,
+        format: 'png',
+        map_scale: map_scale,
+        transparent: 'false',
+        f: 'json',
+      })
+    }).then(res => res.json())
+    .catch(error => console.error('ERROR: ', error))
+    .then(response => {
+      console.log('SUCCESS: ', response)
+    });
+
 
 
   };
@@ -196,16 +228,6 @@ export default class LocationScreen extends React.Component {
               style={styles.map}
               resizeMode='cover'
             />
-            
-          // <View style={styles.aerial_layer_wrap}>
-          // </View>
-
-
-            // <Image 
-            //   source={{ uri: this.state.aerial_layer['href'] }} 
-            //   style={styles.aerial_layer}
-            //   resizeMode='cover'
-            // />
 
 }
           </View>
@@ -257,23 +279,6 @@ const styles = StyleSheet.create({
     borderColor: '#585858',
   },
   map: {
-    // flex: 1,
-    width: 400,
-    height: 400,
-  },
-  aerial_layer_wrap: {
-    // flex: 1,
-    // width: 400,
-    // height: 400,
-
-    // position: 'absolute',
-    opacity: .3,
-    // top: 0,
-    // bottom: 0,
-    // left: 0,
-    // right: 0,
-  },
-  aerial_layer: {
     // flex: 1,
     width: 400,
     height: 400,
