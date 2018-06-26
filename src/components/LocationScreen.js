@@ -51,6 +51,29 @@ export default class LocationScreen extends React.Component {
     this.props.navigation.navigate('Location', {
       location: location,
     });
+
+    this.fetchLocationFromAPI(location);
+  }
+
+  fetchLocationFromAPI(location) {
+    console.log('FETCH LOCATION FROM API: LOCATION: ', location);
+
+    const location_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/locator/GeocodeServer/findAddressCandidates"
+    const location_params = (
+      "?Street=" + location +
+      "&maxLocations=4" + 
+      "&f=json"
+    );
+    const location_url_and_params = location_url + location_params;
+
+// Street=sheridan&SingleLine=&category=&outFields=&maxLocations=&outSR=&searchExtent=&location=&distance=&magicKey=&f=html
+
+    fetch(location_url_and_params)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+    });
+
   }
 
   static navigationOptions = ({navigation}) => {
