@@ -170,22 +170,20 @@ export default class LocationScreen extends React.Component {
 
   zoomIn() {
     let map_scale = this.state.map_scale;
-    if (map_scale > 500000) {
-      map_scale = map_scale - 60000;
+    if (map_scale > 400000) {
+      map_scale = map_scale - 250000;
+    } else if (map_scale > 100000) {
+      map_scale = map_scale - 100000;
     } else {
       map_scale = map_scale - 20000;
     }
-    this.setState({
-      map_scale: map_scale,
-    })
+    this.setState({ map_scale: map_scale });
     this.fetchMapFromAPI(map_scale);
   }
 
   zoomOut() {
-    let map_scale = this.state.map_scale + 20000;
-    this.setState({
-      map_scale: map_scale,
-    })
+    let map_scale = this.state.map_scale + 250000;
+    this.setState({ map_scale: map_scale });
     this.fetchMapFromAPI(map_scale);
   }
 
@@ -193,7 +191,7 @@ export default class LocationScreen extends React.Component {
     console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get('window');
     const mapWidth = dimensions.width;
-    const mapHeight = mapWidth;
+    const mapHeight = dimensions.height * .54;
 
 
     return (
@@ -218,9 +216,7 @@ export default class LocationScreen extends React.Component {
           }]}
         >
 
-          <View 
-          >
-
+          <View>
             <ImageBackground
               source={{ uri: this.state.base_map['href'] }} 
               style={[styles.map, {
@@ -269,25 +265,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flex: .6,
+    flex: 1,
   },
   map_and_layers_wrap: {
-    flex: 1,
-    flexDirection: 'row',
+    flex: 1.5,
+    // flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'pink',
+    backgroundColor: '#ddd',
   },
-  // map_wrap: {
-  //   position: 'absolute',
-  //   backgroundColor: 'blue',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   borderWidth: 1,
-  //   borderColor: '#585858',
-  // },
-  // map: {
-  // },
   zoom_button_wrap: {
     position: 'absolute',
     bottom: 20,

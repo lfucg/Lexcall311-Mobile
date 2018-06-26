@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#585858',
     paddingTop: 15,
+    paddingBottom: 10,
   },
   search_img: {
     width: 18, 
