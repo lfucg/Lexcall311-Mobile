@@ -10,6 +10,21 @@ import {
 import env from '../env.js';
 
 export default class HeaderNext extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      email: this.email(),
+    };
+  }
+
+  email() {
+    if (this.props.email == undefined) {
+      return '';
+    } else {
+      return this.props.email;
+    }
+  }
+
   nextPageOrSubmit() {
     if (this.props.text == 'Submit >') {
       console.log('SUBMIT TO API');
@@ -35,55 +50,54 @@ export default class HeaderNext extends React.Component {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: auth_params,
-      }).then(res => res.json())
+      }).then(auth => auth.json())
         .catch(error => console.error('ERROR: ', error))
-        .then(response => {
-          console.log('SUCCESS: ', response)
+        .then(auth_response => {
+          console.log('AUTH SUCCESS: ', auth_response);
+
+          fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Case/', {
+            method: 'POST',
+            headers: {
+              'Authorization': "Bearer " + auth_response.access_token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              RecordTypeId: "01241000001IK5KAAW",   // RecordTypeId (Id): '01241000001IK5KAAW' 
+              Status: "Open",   // Status (picklist): 'Open'
+              Origin: "Mobile App",   // Origin (picklist): 'Mobile App'
+              Priority: "Normal",   // Priority (picklist): 'Normal'
+              Anonymous__c: anonymous,
+
+
+              Subject: `${this.props.category}`,   // Subject (text/255): Main subject or summary of the request. In our current web-to-case form, we are mapping a picklist of "concern" values to this Subject field.
+              Description: `${this.props.description}`,   // Description (text/32000): Details of the request.
+              Anonymous__c: `${anonymous}`,   // Anonymous__c (true/false): Set to true if the requestor does not wish to furnish their name. Set to false otherwise. There is validation to ensure that this field must be set to true if first and last name are blank, and it must be set to false if either first or last name is not blank. Email and phone are optional either way.
+              Case_Contact_First_Name__c: `${this.props.firstName}`,   // Case_Contact_First_Name__c (text/50): First name of the requestor
+              Case_Contact_Last_Name__c: `${this.props.lastName}`,   // Case_Contact_Last_Name__c (text/50): Last name of the requestor
+              Case_Contact_Email__c: `${this.state.email}`,   // Case_Contact_Email__c (email): Email address of the requestor
+              Case_Contact_Phone__c: `${this.props.phone}`,   // Case_Contact_Phone__c (phone): Phone number of the requestor
+
+
+              // Street_Number__c: "625",   // (text/10)
+              // Street_Name__c: "HILL N DALE RD",   // (text/100)
+              // Location__Latitude__s: "38.0168302600",
+              // Location__Longitude__s: "-84.5403933100"
+            })
+          }).then(res => res.json())
+            .catch(error => console.error('ERROR: ', error))
+            .then(response => {
+              console.log('CASE SUCCESS: ', response);
+              if (response.id) {     
+                this.props.navigation.navigate('Confirmation', {
+                  firstName: this.props.firstName,
+                  trackingID: response.id,
+                });
+              }
+          });
+
+
       });
 
-      // fetch("https://lexcall--devlex311.cs20.my.salesforce.com/services/data/v20.0/sobjects/Account/", {
-      //   method: 'POST',
-      //   headers: {
-      //     // 'Accept': 'application/json',
-      //     // "Authorization": "Bearer token",
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     username: `${env.data.username}`,
-      //     password: `${env.data.password}`,
-
-      //     RecordTypeId: "01241000001IK5KAAW",   // RecordTypeId (Id): '01241000001IK5KAAW' 
-      //     Status: "Open",   // Status (picklist): 'Open'
-      //     Origin: "Mobile App",   // Origin (picklist): 'Mobile App'
-      //     Priority: "Normal",   // Priority (picklist): 'Normal'
-      //     Anonymous__c: "true",
-        
-      //     Subject: "Dead Animal Pickup",   
-      //     Description: "Trash",
-      //     Street_Number__c: "625",   // (text/10)
-      //     Street_Name__c: "HILL N DALE RD",   // (text/100)
-      //     Location__Latitude__s: "38.0168302600",
-      //     Location__Longitude__s: "-84.5403933100"
-      //   })
-      // }).then(res => res.json())
-      // .catch(error => console.error('ERROR: ', error))
-      // .then(response => {
-      //   console.log('SUCCESS: ', response)
-      // });
-
-
-// NOT NEEDED? 
-// grant_type: 'password',
-// "&client_id=" + env.data.client_id +
-// "&client_secret=" + env.data.client_secret +
-
-          // Description: `${this.props.description}`,   // Description (text/32000): Details of the request.
-          // Case_Contact_First_Name__c: `${this.props.firstName}`,   // Case_Contact_First_Name__c (text/50): First name of the requestor
-          // Case_Contact_Last_Name__c: `${this.props.lastName}`,   // Case_Contact_Last_Name__c (text/50): Last name of the requestor
-          // Anonymous__c: `${anonymous}`,   // Anonymous__c (true/false): Set to true if the requestor does not wish to furnish their name. Set to false otherwise. There is validation to ensure that this field must be set to true if first and last name are blank, and it must be set to false if either first or last name is not blank. Email and phone are optional either way.
-          // Subject: `${this.props.category}`,   // Subject (text/255): Main subject or summary of the request. In our current web-to-case form, we are mapping a picklist of "concern" values to this Subject field.
-          // Case_Contact_Email__c: `${this.props.email}`,   // Case_Contact_Email__c (email): Email address of the requestor
-          // Case_Contact_Phone__c: `${this.props.phone}`,   // Case_Contact_Phone__c (phone): Phone number of the requestor
       //     // Case_Contact_Role__c (picklist): This field has not fully been defined. Will have values like 'Resident', 'Owner', and 'Neighbor'. Full list TBD.
       //     // Override_Address_Validation__c (true/false): Set to false. 
       //     // Location_Description__c (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
@@ -112,18 +126,6 @@ export default class HeaderNext extends React.Component {
 
 
 
-        // PASS CONFIRMATION ID BACK TO USER
-        // this.props.navigation.navigate('Confirmation', {
-        //   category: this.props.category,
-        //   location: this.props.location,
-        //   description: this.props.description,
-        //   image1: this.props.image1,
-        //   image2: this.props.image2,
-        //   firstName: this.props.firstName,
-        //   lastName: this.props.lastName,
-        //   email: this.props.email,
-        //   phone: this.props.phone,        
-        // });
     } else {
       this.props.navigation.navigate(this.props.nav_link, {
         category: this.props.category,

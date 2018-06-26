@@ -24,15 +24,6 @@ export default class ConfirmationScreen extends React.Component {
           navigation={navigation}
           text={"< Home"}
           nav_link={"Home"}
-          category={navigation.getParam('category')}
-          location={navigation.getParam('location')}
-          description={navigation.getParam('description')}
-          image1={navigation.getParam('image1')}
-          image2={navigation.getParam('image2')}
-          firstName={navigation.getParam('firstName')}
-          lastName={navigation.getParam('lastName')}
-          email={navigation.getParam('email')}
-          phone={navigation.getParam('phone')}
         />
       ),
       headerTitle: (
@@ -42,6 +33,8 @@ export default class ConfirmationScreen extends React.Component {
   }
 
   render() {
+    console.log('CONFIRMATION SCREEN PARAMS: ', this.props.navigation.state.params);
+
     return (
       <View style={styles.container}>
 
@@ -61,6 +54,9 @@ export default class ConfirmationScreen extends React.Component {
           <Text style={styles.trackingID}>
             Tracking ID:
           </Text>
+          <Text style={styles.trackingID_number}>
+            {this.props.navigation.state.params.trackingID}
+            </Text>
           <Text style={styles.text}>
             If you have any questions or comments, you can call LexCall at (859) 425-2255.
           </Text>
@@ -90,10 +86,15 @@ const styles = StyleSheet.create({
   text: {
   },
   trackingID: {
-    margin: 50,
+    marginTop: 50,
+    marginBottom: 10,
     fontSize: 20,
     fontWeight: '600',
-  }
-  
+  },
+  trackingID_number: {
+    color: 'red',
+    fontSize: 20,
+    marginBottom: 50,
+  },
 });
 
