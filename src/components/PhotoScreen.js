@@ -33,7 +33,17 @@ export default class PhotoScreen extends React.Component {
       uploading: false,
       hasCameraPermission: null,
       hasCameraRollPermission: null,
+      disabled_buttons: this.startingButtonState(),
     };
+  }
+
+  startingButtonState() {
+    currentImage2 = this.props.navigation.getParam('image2');
+    if (currentImage2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   startingImage1() {
@@ -71,7 +81,6 @@ export default class PhotoScreen extends React.Component {
       image2: image2,
     });
   }
-
 
   static navigationOptions = ({navigation}) => {
     return {
@@ -126,10 +135,15 @@ export default class PhotoScreen extends React.Component {
       // base64: true,
     });
     if (!this.state.image1) {
-      this.setState({ image1: image });
+      this.setState({ 
+        image1: image
+      });
       this.updateImage1(image);
     } else {
-      this.setState({ image2: image });
+      this.setState({ 
+        image2: image,
+        disabled_buttons: true,
+      });
       this.updateImage2(image);
     }
   }
@@ -147,10 +161,15 @@ export default class PhotoScreen extends React.Component {
       // base64: true,
     });
     if (!this.state.image1) {
-      this.setState({ image1: image });
+      this.setState({ 
+        image1: image
+      });
       this.updateImage1(image);
     } else {
-      this.setState({ image2: image });
+      this.setState({ 
+        image2: image,
+        disabled_buttons: true,
+      });
       this.updateImage2(image);
     }
   };
@@ -183,7 +202,8 @@ export default class PhotoScreen extends React.Component {
           <View style={styles.button_wrap}>
             <TouchableOpacity 
               onPress={this.camera} 
-              style={styles.button}
+              style={this.state.disabled_buttons ? styles.button_disabled : styles.button}
+              disabled={this.state.disabled_buttons}
             >
               <Text style={styles.button_text}>
                 Camera
@@ -192,7 +212,8 @@ export default class PhotoScreen extends React.Component {
 
             <TouchableOpacity 
               onPress={this.gallery} 
-              style={styles.button}
+              style={this.state.disabled_buttons ? styles.button_disabled : styles.button}
+              disabled={this.state.disabled_buttons}
             >
               <Text style={styles.button_text}>
                 Gallery
@@ -200,60 +221,87 @@ export default class PhotoScreen extends React.Component {
             </TouchableOpacity>
           </View>
 
+
           { !image1 &&
             <View style={styles.img_display}>
               <Image source={camera_img} style={styles.img_in_display} resizeMode='cover' />
             </View>
           }
           { image1 && !image2 &&
-            <View style={styles.img_display}>
-              <ImageBackground source={image1} style={styles.img_in_display} resizeMode='cover'>
-                <TouchableOpacity
-                  onPress={() => this.setState({ image1: null })}
-                  style={styles.img_remove}
-                >
-                  <Text style={styles.img_remove_text}>Remove</Text>
-                </TouchableOpacity>
-              </ImageBackground>
+            <View>
+              <View 
+                style={[styles.photo_count_wrap, {
+                  width: dimensions.width,
+                }]}
+              >
+                <Text style={styles.photo_count_text}>
+                  1 photo added:
+                </Text>
+              </View>
+              <View style={styles.img_display}>
+                <ImageBackground source={image1} style={styles.img_in_display} resizeMode='cover'>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ image1: null })}
+                    style={styles.img_remove}
+                  >
+                    <Text style={styles.img_remove_text}>Remove</Text>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
             </View>
           }
           { image1 && image2 &&
-            <View style={styles.img_multiple_display}>
-              <ImageBackground
-                source={image1} 
-                style={[styles.img_multiple_in_display, 
-                  { 
-                    width: imageWidth, 
-                    height: imageHeight
-                  }]} 
-                resizeMode='cover' 
+            <View>
+              <View 
+                style={[styles.photo_count_wrap, {
+                  width: dimensions.width,
+                }]}
               >
-                <TouchableOpacity
-                  onPress={() => this.setState({
-                    image1: image2,
-                    image2: null,
-                  })}
-                  style={styles.img_remove}
+                <Text style={styles.photo_count_text}>
+                  2 photos added:
+                </Text>
+              </View>
+              <View style={styles.img_multiple_display}>
+                <ImageBackground
+                  source={image1} 
+                  style={[styles.img_multiple_in_display, 
+                    { 
+                      width: imageWidth, 
+                      height: imageHeight
+                    }]} 
+                  resizeMode='cover' 
                 >
-                  <Text style={styles.img_remove_text}>Remove</Text>
-                </TouchableOpacity>
-              </ImageBackground>
-              <ImageBackground 
-                source={image2} 
-                style={[styles.img_multiple_in_display, 
-                  { 
-                    width: imageWidth, 
-                    height: imageHeight
-                  }]} 
-                resizeMode='cover' 
-              >
-                <TouchableOpacity
-                  onPress={() => this.setState({ image2: null })}
-                  style={styles.img_remove}
+                  <TouchableOpacity
+                    onPress={() => this.setState({
+                      image1: image2,
+                      image2: null,
+                      disabled_buttons: false,
+                    })}
+                    style={styles.img_remove}
+                  >
+                    <Text style={styles.img_remove_text}>Remove</Text>
+                  </TouchableOpacity>
+                </ImageBackground>
+                <ImageBackground 
+                  source={image2} 
+                  style={[styles.img_multiple_in_display, 
+                    { 
+                      width: imageWidth, 
+                      height: imageHeight
+                    }]} 
+                  resizeMode='cover' 
                 >
-                  <Text style={styles.img_remove_text}>Remove</Text>
-                </TouchableOpacity>
-              </ImageBackground>
+                  <TouchableOpacity
+                    onPress={() => this.setState({ 
+                      image2: null, 
+                      disabled_buttons: false,
+                    })}
+                    style={styles.img_remove}
+                  >
+                    <Text style={styles.img_remove_text}>Remove</Text>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
             </View>
           }  
 
@@ -286,13 +334,29 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 5,
     height: 50,
-    backgroundColor: '#0057a8',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#0057a8',
+  },
+  button_disabled: {
+    flex: 1,
+    margin: 5,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ddd',
   },
   button_text: {
     color: '#fff',
     fontSize: 20,
+  },
+  photo_count_wrap: {
+    alignItems: 'center',
+  },
+  photo_count_text: {
+    color: '#585858',
+    fontSize: 18,
+    padding: 10,
   },
   img_display: {
     padding: 5,
