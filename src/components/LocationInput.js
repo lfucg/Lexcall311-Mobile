@@ -7,9 +7,22 @@ import {
   TextInput,
 } from 'react-native';
 
+import Autocomplete from 'react-native-autocomplete-input';
+
 import search_img from '../assets/images/icon_search.png';
 
+
 export default class LocationInput extends React.Component {
+
+  static renderLocation(address) {
+    return (
+      <View>
+        <Text>
+          {address}
+        </Text>
+      </View>
+    )
+  }
 
   constructor(props) {
     super(props);
@@ -37,14 +50,38 @@ export default class LocationInput extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={search_img} style={styles.search_img} />
-        <TextInput
-          onFocus={() => this.setState({location : ''})}
-          style={styles.location}
+        <Autocomplete
+          data={this.props.locations.length === 1 ? [] : this.props.locations}
+          // defaultValue={this.state.location}
           onChangeText={(location) => this.locationChange(location)}
-          value={this.state.location}
-          underlineColorAndroid='transparent'
-        />
+          placeHolder={this.state.location}
+          renderItem={(address) => (
+            <TouchableOpacity
+              onPress={() => this.setState({ location: address })}
+            >
+              <TextInput>{address}</TextInput>
+            </TouchableOpacity>
+          )}
+        />      
+        <View style={styles.addressContainer}>
+          {this.props.locations > 0 ? (
+              LocationInput.renderLocation(this.props.locations[0])
+            ) : (
+              <Text>{this.state.location}</Text>
+            )
+          }
+        </View>
+
+{ 
+        // <Image source={search_img} style={styles.search_img} />
+        // <TextInput
+        //   onFocus={() => this.setState({location : ''})}
+        //   style={styles.location}
+        //   onChangeText={(location) => this.locationChange(location)}
+        //   value={this.state.location}
+        //   underlineColorAndroid='transparent'
+        // />
+}
       </View>
     );
   }

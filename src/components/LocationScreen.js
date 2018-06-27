@@ -29,6 +29,7 @@ export default class LocationScreen extends React.Component {
     this.state = {
       base_map: {},
       layer_map: {},
+      locations: [],
       bbox_xmax: -9414495.222138507,
       bbox_xmin: 4574321.311047046,
       bbox_ymax: -9398863.84985421,
@@ -61,17 +62,30 @@ export default class LocationScreen extends React.Component {
     const location_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/locator/GeocodeServer/findAddressCandidates"
     const location_params = (
       "?Street=" + location +
+      // "&SingleLine=" +
+      // "&category=" +
+      // "&outFields=" +
+      // "&outSR=" +
+      // "&searchExtent=" +
+      // "&location=" +
+      // "&distance=" +
+      // "&magicKey=" +
       "&maxLocations=4" + 
       "&f=json"
     );
     const location_url_and_params = location_url + location_params;
-
-// Street=sheridan&SingleLine=&category=&outFields=&maxLocations=&outSR=&searchExtent=&location=&distance=&magicKey=&f=html
-
     fetch(location_url_and_params)
     .then(response => response.json())
     .then(response => {
       console.log(response);
+      console.log(response.candidates.length);
+      let location_list = [];
+      for (let i=0; i < response.candidates.length; i++) {
+        location_list += response.candidates[i].address;
+      }
+      this.setState({
+        locations: location_list,
+      });
     });
 
   }
@@ -229,6 +243,7 @@ export default class LocationScreen extends React.Component {
           <LocationInput 
             navigation={this.props.navigation}
             updateLocation={this.updateLocation.bind(this)}
+            locations={this.state.locations}
           />
         </View>
 
