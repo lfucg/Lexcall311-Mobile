@@ -2,5 +2,10 @@
   "expo": {
     "sdkVersion": "27.0.0",
     "orientation": "portrait",
+    "splash": {
+      "image": "./src/assets/images/loading.png",
+      "backgroundColor": "#0057a8",
+      "resizeMode": "cover"
+    }
   }
 }
