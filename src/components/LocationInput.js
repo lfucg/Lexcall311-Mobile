@@ -12,6 +12,8 @@ import {
 
 import Autocomplete from 'react-native-autocomplete-input';
 
+import AutoSuggest from 'react-native-autosuggest';
+
 import search_img from '../assets/images/icon_search.png';
 
 
@@ -60,6 +62,46 @@ export default class LocationInput extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.autocomplete_wrap}>
+   
+
+{
+          // This is the component that I was looking into most recently.
+          // It doesn't look like the Android build works at all though.
+          // Probably not a good direction.
+          
+          // <AutoSuggest
+          //   containerStyles={{ marginTop: 10, marginBottom: 10 }}
+          //   otherTextInputProps={{ editable: true }}
+          //   textInputStyles={{
+          //     width: 300,
+          //     paddingLeft: 10,
+          //     fontSize: 12,
+          //     backgroundColor: 'lightgrey',
+          //     height: 40,
+          //   }}
+          //   onChangeText={selection => console.log(`you selected ${selection}`)}
+          //   clearBtn={null /* myOptionalCustomClearBtn */}
+          //   terms={[
+          //     'Apple',
+          //     'Banana',
+          //     'Orange',
+          //     'Strawberry',
+          //     'Lemon',
+          //     'Cantaloupe',
+          //     'Peach',
+          //     'Mandarin',
+          //     'Date',
+          //     'Kiwi',
+          //   ]}
+          //   placeholder="I'm a super-awesome TextInput!"
+          //   placeholderTextColor='darkgrey'
+          // />
+
+
+          // This is your best bet to date.  It fetches and displays, but the 
+          // ios build displays the list of suggestions behind the map.  
+          // Probably needs a mix of zIndex and maybe position absolute?  But where?
+
           <Autocomplete
             listContainerStyle={{ zIndex: 999 }}
             style={[styles.autocomplete, {width: this.props.dimensions.width }]}
@@ -90,6 +132,7 @@ export default class LocationInput extends React.Component {
               </TouchableOpacity>
             )}
           />
+}
         </View>
         
 
@@ -98,6 +141,8 @@ export default class LocationInput extends React.Component {
 
 
 { 
+        // this was my original, non suggestion listing code
+
         // <Image source={search_img} style={styles.search_img} />
         // <TextInput
         //   onFocus={() => this.setState({location : ''})}
@@ -109,30 +154,6 @@ export default class LocationInput extends React.Component {
 }
 
 
-
-{
-        // <Autocomplete
-        //   data={this.props.locations.length === 1 ? [] : this.props.locations}
-        //   // defaultValue={this.state.location}
-        //   onChangeText={(location) => this.locationChange(location)}
-        //   placeHolder={this.state.location}
-        //   renderItem={(address) => (
-        //     <TouchableOpacity
-        //       onPress={() => this.setState({ location: address })}
-        //     >
-        //       <TextInput>{address}</TextInput>
-        //     </TouchableOpacity>
-        //   )}
-        // />      
-        // <View style={styles.addressContainer}>
-        //   {this.props.locations > 0 ? (
-        //       LocationInput.renderLocation(this.props.locations[0])
-        //     ) : (
-        //       <Text>{this.state.location}</Text>
-        //     )
-        //   }
-        // </View>
-}
       </View>
     );
   }
@@ -140,12 +161,7 @@ export default class LocationInput extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 10,
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // justifyContent: 'flex-end',
-    // borderTopWidth: 1,
-    // borderColor: '#585858',
+    // flex: 10,   // uncomment to see the display list that is going behind the map
   },
   query_wrap: {
     flexDirection: 'row',
@@ -153,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   query_text: {
-    // paddingLeft: -50,
+    
   },
   query_img: {
     width: 18, 
@@ -178,8 +194,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   data_text: {
-    // padding: 15,
-    // height: 100,
-    // fontSize: 18,
+
   },
+
+
+  // These are styles from the example for AutoSuggest - probably not a good direction
+  // TextInput: {
+  //   width: 300,
+  //   paddingLeft: 10,
+  //   fontSize: 12,
+  //   backgroundColor: 'lightgrey',
+  //   height: 40,
+  // },
+  // AutoSuggest: {
+  //   width: 300,
+  //   paddingLeft: 10,
+  //   fontSize: 12,
+  //   backgroundColor: 'lightgrey',
+  //   height: 40,
+  // },
 });
