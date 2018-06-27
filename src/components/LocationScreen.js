@@ -77,12 +77,13 @@ export default class LocationScreen extends React.Component {
     fetch(location_url_and_params)
     .then(response => response.json())
     .then(response => {
-      console.log(response);
-      console.log(response.candidates.length);
+      // console.log(response);
+      // console.log(response.candidates.length);
       let location_list = [];
       for (let i=0; i < response.candidates.length; i++) {
-        location_list += response.candidates[i].address;
+        location_list.push(response.candidates[i].address);
       }
+      // console.log('LOCATION SCREEN: FETCH LOCATION FROM API: LOCATION LIST: ', location_list);
       this.setState({
         locations: location_list,
       });
@@ -244,6 +245,7 @@ export default class LocationScreen extends React.Component {
             navigation={this.props.navigation}
             updateLocation={this.updateLocation.bind(this)}
             locations={this.state.locations}
+            dimensions={dimensions}
           />
         </View>
 
