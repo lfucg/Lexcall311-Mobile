@@ -132,7 +132,7 @@ export default class PhotoScreen extends React.Component {
     let image = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
       aspect: [1,1],
-      // base64: true,
+      base64: true,
     });
     if (!this.state.image1) {
       this.setState({ 
@@ -158,7 +158,7 @@ export default class PhotoScreen extends React.Component {
     let image = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: false,
       aspect: [1,1],
-      // base64: true,
+      base64: true,
     });
     if (!this.state.image1) {
       this.setState({ 
@@ -176,7 +176,7 @@ export default class PhotoScreen extends React.Component {
 
 
   render() {
-    console.log('PHOTO SCREEN PARAMS: ', this.props.navigation.state.params);
+    // console.log('PHOTO SCREEN PARAMS: ', this.props.navigation.state.params);
     
     let { image1 } = this.state;
     let { image2 } = this.state;

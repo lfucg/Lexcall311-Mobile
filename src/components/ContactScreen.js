@@ -209,7 +209,7 @@ export default class ContactScreen extends React.Component {
   }
 
   render() {
-    console.log('CONTACT SCREEN PARAMS: ', this.props.navigation.state.params);
+    // console.log('CONTACT SCREEN PARAMS: ', this.props.navigation.state.params);
 
     return (
       <View 

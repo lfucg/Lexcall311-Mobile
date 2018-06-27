@@ -43,6 +43,7 @@ export default class HeaderNext extends React.Component {
         '&client_secret=' + env.data.client_secret
       )
 
+      // get authorization
       fetch("https://test.salesforce.com/services/oauth2/token", {
         method: 'POST',
         headers: {
@@ -55,6 +56,7 @@ export default class HeaderNext extends React.Component {
         .then(auth_response => {
           console.log('AUTH SUCCESS: ', auth_response);
 
+          // create new case
           fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Case/', {
             method: 'POST',
             headers: {
@@ -83,14 +85,59 @@ export default class HeaderNext extends React.Component {
               // Location__Latitude__s: "38.0168302600",
               // Location__Longitude__s: "-84.5403933100"
             })
-          }).then(res => res.json())
+          }).then(case_res => case_res.json())
             .catch(error => console.error('ERROR: ', error))
-            .then(response => {
-              console.log('CASE SUCCESS: ', response);
-              if (response.id) {     
+            .then(case_response => {
+              console.log('CASE SUCCESS: ', case_response);
+
+              // create image1 as attachment
+              if (this.props.image1) {
+                console.log('IMAGE1 BEING ATTACHED: ');
+                fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Attachment/', {
+                  method: 'POST',
+                  headers: {
+                    'Authorization': "Bearer " + auth_response.access_token,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    ParentId: `${case_response.id}`,
+                    Name: "LexCall_image_1",
+                    Body: `${this.props.image1.base64}`,
+                  })
+                }).then(image1_res => image1_res.json())
+                  .catch(error => console.error('ERROR: ', error))
+                  .then(image1_response => {
+                    console.log('Image1 attachment SUCCESS: ', image1_response);
+                });
+              }
+
+              // create image2 as attachment
+              if (this.props.image2) {
+                console.log('IMAGE2 BEING ATTACHED: ');
+                fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Attachment/', {
+                  method: 'POST',
+                  headers: {
+                    'Authorization': "Bearer " + auth_response.access_token,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    ParentId: `${case_response.id}`,
+                    Name: "LexCall_image_2",
+                    Body: `${this.props.image2.base64}`,
+                  })
+                }).then(image2_res => image2_res.json())
+                  .catch(error => console.error('ERROR: ', error))
+                  .then(image2_response => {
+                    console.log('Image2 attachment SUCCESS: ', image2_response);
+                });
+              }
+
+
+
+              if (case_response.id) {     
                 this.props.navigation.navigate('Confirmation', {
                   firstName: this.props.firstName,
-                  trackingID: response.id,
+                  trackingID: case_response.id,
                 });
               }
           });
@@ -98,8 +145,8 @@ export default class HeaderNext extends React.Component {
 
       });
 
-      //     // Case_Contact_Role__c (picklist): This field has not fully been defined. Will have values like 'Resident', 'Owner', and 'Neighbor'. Full list TBD.
       //     // Override_Address_Validation__c (true/false): Set to false. 
+      //     // Case_Contact_Role__c (picklist): This field has not fully been defined. Will have values like 'Resident', 'Owner', and 'Neighbor'. Full list TBD.
       //     // Location_Description__c (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
       //     // Location__Latitude__s (double): The latitude of the geolocation.
       //     // Location__Longitude__s (double): The longitude of the geolocation.
