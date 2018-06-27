@@ -2,6 +2,16 @@
   "expo": {
     "sdkVersion": "27.0.0",
     "orientation": "portrait",
+    "name": "LexCall 311",
+    "icon": "./src/assets/images/app_icon.png",
+    "version": "1.0.0",
+    "slug": "lexcall311",
+    "ios": {
+      "bundleIdentifier": "lexcall.311.mobile"
+    },
+    "android": {
+      "package": "lexcall.311.mobile"
+    },
     "splash": {
       "image": "./src/assets/images/loading.png",
       "backgroundColor": "#0057a8",
