@@ -10,6 +10,8 @@ import {
   Dimensions,
 } from 'react-native';
 
+import { MapView } from 'expo';
+
 // components
 import HeaderTitle from './HeaderTitle.js';
 import HeaderBack from './HeaderBack.js';
@@ -257,23 +259,39 @@ export default class LocationScreen extends React.Component {
         >
 
           <View>
-            <ImageBackground
-              source={{ uri: this.state.base_map['href'] }} 
+            <MapView 
               style={[styles.map, {
                 width: mapWidth,
                 height: mapHeight,
               }]}
-              resizeMode='cover'
-            >
-              <Image 
-                source={{ uri: this.state.layer_map['href'] }} 
-                style={[styles.map, {
-                  width: mapWidth,
-                  height: mapHeight,
-                }]}
-                resizeMode='cover'                
-              />
-            </ImageBackground>
+              initialRegion={{
+                latitude: 38.0417769,
+                longitude: -84.5027069,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            />
+
+
+{
+            // <ImageBackground
+//               source={{ uri: this.state.base_map['href'] }} 
+//               style={[styles.map, {
+//                 width: mapWidth,
+//                 height: mapHeight,
+//               }]}
+//               resizeMode='cover'
+//             >
+//               <Image 
+//                 source={{ uri: this.state.layer_map['href'] }} 
+//                 style={[styles.map, {
+//                   width: mapWidth,
+//                   height: mapHeight,
+//                 }]}
+//                 resizeMode='cover'                
+//               />
+//             </ImageBackground>
+}
 
           </View>
         </View>
