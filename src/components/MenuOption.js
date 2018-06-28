@@ -23,7 +23,7 @@ export default class HeaderTitle extends React.Component {
       web('https://www.lexingtonky.gov/lexcall');
     }
     else if (this.props.nav_link == 'MapOfReports') {
-      web('https://www.lexingtonky.gov');
+      web('http://www.arcgis.com/apps/webappviewer/index.html?id=587e882ba3784c088a5cc410f868d7e5');
     }
     else if (this.props.nav_link == 'TrafficInfo') {
       web('https://www.lexingtonky.gov/traffic-ticker');
