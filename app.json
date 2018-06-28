@@ -9,7 +9,8 @@
     "primaryColor": "#0057a8",
     "ios": {
       "bundleIdentifier": "com.apaxsoftware.Lexcall",
-      "buildNumber": "2.0.1"
+      "buildNumber": "2.0.1",
+      "supportsTablet": false
     },
     "android": {
       "package": "com.apaxsoftware.LexCall311App"
