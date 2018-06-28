@@ -10,10 +10,18 @@
     "ios": {
       "bundleIdentifier": "com.apaxsoftware.Lexcall",
       "buildNumber": "2.0.1",
-      "supportsTablet": false
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSPhotoLibraryAddUsageDescription": "LexCall 311 needs access to image gallery to include photographs of your issue.",
+        "NSCameraUsageDescription": "LexCall 311 needs access to your camera to include photographs of your issue."
+      }
     },
     "android": {
-      "package": "com.apaxsoftware.LexCall311App"
+      "package": "com.apaxsoftware.LexCall311App",
+      "permissions": [
+        "CAMERA",
+        "CAMERA_ROLL"
+      ]
     },
     "splash": {
       "image": "./src/assets/images/loading.png",
