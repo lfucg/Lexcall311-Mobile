@@ -8,9 +8,12 @@ import {
   Button,
   TouchableOpacity,
   Dimensions,
+  WebView,
 } from 'react-native';
 
 import { MapView } from 'expo';
+
+import { Map } from 'react-arcgis';
 
 // components
 import HeaderTitle from './HeaderTitle.js';
@@ -22,6 +25,20 @@ import LocationInput from './LocationInput.js';
 
 // images
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
+
+
+
+const html = `
+  <html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>TEST</title>
+  </head>
+  <body>
+      <div style="text-align: center;">Hello</div>
+  </body>
+  </html>
+`;
 
 
 export default class LocationScreen extends React.Component {
@@ -227,6 +244,7 @@ export default class LocationScreen extends React.Component {
     this.fetchMapFromAPI(map_scale);
   }
 
+
   render() {
     console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get('window');
@@ -259,21 +277,36 @@ export default class LocationScreen extends React.Component {
         >
 
           <View>
-            <MapView 
-              style={[styles.map, {
-                width: mapWidth,
-                height: mapHeight,
+            
+            <WebView 
+              source={{html, baseUrl: 'web/'}}
+              style={[styles.map_and_layers_wrap, { 
+                width: mapWidth, 
+                height: mapHeight, 
               }]}
-              initialRegion={{
-                latitude: 38.0417769,
-                longitude: -84.5027069,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
+              mixedContentMode='always'
             />
 
 
 {
+// GOOGLE MAPS 
+//             <MapView 
+//               style={[styles.map, {
+//                 width: mapWidth,
+//                 height: mapHeight,
+//               }]}
+//               initialRegion={{
+//                 latitude: 38.0417769,
+//                 longitude: -84.5027069,
+//                 latitudeDelta: 0.0922,
+//                 longitudeDelta: 0.0421,
+//               }}
+//             />
+}
+
+
+{
+// ArcGIS images
             // <ImageBackground
 //               source={{ uri: this.state.base_map['href'] }} 
 //               style={[styles.map, {
