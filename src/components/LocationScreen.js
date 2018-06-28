@@ -35,7 +35,7 @@ const html = `
       <title>TEST</title>
   </head>
   <body>
-      <div style="text-align: center;">Hello</div>
+      <div id="container" style="text-align: center;"></div>
   </body>
   </html>
 `;
@@ -287,7 +287,7 @@ export default class LocationScreen extends React.Component {
               mixedContentMode='always'
             />
 
-
+            <Map />
 {
 // GOOGLE MAPS 
 //             <MapView 
