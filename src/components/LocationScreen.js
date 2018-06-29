@@ -23,10 +23,6 @@ import LocationInput from './LocationInput.js';
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
 
 
-// do not remove
-const html = ``;
-
-
 export default class LocationScreen extends React.Component {
 
   constructor(props) {
@@ -40,7 +36,6 @@ export default class LocationScreen extends React.Component {
       bbox_ymax: -9398863.84985421,
       bbox_ymin: 4598093.2268437045,
       map_scale: 800000,
-      html: html,
     };
   }
 
@@ -316,45 +311,13 @@ export default class LocationScreen extends React.Component {
 
               <WebView 
                 source={{html: map_html, baseUrl: 'https://www.google.com/'}}
-                // source={{html, baseUrl: 'https://www.google.com/'}}
                 style={[styles.map_and_layers_wrap, { 
                   width: mapWidth, 
                   height: mapHeight, 
                 }]}
                 mixedContentMode='always'
-                // javaScriptEnabled={true}
-                // injectJavaScript={}
-                // geolocationEnabled={true}
-                // domStorageEnabled={true}
-                // thirdPartyCookiesEnabled={true}
-                // scrollEnabled={true}
-                // allowUniversalAccessFromFileURLs={true}
               />
             }
-
-
-
-
-{
-// ARCGIS PNG OF MAPs
-            // <ImageBackground
-//               source={{ uri: this.state.base_map['href'] }} 
-//               style={[styles.map, {
-//                 width: mapWidth,
-//                 height: mapHeight,
-//               }]}
-//               resizeMode='cover'
-//             >
-//               <Image 
-//                 source={{ uri: this.state.layer_map['href'] }} 
-//                 style={[styles.map, {
-//                   width: mapWidth,
-//                   height: mapHeight,
-//                 }]}
-//                 resizeMode='cover'                
-//               />
-//             </ImageBackground>
-}
 
           </View>
         </View>
