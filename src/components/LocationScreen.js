@@ -23,54 +23,8 @@ import LocationInput from './LocationInput.js';
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
 
 
-
-const html = `
-  <!DOCTYPE HTML>
-  <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title>LexCall</title>
-    <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
-    <style>
-      html, body, #map {
-        padding:0;
-        margin:0;
-        height:100%;
-      }
-    </style>
-    <script src="https://js.arcgis.com/3.24/"></script>
-    <script>
-      var map;
-      require([
-        "esri/map", 
-        "esri/layers/ArcGISTiledMapServiceLayer",
-        "dojo/domReady!"
-      ], function(
-        Map,
-        ArcGISTiledMapServiceLayer
-      )  {
-
-        map = new Map("map", {
-          center: [-70.6508, 43.1452],
-          zoom: 16,
-          basemap: "topo"
-        });
-
-        // map = new Map("map");
-        // var base_map;
-        // base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
-        // map.addLayer(base_map);        
-      });
-    </script>
-  </head>
-  <body>
-    <div id="map" class="map">
-      <div id="map_layer">THE MAP OUTSIDE OF SCOPE</div>
-    </div>
-  </body>
-  </html>
-`;
+// do not remove
+const html = ``;
 
 
 export default class LocationScreen extends React.Component {
@@ -312,22 +266,22 @@ export default class LocationScreen extends React.Component {
               "dojo/domReady!"
             ], 
             function(Map, ArcGISTiledMapServiceLayer) {
-              map = new Map("map", {
-                center: [-70.6508, 43.1452],
-                zoom: 16,
-                basemap: "topo"
+              map = new Map("map", { 
+                center: [-84.5027069, 38.0417769],
+                zoom: 12 
               });
-
-              // map = new Map("map", { zoom: 11 });
-              // var base_map;
-              // base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
-              // map.addLayer(base_map);        
+              var base_map;
+              base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
+              map.addLayer(base_map);
+              var road_names;
+              road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
+              map.addLayer(road_names);
             });
           </script>
         </head>
         <body>
           <div id="map" class="map">
-            <div id="map_layer">HERE IS THE MAP</div>
+            <div id="map_layer"></div>
           </div>
         </body>
         </html>
@@ -358,53 +312,31 @@ export default class LocationScreen extends React.Component {
         >
 
           <View>
-            
- 
-            <WebView 
-              // source={{html: map_html}}
-              source={{html, baseUrl: 'web/'}}
-              style={[styles.map_and_layers_wrap, { 
-                width: mapWidth, 
-                height: mapHeight, 
-              }]}
-              mixedContentMode='always'
-              // javaScriptEnabled={true}
-              // geolocationEnabled={true}
-              // domStorageEnabled={true}
-              // thirdPartyCookiesEnabled={true}
-              // scrollEnabled={true}
-              // allowUniversalAccessFromFileURLs={true}
-            />
+            {
+
+              <WebView 
+                source={{html: map_html, baseUrl: 'https://www.google.com/'}}
+                // source={{html, baseUrl: 'https://www.google.com/'}}
+                style={[styles.map_and_layers_wrap, { 
+                  width: mapWidth, 
+                  height: mapHeight, 
+                }]}
+                mixedContentMode='always'
+                // javaScriptEnabled={true}
+                // injectJavaScript={}
+                // geolocationEnabled={true}
+                // domStorageEnabled={true}
+                // thirdPartyCookiesEnabled={true}
+                // scrollEnabled={true}
+                // allowUniversalAccessFromFileURLs={true}
+              />
+            }
 
 
 
 
 {
-
-
-// REACT MAP  
-            // <Map />
-
-
-
-// GOOGLE MAPS 
-//             <MapView 
-//               style={[styles.map, {
-//                 width: mapWidth,
-//                 height: mapHeight,
-//               }]}
-//               initialRegion={{
-//                 latitude: 38.0417769,
-//                 longitude: -84.5027069,
-//                 latitudeDelta: 0.0922,
-//                 longitudeDelta: 0.0421,
-//               }}
-//             />
-}
-
-
-{
-// ArcGIS images
+// ARCGIS PNG OF MAPs
             // <ImageBackground
 //               source={{ uri: this.state.base_map['href'] }} 
 //               style={[styles.map, {
