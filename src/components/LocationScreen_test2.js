@@ -51,25 +51,33 @@ const html = `
         ArcGISTiledMapServiceLayer
       )  {
 
-        map = new Map("map", {
-          center: [-70.6508, 43.1452],
-          zoom: 16,
-          basemap: "topo"
-        });
+        // map = new Map("map", {
+        //   center: [-70.6508, 43.1452],
+        //   zoom: 16,
+        //   basemap: "topo"
+        // });
 
         // map = new Map("map");
-        // var base_map;
+        var base_map;
         // base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
         // map.addLayer(base_map);        
       });
     </script>
+    <script>
+      function test() {
+        // var test_variable = "BLEAGH";
+        document.getElementById('test').innerHTML = test_variable;
+      }
+    </script>
   </head>
-  <body>
+  <body onload="test()">
     <div id="map" class="map">
-      <div id="map_layer">THE MAP OUTSIDE OF SCOPE</div>
+      <div id="map_layer"></div>
+      <div id="test"></div>
     </div>
   </body>
   </html>
+
 `;
 
 
@@ -86,7 +94,6 @@ export default class LocationScreen extends React.Component {
       bbox_ymax: -9398863.84985421,
       bbox_ymin: 4598093.2268437045,
       map_scale: 800000,
-      html: html,
     };
   }
 
@@ -281,57 +288,14 @@ export default class LocationScreen extends React.Component {
     this.fetchMapFromAPI(map_scale);
   }
 
+
   render() {
     // console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get('window');
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;
 
-    const map_html = `
-      <!DOCTYPE HTML>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-          <title>LexCall</title>
-          <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
-          <style>
-            html, body, #map {
-              padding:0;
-              margin:0;
-              height:100%;
-            }
-          </style>
-          <script src="https://js.arcgis.com/3.24/"></script>
-          <script>
-            var map;
-            require(
-            [
-              "esri/map", 
-              "esri/layers/ArcGISTiledMapServiceLayer",
-              "dojo/domReady!"
-            ], 
-            function(Map, ArcGISTiledMapServiceLayer) {
-              map = new Map("map", {
-                center: [-70.6508, 43.1452],
-                zoom: 16,
-                basemap: "topo"
-              });
-
-              // map = new Map("map", { zoom: 11 });
-              // var base_map;
-              // base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
-              // map.addLayer(base_map);        
-            });
-          </script>
-        </head>
-        <body>
-          <div id="map" class="map">
-            <div id="map_layer">HERE IS THE MAP</div>
-          </div>
-        </body>
-        </html>
-    `;
+    console.log('BASE MAP URL: ', this.state.base_map_url);
 
     return (
       <View style={styles.container}>
@@ -359,25 +323,16 @@ export default class LocationScreen extends React.Component {
 
           <View>
             
- 
             <WebView 
-              // source={{html: map_html}}
               source={{html, baseUrl: 'web/'}}
               style={[styles.map_and_layers_wrap, { 
                 width: mapWidth, 
                 height: mapHeight, 
               }]}
+              // injectedJavaScript={{base:this.state.base_map_url}}
               mixedContentMode='always'
-              // javaScriptEnabled={true}
-              // geolocationEnabled={true}
-              // domStorageEnabled={true}
-              // thirdPartyCookiesEnabled={true}
-              // scrollEnabled={true}
-              // allowUniversalAccessFromFileURLs={true}
+              // injectJavaScript={() => "var test_variable = 'something here'"}
             />
-
-
-
 
 {
 
