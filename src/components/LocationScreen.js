@@ -11,9 +11,9 @@ import {
   WebView,
 } from 'react-native';
 
-import { MapView } from 'expo';
+// import { MapView } from 'expo';
 
-import { Map } from 'react-arcgis';
+// import { Map } from 'react-arcgis';
 
 // components
 import HeaderTitle from './HeaderTitle.js';
@@ -28,17 +28,13 @@ import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
 
 
 
-const html = `
-  <html lang="en">
-  <head>
-      <meta charset="utf-8">
-      <title>TEST</title>
-  </head>
-  <body>
-      <div id="container" style="text-align: center;"></div>
-  </body>
-  </html>
-`;
+
+
+
+
+
+
+
 
 
 export default class LocationScreen extends React.Component {
@@ -251,7 +247,6 @@ export default class LocationScreen extends React.Component {
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;
 
-
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -279,16 +274,76 @@ export default class LocationScreen extends React.Component {
           <View>
             
             <WebView 
-              source={{html, baseUrl: 'web/'}}
+              source={{ html: `
+                <!DOCTYPE HTML>
+                <html>
+                <head>
+                  <meta charset="utf-8">
+                  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+                  <title>LexCall</title>
+                  <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
+                  <style>
+                    html, body, #map {
+                      padding:0;
+                      margin:0;
+                      height:100%;
+                    }
+                  </style>
+                  <script src="https://js.arcgis.com/3.24/"></script>
+                  <script>
+                    var map;
+                    require([
+                      "esri/map", 
+                      "esri/layers/ArcGISTiledMapServiceLayer",
+                      "dojo/domReady!"
+                    ], function(
+                      Map,
+                      ArcGISTiledMapServiceLayer
+                    )  {
+
+                      map = new Map("map", {
+                        center: [-70.6508, 43.1452],
+                        zoom: 16,
+                        basemap: "topo"
+                      });
+
+                      // map = new Map("map");
+                      // var base_map;
+                      // base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
+
+                      // map.addLayer(base_map);        
+                    });
+                  </script>
+                </head>
+                <body>
+                  <div id="map" class="map">
+                    <div id="map_layer"></div>
+                  </div>
+                </body>
+                </html>
+              `
+
+
+
+              }}
               style={[styles.map_and_layers_wrap, { 
                 width: mapWidth, 
                 height: mapHeight, 
               }]}
               mixedContentMode='always'
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              startInLoadingState={true}
             />
 
-            <Map />
 {
+
+
+// REACT MAP  
+            // <Map />
+
+
+
 // GOOGLE MAPS 
 //             <MapView 
 //               style={[styles.map, {
@@ -329,22 +384,26 @@ export default class LocationScreen extends React.Component {
           </View>
         </View>
 
-        <View style={styles.zoom_button_wrap}>
-          <TouchableOpacity 
-            style={styles.zoom_button}
-            disabled={this.state.map_scale > 20000 ? false : true}
-            onPress={this.state.map_scale > 20000 ? this.zoomIn.bind(this) : null}
-          >
-            <Text>+</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.zoom_button}
-            disabled={this.state.map_scale < 2000000 ? false : true}
-            onPress={this.state.map_scale < 2000000 ? this.zoomOut.bind(this) : null}
-          >
-            <Text>-</Text>
-          </TouchableOpacity>
-        </View>
+
+{
+// OUR ZOOM BUTTONS
+        // <View style={styles.zoom_button_wrap}>
+        //   <TouchableOpacity 
+        //     style={styles.zoom_button}
+        //     disabled={this.state.map_scale > 20000 ? false : true}
+        //     onPress={this.state.map_scale > 20000 ? this.zoomIn.bind(this) : null}
+        //   >
+        //     <Text>+</Text>
+        //   </TouchableOpacity>
+        //   <TouchableOpacity
+        //     style={styles.zoom_button}
+        //     disabled={this.state.map_scale < 2000000 ? false : true}
+        //     onPress={this.state.map_scale < 2000000 ? this.zoomOut.bind(this) : null}
+        //   >
+        //     <Text>-</Text>
+        //   </TouchableOpacity>
+        // </View>
+}
       </View>
     );
   }
