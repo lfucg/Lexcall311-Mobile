@@ -35,7 +35,6 @@ export default class LocationScreen extends React.Component {
       bbox_xmin: 4574321.311047046,
       bbox_ymax: -9398863.84985421,
       bbox_ymin: 4598093.2268437045,
-      map_scale: 800000,
     };
   }
 
@@ -211,25 +210,6 @@ export default class LocationScreen extends React.Component {
 
   };
 
-  zoomIn() {
-    let map_scale = this.state.map_scale;
-    if (map_scale > 400000) {
-      map_scale = map_scale - 250000;
-    } else if (map_scale > 100000) {
-      map_scale = map_scale - 100000;
-    } else {
-      map_scale = map_scale - 20000;
-    }
-    this.setState({ map_scale: map_scale });
-    this.fetchMapFromAPI(map_scale);
-  }
-
-  zoomOut() {
-    let map_scale = this.state.map_scale + 250000;
-    this.setState({ map_scale: map_scale });
-    this.fetchMapFromAPI(map_scale);
-  }
-
   render() {
     // console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get('window');
@@ -249,6 +229,12 @@ export default class LocationScreen extends React.Component {
               padding:0;
               margin:0;
               height:100%;
+            }
+          </style>
+          <style>
+            #map_zoom_slider {
+              left: 10px;
+              top: 75%;
             }
           </style>
           <script src="https://js.arcgis.com/3.24/"></script>
