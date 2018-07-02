@@ -22,6 +22,8 @@ import LocationInput from './LocationInput.js';
 // images
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
 
+// import{ WebViewBridge } from 'react-native-webview-bridge';
+
 
 export default class LocationScreen extends React.Component {
 
@@ -216,243 +218,6 @@ export default class LocationScreen extends React.Component {
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;
 
-    let mapJS = `
-      document.querySelector('#lat').innerHTML = "-84.5027069";
-    `;
-
-    const map_html = `
-      <!DOCTYPE HTML>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-        <title>LexCall</title>
-        <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
-        <style>
-          html, body, #map {
-            padding:0;
-            margin:0;
-            height:100%;
-          }
-          #map_zoom_slider {
-            left: 10px;
-            top: 75%;
-          }
-          #LocateButton {
-            position: absolute;
-            top: 95px;
-            left: 20px;
-            z-index: 50;
-          }
-        </style>
-        <script src="https://js.arcgis.com/3.24/"></script>
-
-        <script>
-          let map;
-
-          require(
-          [
-            "esri/map", 
-            "esri/layers/ArcGISTiledMapServiceLayer",
-            "esri/dijit/LocateButton",
-            "dojo/domReady!",
-            "esri/symbols/SimpleMarkerSymbol",
-            "esri/graphic"
-          ], 
-          function(
-            Map, 
-            ArcGISTiledMapServiceLayer, 
-            LocateButton, 
-            SimpleMarkerSymbol
-          ) {
-            
-            // if (document.querySelector('#lat').innerHTML) {
-              // let centerLat = -84.5027069;
-              // centerLat = document.querySelector('#lat').innerHTML;
-            // }
-            let centerLat = -84.5027069;
-            let centerLong = 38.0417769;
-
-            map = new Map("map", { 
-              center: [centerLat, centerLong],
-              zoom: 12 
-            });
-            
-            // geoLocate = new LocateButton({
-            //   map: map
-            // }, "LocateButton");
-            // geoLocate.startup();
-
-            let base_map;
-            base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
-            map.addLayer(base_map);
-            let road_names;
-            road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
-            map.addLayer(road_names);
-
-            // Add a point when the map is clicked
-            dojo.connect(map, 'onClick', function(evt) {
-              map.graphics.add(new esri.Graphic(
-                evt.mapPoint,
-                new esri.symbol.SimpleMarkerSymbol()
-              ));
-            });
-
-          });
-        </script>
-
-      </head>
-      <body>
-        <div id="map" class="map">
-          <div id="lat"></div>
-          <div id="LocateButton"></div>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const map2 = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-          <meta name="viewport" content="width=device-width,user-scalable=no">
-          
-          <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-          <title>Maps Toolbar</title>
-          
-          <link rel="stylesheet" href="https://js.arcgis.com/3.24/dijit/themes/nihilo/nihilo.css">
-          <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
-          <style>
-            html, body, #mainWindow {
-              font-family: sans-serif; 
-              height: 100%; 
-              width: 100%; 
-            }
-            #map {
-              height: 100%;
-              width: 100%;
-            }
-            html, body {
-              margin: 0; 
-              padding: 0;
-            }
-            #header {
-              height: 80px; 
-              overflow: auto;
-              padding: 0.5em;
-            }
-          </style>
-          
-          <script src="https://js.arcgis.com/3.24/"></script>
-          <script>
-            var map, toolbar, symbol, geomTask;
-
-            require([
-              "esri/map", 
-              "esri/layers/ArcGISTiledMapServiceLayer",
-              "esri/toolbars/draw",
-              "esri/graphic",
-
-              "esri/symbols/SimpleMarkerSymbol",
-              "esri/symbols/SimpleLineSymbol",
-              "esri/symbols/SimpleFillSymbol",
-
-              "dojo/parser", 
-              "dijit/registry",
-
-              "dijit/layout/BorderContainer", 
-              "dijit/layout/ContentPane", 
-              "dijit/form/Button", 
-              "dijit/WidgetSet", 
-              "dojo/domReady!"
-            ], function(
-              Map, 
-              ArcGISTiledMapServiceLayer,
-              Draw, 
-              Graphic,
-              SimpleMarkerSymbol, 
-              SimpleLineSymbol, 
-              SimpleFillSymbol,
-              parser, 
-              registry
-            ) {
-              parser.parse();
-
-              let centerLat = -84.5027069;
-              let centerLong = 38.0417769;
-
-              map = new Map("map", {
-                center: [centerLat, centerLong],
-                zoom: 12
-              });
-              
-              let base_map;
-              base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
-              map.addLayer(base_map);
-              let road_names;
-              road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
-              map.addLayer(road_names);
-
-              
-              map.on("load", createToolbar);
-
-              // loop through all dijits, connect onClick event
-              // listeners for buttons to activate drawing tools
-              registry.forEach(function(d) {
-                // d is a reference to a dijit
-                // could be a layout container or a button
-                if ( d.declaredClass === "dijit.form.Button" ) {
-                  d.on("click", activateTool);
-                }
-              });
-
-              function activateTool() {
-                var tool = this.label.toUpperCase().replace(/ /g, "_");
-                toolbar.activate(Draw[tool]);
-                map.hideZoomSlider();
-              }
-
-              function createToolbar(themap) {
-                toolbar = new Draw(map);
-                toolbar.on("draw-end", addToMap);
-              }
-
-              function addToMap(evt) {
-                var symbol;
-                toolbar.deactivate();
-                map.showZoomSlider();
-                switch (evt.geometry.type) {
-                  case "point":
-                  case "multipoint":
-                    symbol = new SimpleMarkerSymbol();
-                    break;
-                  case "polyline":
-                    symbol = new SimpleLineSymbol();
-                    break;
-                  default:
-                    symbol = new SimpleFillSymbol();
-                    break;
-                }
-                var graphic = new Graphic(evt.geometry, symbol);
-                map.graphics.add(graphic);
-              }
-            });
-          </script>
-        </head>
-        <body class="nihilo">
-
-          <div id="mainWindow" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline'">
-            <div id="header" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
-              <button data-dojo-type="dijit/form/Button">Point</button>
-            </div>
-            <div id="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'"></div>
-          </div>
-
-        </body>
-      </html>
-    `;
-
 
     const map3 = `
       <!DOCTYPE html>
@@ -479,23 +244,15 @@ export default class LocationScreen extends React.Component {
           
           <script src="https://js.arcgis.com/3.24/"></script>
           <script>
-            var map, symbol;
+            var map;
 
             require([
               "esri/map", 
               "esri/layers/ArcGISTiledMapServiceLayer",
-              "esri/toolbars/draw",
-              "esri/graphic",
-
-              "esri/symbols/SimpleMarkerSymbol",
-              "dijit/WidgetSet", 
               "dojo/domReady!"
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer,
-              Draw, 
-              Graphic,
-              SimpleMarkerSymbol, 
             ) {
 
               let centerLat = -84.5027069;
@@ -506,6 +263,7 @@ export default class LocationScreen extends React.Component {
                 zoom: 12
               });
               
+              // build map layers
               let base_map;
               base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
               map.addLayer(base_map);
@@ -513,6 +271,15 @@ export default class LocationScreen extends React.Component {
               road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
 
+              // place marker
+              dojo.connect(map, 'onClick', function(evt) {
+
+                map.graphics.clear();
+                map.graphics.add(new esri.Graphic(
+                  evt.mapPoint,
+                  new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183])
+                ));
+              });
             });
           </script>
         </head>
@@ -540,6 +307,9 @@ export default class LocationScreen extends React.Component {
             locations={this.state.locations}
             dimensions={dimensions}
           />
+          <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
+            <Text> TEST OF THE OPERATING SYSTEM </Text>
+          </TouchableOpacity>
         </View>
 
         <View 
@@ -558,10 +328,13 @@ export default class LocationScreen extends React.Component {
                   width: mapWidth, 
                   height: mapHeight, 
                 }]}
-                // ref={webview => { this._webview = webview; }}
+                // onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
+                onMessage={(event) => {
+                  let message = event.nativeEvent.data;
+                  console.log('MESSAGE ---------: ', message);
+                }}
+                ref={(r)=> { this.webview = r}}
                 mixedContentMode='always'
-                // javaScriptEnabled={true}
-                // injectedJavaScript={mapJS}
               />
             }
 
