@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flex: 2,
+    height: 170,
     borderBottomWidth: 1,
     borderColor: '#585858',
   },

@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   StyleSheet,
   Text,
-  View 
+  View,
 } from 'react-native';
 
 // components
@@ -62,6 +62,7 @@ export default class CategoryScreen extends React.Component {
           />
         </View>
         <View style={styles.menu}>
+
           <MenuOption 
             navigation={this.props.navigation}
             nav_link={'Location'} 
@@ -151,10 +152,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flex: 2,
+    height: 170,
   },
   menu: {
-    flex: 6,
+    flex: 1,
   },
 });
 

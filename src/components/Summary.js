@@ -20,7 +20,7 @@ export default class Summary extends React.Component {
               style={styles.icon}
             />
           </View>
-
+          
           <Text style={styles.heading}>
             {this.props.heading}
           </Text>
@@ -35,20 +35,18 @@ export default class Summary extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     paddingLeft: 10,
     paddingRight: 10,
   },
   wrap: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   img_wrap: {
-    flex: 2,
-    paddingTop: 15,
-    paddingBottom: 10,
+    height: 30,
+    marginTop: 10,
+    marginBottom: 5,
     justifyContent: 'center',
   },
   icon: {
@@ -56,16 +54,16 @@ const styles = StyleSheet.create({
     height: 30,
   },
   heading: {
-    flex: 3,
+    height: 30,
     color: '#000',
     fontSize: 20,
     fontWeight: '600',
   },
   content: {
-    flex: 3,
     fontSize: 16,
     paddingBottom: 10,
     color: '#585858',
+    textAlign: 'center',
   },
 })
 

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     ...Platform.select({
       ios: {
-        paddingTop: 10,
+        paddingTop: 12,
       },
       android: {
         paddingTop: 16,
@@ -43,12 +43,26 @@ const styles = StyleSheet.create({
     }),
   },
   horse: {
-    marginTop: -8,
+    ...Platform.select({
+      ios: {
+        marginTop: -12,
+      },
+      android: {
+        marginTop: -8,
+      },
+    }),
     marginRight: 10,
     marginLeft: -15,
   },
   title: {
     fontWeight: '600',
-    fontSize: 18,
+    ...Platform.select({
+      ios: {
+        fontSize: 16,
+      },
+      android: {
+        fontSize: 18,
+      },
+    }),
   },
 });

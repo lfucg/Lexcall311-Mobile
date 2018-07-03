@@ -214,8 +214,15 @@ const styles = StyleSheet.create({
   wrap: {
   },
   text: {
+    ...Platform.select({
+      ios: {
+        fontSize: 16,
+      },
+      android: {
+        fontSize: 18,
+      },
+    }),
     fontWeight: '600',
-    fontSize: 18,
     color: '#007aff',
     paddingRight: 10,
   },
