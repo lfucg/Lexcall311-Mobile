@@ -9,8 +9,13 @@ import {
   TextInput, 
   Keyboard,
   ScrollView,
+  Platform,
 } from 'react-native';
+
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareView } from 'react-native-keyboard-aware-view'
 
 // components
 import HeaderTitle from './HeaderTitle.js';
@@ -39,32 +44,32 @@ export default class ContactScreen extends React.Component {
   }
 
   componentWillMount() {
-    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
+    // this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    // this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
   }
 
   componentWillUnmount() {
-    this.keyboardDidShowSub.remove();
-    this.keyboardDidHideSub.remove();
+    // this.keyboardDidShowSub.remove();
+    // this.keyboardDidHideSub.remove();
   }
 
-  keyboardDidShow = (event) => {
-    this.setState({
-      headerMarginBottom: 5,
-      contactMarginBottom: 5,
-      contactPaddingTop: 10,
-      contactPaddingBottom: 10,
-    });
-  };
+  // keyboardDidShow = (event) => {
+  //   this.setState({
+  //     headerMarginBottom: 5,
+  //     contactMarginBottom: 5,
+  //     contactPaddingTop: 10,
+  //     contactPaddingBottom: 10,
+  //   });
+  // };
 
-  keyboardDidHide = (event) => {
-    this.setState({
-      headerMarginBottom: 30,
-      contactMarginBottom: 10,
-      contactPaddingTop: 20,
-      contactPaddingBottom: 20,
-    });
-  };
+  // keyboardDidHide = (event) => {
+  //   this.setState({
+  //     headerMarginBottom: 30,
+  //     contactMarginBottom: 10,
+  //     contactPaddingTop: 20,
+  //     contactPaddingBottom: 20,
+  //   });
+  // };
 
 
   startingFirstName() {
@@ -215,7 +220,18 @@ export default class ContactScreen extends React.Component {
       <View 
         style={[styles.container, { paddingBottom: this.keyboardHeight }]} 
       >
-        <ScrollView scrollEnabled={false} keyboardShouldPersistTaps='handled'>
+{      
+        // <ScrollView scrollEnabled={false} keyboardShouldPersistTaps='handled'>
+
+
+        // <KeyboardAwareScrollView 
+        //   enableOnAndroid={true}
+        // >
+
+        <KeyboardAwareView>
+
+          <View style={{flex: 1}}>
+          <ScrollView style={{flex: 1}}>
 
           <View style={[styles.header, { marginBottom: this.state.headerMarginBottom }]}>
             <NineOneOne />
@@ -288,9 +304,17 @@ export default class ContactScreen extends React.Component {
             </View>
 
           </View>
-        </ScrollView>
 
-        <KeyboardSpacer/>
+
+          </ScrollView>
+          </View>
+        </KeyboardAwareView>
+
+        // </KeyboardAwareScrollView>  
+        // </ScrollView>
+        // <KeyboardSpacer/>
+
+}
 
       </View>
     );
