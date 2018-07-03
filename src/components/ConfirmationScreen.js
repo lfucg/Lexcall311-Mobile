@@ -35,6 +35,7 @@ export default class ConfirmationScreen extends React.Component {
   render() {
     console.log('CONFIRMATION SCREEN PARAMS: ', this.props.navigation.state.params);
 
+
     return (
       <View style={styles.container}>
 
@@ -56,7 +57,7 @@ export default class ConfirmationScreen extends React.Component {
           </Text>
           <Text style={styles.trackingID_number}>
             {this.props.navigation.state.params.trackingID}
-            </Text>
+          </Text>
           <Text style={styles.text}>
             If you have any questions or comments, you can call LexCall at (859) 425-2255.
           </Text>
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flex: 1,
+    height: 160,
     borderBottomWidth: 1,
     borderColor: '#585858',
   },
@@ -84,9 +85,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
+    textAlign: 'center',
   },
   trackingID: {
-    marginTop: 50,
+    marginTop: 30,
     marginBottom: 10,
     fontSize: 20,
     fontWeight: '600',
@@ -94,7 +96,8 @@ const styles = StyleSheet.create({
   trackingID_number: {
     color: 'red',
     fontSize: 20,
-    marginBottom: 50,
+    marginBottom: 30,
+    textAlign: 'center',
   },
 });
 

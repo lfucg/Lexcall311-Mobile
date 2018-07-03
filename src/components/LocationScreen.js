@@ -445,7 +445,6 @@ const styles = StyleSheet.create({
   },
   map_and_layers_wrap: {
     flex: 1.5,
-    // flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ddd',
