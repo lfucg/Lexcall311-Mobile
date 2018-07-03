@@ -12,8 +12,6 @@ import {
 
 import Autocomplete from 'react-native-autocomplete-input';
 
-import AutoSuggest from 'react-native-autosuggest';
-
 import search_img from '../assets/images/icon_search.png';
 
 
@@ -33,6 +31,7 @@ export default class LocationInput extends React.Component {
     super(props);
     this.state = { 
       query: this.startingLocation(),
+      // inputHeight: 42,
     };
   }
 
@@ -50,6 +49,7 @@ export default class LocationInput extends React.Component {
       query: location,
     });
     this.props.updateLocation(location);
+    this.props.updateInputHeight(0);
   }
 
   render() {
@@ -60,80 +60,70 @@ export default class LocationInput extends React.Component {
     console.log('DATA: ', this.props.locations);
 
     return (
-      <View style={styles.container}>
-        <View style={styles.autocomplete_wrap}>
-   
+      <View 
+        style={[styles.container, {
+          height: 42,
+        }]}
+      >
+          <Autocomplete
+
+          >
+
+          </Autocomplete>
+
+
+
 
 {
-          // This is the component that I was looking into most recently.
-          // It doesn't look like the Android build works at all though.
-          // Probably not a good direction.
-          
-          // <AutoSuggest
-          //   containerStyles={{ marginTop: 10, marginBottom: 10 }}
-          //   otherTextInputProps={{ editable: true }}
-          //   textInputStyles={{
-          //     width: 300,
-          //     paddingLeft: 10,
-          //     fontSize: 12,
-          //     backgroundColor: 'lightgrey',
-          //     height: 40,
+        // <View style={styles.autocomplete_wrap}>
+   
+          // <Autocomplete
+          //   listContainerStyle={{ 
+          //     zIndex: 999,
+          //     backgroundColor: 'blue',
           //   }}
-          //   onChangeText={selection => console.log(`you selected ${selection}`)}
-          //   clearBtn={null /* myOptionalCustomClearBtn */}
-          //   terms={[
-          //     'Apple',
-          //     'Banana',
-          //     'Orange',
-          //     'Strawberry',
-          //     'Lemon',
-          //     'Cantaloupe',
-          //     'Peach',
-          //     'Mandarin',
-          //     'Date',
-          //     'Kiwi',
-          //   ]}
-          //   placeholder="I'm a super-awesome TextInput!"
-          //   placeholderTextColor='darkgrey'
+          //   listStyle={{
+          //     zIndex: 27,
+          //     backgroundColor: 'pink',
+          //     // padding: 50,
+          //   }}
+          //   containerStyle={{
+          //     // zIndex: 5,
+          //     // backgroundColor: 'pink',
+          //   }}
+          //   style={[styles.autocomplete, {width: this.props.dimensions.width }]}
+          //   data={this.props.locations}
+          //   // data={this.resultsHeightAdjustment()}
+          //   defaultValue={(
+          //     this.state.query
+          //   )}
+          //   // onFocus={this.resultsHeightAdjustment()}
+          //   // onChangeText={text => this.locationChange(text)}
+          //   renderTextInput={text => (
+          //     <View style={styles.query_wrap}>
+          //       <Image source={search_img} style={styles.query_img} />
+          //       <TextInput
+          //         style={styles.query_text}
+          //         onFocus={() => this.setState({query : ''})}
+          //         onChangeText={(location) => this.locationChange(location)}
+          //         value={this.state.query}
+          //         underlineColorAndroid='transparent'
+          //       />
+          //     </View>
+          //   )}
+          //   renderItem={locationResponse => (
+          //     <TouchableOpacity 
+          //       style={styles.data_wrap}
+          //       onPress={() => this.locationChange(locationResponse)}
+          //     >
+          //       <Text style={styles.data_text}>{locationResponse}</Text>
+          //     </TouchableOpacity>
+          //   )}
           // />
+      
 
-
-          // This is your best bet to date.  It fetches and displays, but the 
-          // ios build displays the list of suggestions behind the map.  
-          // Probably needs a mix of zIndex and maybe position absolute?  But where?
-
-          <Autocomplete
-            listContainerStyle={{ zIndex: 999 }}
-            style={[styles.autocomplete, {width: this.props.dimensions.width }]}
-            data={this.props.locations}
-            defaultValue={(
-              this.state.query
-            )}
-            // onFocus={() => this.setState({query : ''})}
-            // onChangeText={text => this.locationChange(text)}
-            renderTextInput={text => (
-              <View style={styles.query_wrap}>
-                <Image source={search_img} style={styles.query_img} />
-                <TextInput
-                  style={styles.query_text}
-                  onFocus={() => this.setState({query : ''})}
-                  onChangeText={(location) => this.locationChange(location)}
-                  value={this.state.query}
-                  underlineColorAndroid='transparent'
-                />
-              </View>
-            )}
-            renderItem={item => (
-              <TouchableOpacity 
-                style={styles.data_wrap}
-                onPress={() => this.locationChange(item)}
-              >
-                <Text style={styles.data_text}>{item}</Text>
-              </TouchableOpacity>
-            )}
-          />
+        // </View>
 }
-        </View>
         
 
 
@@ -153,7 +143,6 @@ export default class LocationInput extends React.Component {
         // />
 }
 
-
       </View>
     );
   }
@@ -161,58 +150,50 @@ export default class LocationInput extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    width: '100%',
-    bottom: 0,
-  },
-  query_wrap: {
-    flexDirection: 'row',
-    height: 40,
-    justifyContent: 'flex-start',
-  },
-  query_text: {
-    
-  },
-  query_img: {
-    width: 18, 
-    height: 18,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-  },
-  autocomplete_wrap: {
-    ...Platform.select({
-      ios: {
-      },
-      android: {
-        height: 40,
-      },
-    }),
-  },
-  autocomplete: {
-  },
-  data_wrap: {
-    padding: 15,
     backgroundColor: '#fff',
-  },
-  data_text: {
+  }
 
-  },
-
-
-  // These are styles from the example for AutoSuggest - probably not a good direction
-  // TextInput: {
-  //   width: 300,
-  //   paddingLeft: 10,
-  //   fontSize: 12,
-  //   backgroundColor: 'lightgrey',
-  //   height: 40,
+  // container: {
+  //   backgroundColor: '#fff',
   // },
-  // AutoSuggest: {
-  //   width: 300,
-  //   paddingLeft: 10,
-  //   fontSize: 12,
-  //   backgroundColor: 'lightgrey',
+  // query_wrap: {
+  //   flexDirection: 'row',
   //   height: 40,
+  //   justifyContent: 'flex-start',
+  // },
+  // query_text: {
+  // },
+  // query_img: {
+  //   width: 18, 
+  //   height: 18,
+  //   marginLeft: 10,
+  //   marginRight: 10,
+  //   marginTop: 10,
+  // },
+  // autocomplete_wrap: {
+  //   ...Platform.select({
+  //     ios: {
+  //     },
+  //     android: {
+  //       height: 40,
+  //     },
+  //   }),
+  // },
+  // autocomplete: {
+  //   zIndex: 999,
+  //   height: 200,
+  // },
+  // data_wrap: {
+  //   paddingLeft: 15,
+  //   paddingRight: 15,
+  //   paddingTop: 2,
+  //   paddingBottom: 2,
+  //   // height: 10,
+  //   backgroundColor: '#fff',
+  // },
+  // data_text: {
+  //   // backgroundColor: 'pink',
+  //   zIndex: 999,
+  //   height: 20,
   // },
 });

@@ -11,6 +11,9 @@ import {
   WebView,
 } from 'react-native';
 
+import Autocomplete from 'react-native-autocomplete-input';
+
+
 // components
 import HeaderTitle from './HeaderTitle.js';
 import HeaderBack from './HeaderBack.js';
@@ -21,8 +24,6 @@ import LocationInput from './LocationInput.js';
 
 // images
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
-
-// import{ WebViewBridge } from 'react-native-webview-bridge';
 
 
 export default class LocationScreen extends React.Component {
@@ -58,6 +59,14 @@ export default class LocationScreen extends React.Component {
     this.fetchLocationFromAPI(location);
   }
 
+  updateInputHeight(locationCount) {
+    if (locationCount == 0) {
+      this.setState({ inputHeight: 42 });
+    } else {
+      this.setState({ inputHeight: 140 });
+    }
+  }
+
   fetchLocationFromAPI(location) {
     console.log('FETCH LOCATION FROM API: LOCATION: ', location);
 
@@ -85,6 +94,7 @@ export default class LocationScreen extends React.Component {
       for (let i=0; i < response.candidates.length; i++) {
         location_list.push(response.candidates[i].address);
       }
+      this.updateInputHeight(location_list.length);
       // console.log('LOCATION SCREEN: FETCH LOCATION FROM API: LOCATION LIST: ', location_list);
       this.setState({
         locations: location_list,
@@ -299,18 +309,35 @@ export default class LocationScreen extends React.Component {
             heading={"Set Location of Issue"}
             content={"Enter the address, use your current location or tap the map to place a marker near the issue."} 
           />
-          <LocationInput 
-            navigation={this.props.navigation}
-            updateLocation={this.updateLocation.bind(this)}
-            locations={this.state.locations}
-            dimensions={dimensions}
-          />
           { 
           // <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
           //   <Text> TEST OF THE OPERATING SYSTEM </Text>
           // </TouchableOpacity>
           }
         </View>
+        
+
+
+
+
+        <View
+          style={[styles.location_input, {
+            height: 142,
+            borderBottomWidth: 0,
+          }]}
+        >  
+          <Autocomplete 
+            style={{
+              borderBottomWidth: 0,
+            }}
+          >
+          </Autocomplete> 
+        </View>
+
+
+
+
+
 
         <View 
           style={[styles.map_and_layers_wrap, { 
@@ -318,24 +345,37 @@ export default class LocationScreen extends React.Component {
             height: mapHeight, 
           }]}
         >
-            {
+{
+          // <LocationInput 
+          //   navigation={this.props.navigation}
+          //   updateLocation={this.updateLocation.bind(this)}
+          //   locations={this.state.locations}
+          //   inputHeight={this.state.inputHeight}
+          //   updateInputHeight={this.updateInputHeight.bind(this)}
+          //   dimensions={dimensions}
+          // />
+}
 
-              <WebView 
-                source={{html: map5, baseUrl: 'https://www.google.com/'}}
-                style={[styles.map_and_layers_wrap, { 
-                  width: mapWidth, 
-                  height: mapHeight, 
-                }]}
-                // onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
-                // onMessage={(event) => {
-                //   let message = event.nativeEvent.data;
-                //   console.log('MESSAGE ---------: ', message);
-                // }}
-                // ref={(r)=> { this.webview = r}}
-                mixedContentMode='always'
-                javaScriptEnabled={true}
-              />
-            }
+
+
+
+
+
+            <WebView 
+              source={{html: map5, baseUrl: 'https://www.google.com/'}}
+              style={[styles.map_and_layers_wrap, { 
+                width: mapWidth, 
+                height: mapHeight, 
+              }]}
+              // onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
+              // onMessage={(event) => {
+              //   let message = event.nativeEvent.data;
+              //   console.log('MESSAGE ---------: ', message);
+              // }}
+              // ref={(r)=> { this.webview = r}}
+              mixedContentMode='always'
+              javaScriptEnabled={true}
+            />
 
         </View>
 
@@ -350,27 +390,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    height: 225,
+    height: 180,
   },
   map_and_layers_wrap: {
     flex: 1,
     backgroundColor: '#ddd',
   },
-
-  // zoom_button_wrap: {
-  //   position: 'absolute',
-  //   bottom: 20,
-  //   left: 20,
-  //   width: 35,
-  // },
-  // zoom_button: {
-  //   backgroundColor: '#fff',
-  //   borderColor: '#585858',
-  //   borderWidth: 1,
-  //   elevation: 1,
-  //   height: 50,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
+  location_input: {
+    // backgroundColor: 'pink',
+  },
 });
 
