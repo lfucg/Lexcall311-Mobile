@@ -161,7 +161,9 @@ export default class LocationInput extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 10,   // uncomment to see the display list that is going behind the map
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
   },
   query_wrap: {
     flexDirection: 'row',

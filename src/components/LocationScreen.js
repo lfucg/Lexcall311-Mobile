@@ -218,8 +218,7 @@ export default class LocationScreen extends React.Component {
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;
 
-
-    const map3 = `
+    const map5 = `
       <!DOCTYPE html>
       <html>
         <head>
@@ -243,26 +242,19 @@ export default class LocationScreen extends React.Component {
             #map_zoom_slider {
               top: 75%;
             }
-            #LocateButton {
-              position: absolute;
-              top: 20px;
-              left: 20px;
-              z-index: 50;
-            }
           </style>
           
           <script src="https://js.arcgis.com/3.24/"></script>
+
           <script>
             let map;
 
             require([
               "esri/map", 
-              "esri/dijit/LocateButton",
               "esri/layers/ArcGISTiledMapServiceLayer",
               "dojo/domReady!"
             ], function(
               Map, 
-              LocateButton,
               ArcGISTiledMapServiceLayer
             ) {
 
@@ -275,18 +267,10 @@ export default class LocationScreen extends React.Component {
               });
               
               // build map layers
-              let base_map;
-              base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
+              let base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
               map.addLayer(base_map);
-              let road_names;
-              road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
+              let road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
-
-              // current location
-              geoLocate = new LocateButton({
-                map: map
-              }, "LocateButton");
-              geoLocate.startup();
 
               // place marker
               dojo.connect(map, 'onClick', function(evt) {
@@ -301,85 +285,10 @@ export default class LocationScreen extends React.Component {
         </head>
         <body>
           <div id="map" class="map">
-            <div id="LocateButton"></div>
           </div>
         </body>
       </html>      
     `;
-
-
-
-
-
-    const map4 = `
-      <!DOCTYPE HTML>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-        <title>Locate button - 4.7</title>
-        <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/main.css">
-        <style>
-          html,
-          body,
-          #viewDiv {
-            padding: 0;
-            margin: 0;
-            height: 100%;
-            width: 100%;
-          }
-        </style>
-        <script src="https://js.arcgis.com/4.7/"></script>
-        <script>
-          require([
-            "esri/Map",
-            "esri/views/MapView",
-            "esri/widgets/Locate",
-            "dojo/domReady!"
-          ], function(
-            Map, MapView, Locate
-          ) {
-
-
-            let centerLat = -84.5027069;
-            let centerLong = 38.0417769;
-
-            let map = new Map({
-            });
-
-            let view = new MapView({
-              container: "viewDiv",
-              map: map,
-              center: [centerLat, centerLong],
-              zoom: 12
-            });
-       
-            // build map layers
-            let base_map;
-            base_map = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer");
-            map.addLayer(base_map);
-            let road_names;
-            road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
-            map.addLayer(road_names);
-
-            let locateBtn = new Locate({
-              view: view
-            });
-
-            // Add the locate widget to the top left corner of the view
-            view.ui.add(locateBtn, {
-              position: "top-left"
-            });
-          });
-        </script>
-      </head>
-      <body>
-        <div id="viewDiv"></div>
-      </body>
-      </html>
-    `;
-
-
 
     return (
       <View style={styles.container}>
@@ -396,9 +305,11 @@ export default class LocationScreen extends React.Component {
             locations={this.state.locations}
             dimensions={dimensions}
           />
-          <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
-            <Text> TEST OF THE OPERATING SYSTEM </Text>
-          </TouchableOpacity>
+          { 
+          // <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
+          //   <Text> TEST OF THE OPERATING SYSTEM </Text>
+          // </TouchableOpacity>
+          }
         </View>
 
         <View 
@@ -407,27 +318,25 @@ export default class LocationScreen extends React.Component {
             height: mapHeight, 
           }]}
         >
-
-          <View>
             {
 
               <WebView 
-                source={{html: map4, baseUrl: 'https://www.google.com/'}}
+                source={{html: map5, baseUrl: 'https://www.google.com/'}}
                 style={[styles.map_and_layers_wrap, { 
                   width: mapWidth, 
                   height: mapHeight, 
                 }]}
                 // onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
-                onMessage={(event) => {
-                  let message = event.nativeEvent.data;
-                  console.log('MESSAGE ---------: ', message);
-                }}
-                ref={(r)=> { this.webview = r}}
+                // onMessage={(event) => {
+                //   let message = event.nativeEvent.data;
+                //   console.log('MESSAGE ---------: ', message);
+                // }}
+                // ref={(r)=> { this.webview = r}}
                 mixedContentMode='always'
+                javaScriptEnabled={true}
               />
             }
 
-          </View>
         </View>
 
       </View>
@@ -441,15 +350,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    height: 300,
+    height: 225,
   },
   map_and_layers_wrap: {
-    flex: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
     backgroundColor: '#ddd',
   },
-
 
   // zoom_button_wrap: {
   //   position: 'absolute',
