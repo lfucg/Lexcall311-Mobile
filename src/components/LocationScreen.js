@@ -83,12 +83,20 @@ export default class LocationScreen extends React.Component {
     fetch(location_url_and_params)
     .then(response => response.json())
     .then(response => {
-      console.log(response);
+      // console.log(response);
       // console.log(response.candidates.length);
       let location_list = [];
+      let lat_list = [];
+      let lat = 0;
       for (let i=0; i < response.candidates.length; i++) {
+
+        // lat = response.candidates[i].location.y;
+
+        // lat_list.push(lat);
+
         location_list.push(response.candidates[i].address);
       }
+      // console.log('LAT LIST: ', lat_list);
 
       this.updateInputHeight(location_list.length);
       
@@ -138,67 +146,67 @@ export default class LocationScreen extends React.Component {
   fetchMapFromAPI(map_scale=undefined) {
     // console.log('MAP BEING FETCHED');
 
-    const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
-    const layer_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer/export?";
-    let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
+    // const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
+    // const layer_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer/export?";
+    // let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
 
-    if (map_scale==undefined) {
-      map_scale = this.state.map_scale;
-    } 
+    // if (map_scale==undefined) {
+    //   map_scale = this.state.map_scale;
+    // } 
 
-    let base_params = (
-      // "&layerDefs=" +
-      // "&layerTimeOptions=" +
-      // "&layerRangeValues=" +
-      // "&dynamicLayers=" +
-      // "&layerParameterValues=" +
-      // "&time=" +
-      // "&gdbVersion=" +
-      // "&rotation=" +
-      // "&datumTransformations=" +
-      // "&mapRangeValues=" +
-      // "&layers=show:4,20" +
-      "bbox=" + bbox + 
-      "&mapScale=" + map_scale +
-      "&bboxSR=102100" + 
-      "&size=409,622" +
-      "&imageSR=102100" +
-      "&dpi=600" +
-      "&format=png32" +
-      "&transparent=true" +
-      "&f=json" 
-    );
-    let base_map_url = base_url + base_params;
-    // console.log('URL: ', map_params);
+    // let base_params = (
+    //   // "&layerDefs=" +
+    //   // "&layerTimeOptions=" +
+    //   // "&layerRangeValues=" +
+    //   // "&dynamicLayers=" +
+    //   // "&layerParameterValues=" +
+    //   // "&time=" +
+    //   // "&gdbVersion=" +
+    //   // "&rotation=" +
+    //   // "&datumTransformations=" +
+    //   // "&mapRangeValues=" +
+    //   // "&layers=show:4,20" +
+    //   "bbox=" + bbox + 
+    //   "&mapScale=" + map_scale +
+    //   "&bboxSR=102100" + 
+    //   "&size=409,622" +
+    //   "&imageSR=102100" +
+    //   "&dpi=600" +
+    //   "&format=png32" +
+    //   "&transparent=true" +
+    //   "&f=json" 
+    // );
+    // let base_map_url = base_url + base_params;
+    // // console.log('URL: ', map_params);
 
-    this.setState({
-      base_map_url: base_map_url,
-    })
+    // this.setState({
+    //   base_map_url: base_map_url,
+    // })
 
 
-    let layer_params = (
-      // "&layerDefs=" +
-      // "&layerTimeOptions=" +
-      // "&layerRangeValues=" +
-      // "&dynamicLayers=" +
-      // "&layerParameterValues=" +
-      // "&time=" +
-      // "&gdbVersion=" +
-      // "&rotation=" +
-      // "&datumTransformations=" +
-      // "&mapRangeValues=" +
-      "bbox=" + bbox + 
-      // "&layers=show:4" +
-      "&mapScale=" + map_scale +
-      "&bboxSR=102100" + 
-      "&size=409,622" +
-      "&imageSR=102100" +
-      "&dpi=600" +
-      "&format=png32" +
-      "&transparent=true" +
-      "&f=json" 
-    );
-    let layer_map_url = layer_url + layer_params;
+    // let layer_params = (
+    //   // "&layerDefs=" +
+    //   // "&layerTimeOptions=" +
+    //   // "&layerRangeValues=" +
+    //   // "&dynamicLayers=" +
+    //   // "&layerParameterValues=" +
+    //   // "&time=" +
+    //   // "&gdbVersion=" +
+    //   // "&rotation=" +
+    //   // "&datumTransformations=" +
+    //   // "&mapRangeValues=" +
+    //   "bbox=" + bbox + 
+    //   // "&layers=show:4" +
+    //   "&mapScale=" + map_scale +
+    //   "&bboxSR=102100" + 
+    //   "&size=409,622" +
+    //   "&imageSR=102100" +
+    //   "&dpi=600" +
+    //   "&format=png32" +
+    //   "&transparent=true" +
+    //   "&f=json" 
+    // );
+    // let layer_map_url = layer_url + layer_params;
 
 
     // fetch(base_map_url)
