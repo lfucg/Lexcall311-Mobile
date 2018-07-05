@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Button,
   TouchableOpacity,
+  TextInput,
   Dimensions,
   WebView,
 } from 'react-native';
@@ -20,11 +21,10 @@ import HeaderBack from './HeaderBack.js';
 import HeaderNext from './HeaderNext.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
-import LocationInput from './LocationInput.js';
 
 // images
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
-
+import search_img from '../assets/images/icon_search.png';
 
 export default class LocationScreen extends React.Component {
 
@@ -34,6 +34,9 @@ export default class LocationScreen extends React.Component {
       base_map: {},
       layer_map: {},
       locations: [],
+      query: this.startingQuery(),
+      inputHeight: 42,
+      inputMarginOffset: 0,
       bbox_xmax: -9414495.222138507,
       bbox_xmin: 4574321.311047046,
       bbox_ymax: -9398863.84985421,
@@ -48,27 +51,18 @@ export default class LocationScreen extends React.Component {
     });
   }
 
-  updateLocation(location) {
-    this.setState({
-      location: location,
-    });
-    this.props.navigation.navigate('Location', {
-      location: location,
-    });
 
-    this.fetchLocationFromAPI(location);
-  }
-
-  updateInputHeight(locationCount) {
-    if (locationCount == 0) {
-      this.setState({ inputHeight: 42 });
+  startingQuery() {
+    currentQuery = this.props.navigation.getParam('location');
+    if (currentQuery) {
+      return currentQuery;
     } else {
-      this.setState({ inputHeight: 140 });
+      return 'Enter address or describe location';
     }
   }
 
   fetchLocationFromAPI(location) {
-    console.log('FETCH LOCATION FROM API: LOCATION: ', location);
+    // console.log('FETCH LOCATION FROM API: LOCATION: ', location);
 
     const location_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/locator/GeocodeServer/findAddressCandidates"
     const location_params = (
@@ -94,7 +88,9 @@ export default class LocationScreen extends React.Component {
       for (let i=0; i < response.candidates.length; i++) {
         location_list.push(response.candidates[i].address);
       }
+
       this.updateInputHeight(location_list.length);
+      
       // console.log('LOCATION SCREEN: FETCH LOCATION FROM API: LOCATION LIST: ', location_list);
       this.setState({
         locations: location_list,
@@ -137,7 +133,7 @@ export default class LocationScreen extends React.Component {
 
 
   fetchMapFromAPI(map_scale=undefined) {
-    console.log('MAP BEING FETCHED');
+    // console.log('MAP BEING FETCHED');
 
     const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
     const layer_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer/export?";
@@ -202,25 +198,48 @@ export default class LocationScreen extends React.Component {
     let layer_map_url = layer_url + layer_params;
 
 
-    fetch(base_map_url)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-      this.setState({
-        base_map: response,
-      });
-    });
+    // fetch(base_map_url)
+    // .then(response => response.json())
+    // .then(response => {
+    //   // console.log(response);
+    //   this.setState({
+    //     base_map: response,
+    //   });
+    // });
 
-    fetch(layer_map_url)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-      this.setState({
-        layer_map: response,
-      });
-    });
+    // fetch(layer_map_url)
+    // .then(response => response.json())
+    // .then(response => {
+    //   // console.log(response);
+    //   this.setState({
+    //     layer_map: response,
+    //   });
+    // });
 
   };
+
+
+  handleInputFocus() {
+    // console.log('FOCUSED-------------');
+    if (this.state.query == 'Enter address or describe location') {
+      this.setState({ query: '' })
+    }
+  }
+
+  updateInputHeight(locationCount) {
+    // console.log('HEIGHT UPDATE----------------')
+    if (locationCount == 0) {
+      this.setState({ 
+        inputHeight: 42, 
+        inputMarginOffset: 0 
+      });
+    } else {
+      this.setState({ 
+        inputHeight: 170, 
+        inputMarginOffset: -115 
+      });
+    }
+  }
 
   render() {
     // console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
@@ -315,29 +334,41 @@ export default class LocationScreen extends React.Component {
           // </TouchableOpacity>
           }
         </View>
-        
-
-
 
 
         <View
           style={[styles.location_input, {
-            height: 142,
-            borderBottomWidth: 0,
+            backgroundColor: '#fff',
+            height: this.state.inputHeight,
+            marginTop: this.state.inputMarginOffset,
           }]}
         >  
           <Autocomplete 
-            style={{
-              borderBottomWidth: 0,
+            style={{ 
+              paddingLeft: 10, 
+              height: 42,
             }}
+            listStyle={{
+              padding: 10,
+            }}
+            underlineColorAndroid='transparent'
+            data={this.state.locations}
+            defaultValue={this.state.query}
+            onFocus={() => this.handleInputFocus()}
+            onChangeText={text => this.fetchLocationFromAPI(text)}
+            renderItem={item => (
+              <TouchableOpacity
+                style={{
+                  padding: 5,
+                }}
+                onPress={() => this.setState({ query: item })}
+              >
+                <Text>{item}</Text>
+              </TouchableOpacity>
+            )}
           >
           </Autocomplete> 
         </View>
-
-
-
-
-
 
         <View 
           style={[styles.map_and_layers_wrap, { 
@@ -345,22 +376,6 @@ export default class LocationScreen extends React.Component {
             height: mapHeight, 
           }]}
         >
-{
-          // <LocationInput 
-          //   navigation={this.props.navigation}
-          //   updateLocation={this.updateLocation.bind(this)}
-          //   locations={this.state.locations}
-          //   inputHeight={this.state.inputHeight}
-          //   updateInputHeight={this.updateInputHeight.bind(this)}
-          //   dimensions={dimensions}
-          // />
-}
-
-
-
-
-
-
             <WebView 
               source={{html: map5, baseUrl: 'https://www.google.com/'}}
               style={[styles.map_and_layers_wrap, { 
@@ -376,7 +391,6 @@ export default class LocationScreen extends React.Component {
               mixedContentMode='always'
               javaScriptEnabled={true}
             />
-
         </View>
 
       </View>
@@ -395,9 +409,6 @@ const styles = StyleSheet.create({
   map_and_layers_wrap: {
     flex: 1,
     backgroundColor: '#ddd',
-  },
-  location_input: {
-    // backgroundColor: 'pink',
   },
 });
 
