@@ -91,6 +91,8 @@ export default class PhotoScreen extends React.Component {
           nav_link={"Description"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
+          latitude={navigation.getParam('latitude')}
+          longitude={navigation.getParam('longitude')}
           description={navigation.getParam('description')}
           image1={navigation.getParam('image1')}
           image2={navigation.getParam('image2')}
@@ -110,6 +112,8 @@ export default class PhotoScreen extends React.Component {
           nav_link={"Contact"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
+          latitude={navigation.getParam('latitude')}
+          longitude={navigation.getParam('longitude')}
           description={navigation.getParam('description')}
           image1={navigation.getParam('image1')}
           image2={navigation.getParam('image2')}

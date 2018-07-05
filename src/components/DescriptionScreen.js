@@ -52,6 +52,8 @@ export default class DescriptionScreen extends React.Component {
           nav_link={"Location"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
+          latitude={navigation.getParam('latitude')}
+          longitude={navigation.getParam('longitude')}
           description={navigation.getParam('description')}
           image1={navigation.getParam('image1')}
           image2={navigation.getParam('image2')}
@@ -71,6 +73,8 @@ export default class DescriptionScreen extends React.Component {
           nav_link={"Photo"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
+          latitude={navigation.getParam('latitude')}
+          longitude={navigation.getParam('longitude')}
           description={navigation.getParam('description')}
           image1={navigation.getParam('image1')}
           image2={navigation.getParam('image2')}

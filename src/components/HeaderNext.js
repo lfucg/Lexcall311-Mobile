@@ -82,8 +82,10 @@ export default class HeaderNext extends React.Component {
 
               // Street_Number__c: "625",   // (text/10)
               // Street_Name__c: "HILL N DALE RD",   // (text/100)
-              // Location__Latitude__s: "38.0168302600",
-              // Location__Longitude__s: "-84.5403933100"
+
+              Location_Description__c: `${this.props.location}`, // (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
+              Location__Latitude__s: `${this.props.latitude}`, // (double) The latitude of the geolocation.
+              Location__Longitude__s: `${this.props.longitude}`  // (double) The longitude of the geolocation.
             })
           }).then(case_res => case_res.json())
             .catch(error => console.error('ERROR: ', error))
@@ -147,9 +149,6 @@ export default class HeaderNext extends React.Component {
 
       //     // Override_Address_Validation__c (true/false): Set to false. 
       //     // Case_Contact_Role__c (picklist): This field has not fully been defined. Will have values like 'Resident', 'Owner', and 'Neighbor'. Full list TBD.
-      //     // Location_Description__c (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
-      //     // Location__Latitude__s (double): The latitude of the geolocation.
-      //     // Location__Longitude__s (double): The longitude of the geolocation.
       //     // For the remaining fields, simply pass through the values that come from ESRI. Most should be self-explanatory.
       //     // Address_ID__c (text/20): The ESRI Address ID for the address, or the ESRI Intersection ID if it is an intersection.
       //     // Location_Type__c (picklist): 'Address', 'Intersection', 'Landmark', 'Range of Addresses'
@@ -177,6 +176,8 @@ export default class HeaderNext extends React.Component {
       this.props.navigation.navigate(this.props.nav_link, {
         category: this.props.category,
         location: this.props.location,
+        latitude: this.props.latitude,
+        longitude: this.props.longitude,
         description: this.props.description,
         image1: this.props.image1,
         image2: this.props.image2,

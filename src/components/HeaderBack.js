@@ -17,6 +17,8 @@ export default class HeaderBack extends React.Component {
         onPress={() => this.props.navigation.navigate(this.props.nav_link, {
           category: this.props.category,
           location: this.props.location,
+          latitude: this.props.latitude,
+          longitude: this.props.longitude,
           description: this.props.description,
           image1: this.props.image1,
           image2: this.props.image2,

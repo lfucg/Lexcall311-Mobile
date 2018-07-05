@@ -34,7 +34,9 @@ export default class LocationScreen extends React.Component {
       base_map: {},
       layer_map: {},
       locations: [],
-      query: this.startingQuery(),
+      latitude: 77,
+      longitude: 100,
+      query: this.startingQuery(),  // this is the navigation param 'location'
       inputHeight: 42,
       inputMarginOffset: 0,
       bbox_xmax: -9414495.222138507,
@@ -51,7 +53,6 @@ export default class LocationScreen extends React.Component {
     });
   }
 
-
   startingQuery() {
     currentQuery = this.props.navigation.getParam('location');
     if (currentQuery) {
@@ -62,7 +63,7 @@ export default class LocationScreen extends React.Component {
   }
 
   fetchLocationFromAPI(location) {
-    // console.log('FETCH LOCATION FROM API: LOCATION: ', location);
+    console.log('FETCH LOCATION FROM API: LOCATION: ', location);
 
     const location_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/locator/GeocodeServer/findAddressCandidates"
     const location_params = (
@@ -82,7 +83,7 @@ export default class LocationScreen extends React.Component {
     fetch(location_url_and_params)
     .then(response => response.json())
     .then(response => {
-      // console.log(response);
+      console.log(response);
       // console.log(response.candidates.length);
       let location_list = [];
       for (let i=0; i < response.candidates.length; i++) {
@@ -95,6 +96,8 @@ export default class LocationScreen extends React.Component {
       this.setState({
         locations: location_list,
       });
+
+      this.webview.postMessage(location);
     });
 
   }
@@ -118,6 +121,8 @@ export default class LocationScreen extends React.Component {
           nav_link={"Description"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
+          latitude={navigation.getParam('latitude')}
+          longitude={navigation.getParam('longitude')}
           description={navigation.getParam('description')}
           image1={navigation.getParam('image1')}
           image2={navigation.getParam('image2')}
@@ -129,8 +134,6 @@ export default class LocationScreen extends React.Component {
       ),
     };
   };
-
-
 
   fetchMapFromAPI(map_scale=undefined) {
     // console.log('MAP BEING FETCHED');
@@ -218,6 +221,14 @@ export default class LocationScreen extends React.Component {
 
   };
 
+  updateQuery(query) {
+    this.setState({ query: query });
+    this.props.navigation.navigate('Location', {
+      location: query,
+    });
+    this.fetchLocationFromAPI(query);
+  }
+
 
   handleInputFocus() {
     // console.log('FOCUSED-------------');
@@ -233,6 +244,21 @@ export default class LocationScreen extends React.Component {
         inputHeight: 42, 
         inputMarginOffset: 0 
       });
+    } else if (locationCount == 1) {
+      this.setState({ 
+        inputHeight: 84, 
+        inputMarginOffset: -29 
+      });
+    } else if (locationCount == 2) {
+      this.setState({
+        inputHeight: 126, 
+        inputMarginOffset: -71 
+      });
+    } else if (locationCount == 3) {
+      this.setState({
+        inputHeight: 146, 
+        inputMarginOffset: -91 
+      });
     } else {
       this.setState({ 
         inputHeight: 170, 
@@ -242,7 +268,7 @@ export default class LocationScreen extends React.Component {
   }
 
   render() {
-    // console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
+    console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get('window');
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;
@@ -276,15 +302,24 @@ export default class LocationScreen extends React.Component {
           <script src="https://js.arcgis.com/3.24/"></script>
 
           <script>
+            // let location = 'Something';
+            // document.addEventListener("message", function(data) {
+            //   location = data.data;
+            // });
+          </script>
+
+          <script>
             let map;
 
             require([
               "esri/map", 
               "esri/layers/ArcGISTiledMapServiceLayer",
-              "dojo/domReady!"
+              "dojo/domReady!",
+              "esri/graphic"
             ], function(
               Map, 
-              ArcGISTiledMapServiceLayer
+              ArcGISTiledMapServiceLayer, 
+              Graphic
             ) {
 
               let centerLat = -84.5027069;
@@ -303,6 +338,7 @@ export default class LocationScreen extends React.Component {
 
               // place marker
               dojo.connect(map, 'onClick', function(evt) {
+
                 map.graphics.clear();
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
@@ -355,13 +391,13 @@ export default class LocationScreen extends React.Component {
             data={this.state.locations}
             defaultValue={this.state.query}
             onFocus={() => this.handleInputFocus()}
-            onChangeText={text => this.fetchLocationFromAPI(text)}
+            onChangeText={text => this.updateQuery(text)}
             renderItem={item => (
               <TouchableOpacity
                 style={{
                   padding: 5,
                 }}
-                onPress={() => this.setState({ query: item })}
+                onPress={() => this.updateQuery(item)}
               >
                 <Text>{item}</Text>
               </TouchableOpacity>
@@ -382,12 +418,12 @@ export default class LocationScreen extends React.Component {
                 width: mapWidth, 
                 height: mapHeight, 
               }]}
-              // onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
-              // onMessage={(event) => {
-              //   let message = event.nativeEvent.data;
-              //   console.log('MESSAGE ---------: ', message);
-              // }}
-              // ref={(r)=> { this.webview = r}}
+              onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
+              onMessage={(event) => {
+                let message = event.nativeEvent.data;
+                console.log('MESSAGE ---------: ', message);
+              }}
+              ref={(r)=> { this.webview = r}}
               mixedContentMode='always'
               javaScriptEnabled={true}
             />
