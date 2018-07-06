@@ -408,6 +408,8 @@ export default class LocationScreen extends React.Component {
               */
               let centerLat = -84.5027069;
               let centerLong = 38.0417769;
+
+
               //var lexingtonExtentAndSR = new esri.geometry.Extent(-85,37.5,-84,38.5, new esri.SpatialReference({"wkid":4326}));              
               map = new esri.Map("map", {
                 center: [centerLat, centerLong],
@@ -461,11 +463,6 @@ export default class LocationScreen extends React.Component {
             heading={"Set Location of Issue"}
             content={"Enter the address, use your current location or tap the map to place a marker near the issue."} 
           />
-          { 
-           // <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
-           //   <Text> TEST OF THE OPERATING SYSTEM </Text>
-           // </TouchableOpacity>
-          }
         </View>
 
 
