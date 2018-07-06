@@ -351,6 +351,9 @@ export default class LocationScreen extends React.Component {
         latitude: location.coords.latitude,
       });
 
+      this.webview.postMessage([location.coords.longitude, location.coords.latitude]); // TODO: this is no longer working?  We need a way to pass this lat and lng to the webview
+
+      
       // TODO: place a marker, recenter map and zoom
     }
   };
@@ -391,46 +394,48 @@ export default class LocationScreen extends React.Component {
           <script src="https://js.arcgis.com/3.24/"></script>
 
           <script>
-            let location = 'Something';
-            
             // FROM Justin: Sample function for handling communication from App -> Webview
-            function executeMessage(data) {
-              alert("message received: '" + JSON.stringify(data) + "'")
-              if data["action"] != null {
-                var action = data["action"];
-                if action == "place_marker" {
-                  alert(JSON.stringify(data["location"]));
-                } else {
-                  alert("unknown action: '" + action + "'");
-                }
-              } else {
-                alert("action undefined");
-              }
-            }
+            // function executeMessage(data) {
+            //   alert("message received: '" + JSON.stringify(data) + "'")
+            //   if data["action"] != null {
+            //     var action = data["action"];
+            //     if action == "place_marker" {
+            //       alert(JSON.stringify(data["location"]));
+            //     } else {
+            //       alert("unknown action: '" + action + "'");
+            //     }
+            //   } else {
+            //     alert("action undefined");
+            //   }
+            // }
 
             // FROM JUSTIN: this was how this was working before, but you got rid of react-native-webview-bridge
             // so I don't think this works anymore
-            document.addEventListener("message", function(data) {
-              executeMessage(data)
-            });
+            // FROM JASON: It works.  You can display the data like this:  document.getElementById('data').innerHTML = data.data
+            // document.addEventListener("message", function(data) {
+            //   executeMessage(data)
+            // });
 
           </script>
 
           <script>
+            function placeMarker() {
+
+            }
+
             let map;
             require([
               "esri/map", 
               "esri/layers/ArcGISTiledMapServiceLayer",
               "dojo/domReady!",
               "esri/graphic",
-              // "esri/geometry/webMercatorUtils",            
+              "esri/geometry/webMercatorUtils",
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer, 
               Graphic,
-              // webMercatorUtils
+              webMercatorUtils
             ) {
-
               /*
                 // TODO: make this centerLat and centerLong constants (I don't know where an appropriate
                           code-location for that is).  Use those constants here and also pass them with the
@@ -452,10 +457,10 @@ export default class LocationScreen extends React.Component {
               map.addLayer(base_map);
               let road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
-              
-              // place marker
-              let coords = []
-              dojo.connect(map, 'onClick', function(evt) {                           
+
+              // place marker when user touches map
+              dojo.connect(map, 'onClick', function(evt) { 
+                let coords = []
                 map.graphics.clear();
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
@@ -463,22 +468,38 @@ export default class LocationScreen extends React.Component {
                   // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
                   // var normalizedVal = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y);
 
-                  coords.push(evt.mapPoint.x),
-                  coords.push(evt.mapPoint.y),
                 ));
-                
-                window.postMessage(coords)
 
+                // NOTE: - might be the right system?  Square_Mile_US   WKID: 109413  Conversion value: 2589998.4703195216 - projected coordinate systems
+                // NOTE: webMercatorUtils always breaks everything.  Not sure why.  Wrong conversion system?
+                // NOTE: The WKID seems to be the key to the translation?  Where do we plug in what WKID to use?  
+                // var value = webMercatorUtils.xyToLngLat(42215329, 1321748, true);
+                // let lat_long = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y, true);
+                coords.push(evt.mapPoint.x);
+                coords.push(evt.mapPoint.y);
+                document.getElementById('data').innerHTML = 'marker coords: ' + coords;
+                
+                window.postMessage(coords) // TODO: coords are some crazy format - convert to lat/long
               });
+
             });
-            // document.addEventListener("message", function(data) {
-              // document.getElementById('data').innerHTML = 'location: ' + data.data;
-            // });
+
+            // place marker for phone location - called from getMyLocation() 
+            document.addEventListener("message", function(data) {
+              document.getElementById('data').innerHTML = 'location:  ' + data.data;
+              map.graphics.clear();
+              // NOTE: this needs to happen.  But the data.data (lat/long) probably needs to be translated to the same projected coordinate system as above
+              // map.graphics.add(new esri.Graphic(
+              //   data.data,
+              //   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
+              // ));              
+            });
+
           </script>
         </head>
         <body>
-          <div id="data"></div>
           <div id="map" class="map">
+            <div id="data" style=""></div>
           </div>
         </body>
       </html>      
