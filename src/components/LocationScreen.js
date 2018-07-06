@@ -392,11 +392,13 @@ export default class LocationScreen extends React.Component {
               "esri/map", 
               "esri/layers/ArcGISTiledMapServiceLayer",
               "dojo/domReady!",
-              "esri/graphic"              
+              "esri/graphic",
+              // "esri/geometry/webMercatorUtils",            
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer, 
-              Graphic
+              Graphic,
+              // webMercatorUtils
             ) {
 
               /*
@@ -418,6 +420,7 @@ export default class LocationScreen extends React.Component {
               map.addLayer(base_map);
               let road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
+              
               // place marker
               let coords = []
               dojo.connect(map, 'onClick', function(evt) {                           
@@ -426,6 +429,8 @@ export default class LocationScreen extends React.Component {
                   evt.mapPoint,
                   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),                  
                   // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
+                  // var normalizedVal = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y);
+
                   coords.push(evt.mapPoint.x),
                   coords.push(evt.mapPoint.y),
                 ));
