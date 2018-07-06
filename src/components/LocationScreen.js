@@ -244,6 +244,16 @@ export default class LocationScreen extends React.Component {
   //   this.fetchLocationFromAPI(query);
   // }
 
+
+/*  TODO: updateQueryFromInput should probably only be triggered if query is a certain length (>= 3 chars?)
+          and also only after 0.5 seconds of inaction from the user.  The reason for this is
+          you end up with race conditions with this getting called every time the user strikes
+          a key on the keyboard.  You could have several requests that aren't yet complete and
+          the order they finish is not predictable, so while typing 348 east main street, you
+          may end up with a result for '348' finishing after a previous result for '348 east m'
+          finished, resulting in a jittery UI and also worse results
+
+*/
   updateQueryFromInput(query) {
     console.log('Updating Query ---------: ', query);
     this.setState({ query: query });
@@ -261,8 +271,8 @@ export default class LocationScreen extends React.Component {
       longitude: locationObj.lng,
       latitude: locationObj.lat,
     });
-    //this.webview.postMessage({'action':'place_marker', 'location': locationObj})
-    this.webview.postMessage('test');
+    //this.webview.postMessage({'action':'place_marker', 'location': locationObj}) // TODO: this is no longer working?  We need a way to pass this lat and lng to the webview
+    //this.webview.injectJavaScript("executeMessage({'action':'place_marker', 'location': locationObj})") // this is not working either
   }
   
   updateLongitude(longitude) {
@@ -351,42 +361,56 @@ export default class LocationScreen extends React.Component {
           <script src="https://js.arcgis.com/3.24/"></script>
 
           <script>
-            // let location = 'Something';
-            document.addEventListener("message", function(data) {
+            let location = 'Something';
+            
+            // FROM Justin: Sample function for handling communication from App -> Webview
+            function executeMessage(data) {
               alert("message received: '" + JSON.stringify(data) + "'")
               if data["action"] != null {
                 var action = data["action"];
                 if action == "place_marker" {
-                  alert(JSON.stringify(data["location"]);
+                  alert(JSON.stringify(data["location"]));
                 } else {
                   alert("unknown action: '" + action + "'");
                 }
               } else {
-                alert("action undefined")
-              }              
+                alert("action undefined");
+              }
+            }
+
+            // FROM JUSTIN: this was how this was working before, but you got rid of react-native-webview-bridge
+            // so I don't think this works anymore
+            document.addEventListener("message", function(data) {
+              executeMessage(data)
             });
+
           </script>
 
           <script>
             let map;
-
             require([
               "esri/map", 
               "esri/layers/ArcGISTiledMapServiceLayer",
               "dojo/domReady!",
-              "esri/graphic"
+              "esri/graphic"              
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer, 
               Graphic
             ) {
 
+              /*
+                // TODO: make this centerLat and centerLong constants (I don't know where an appropriate
+                          code-location for that is).  Use those constants here and also pass them with the
+                          fetchLocationFromAPI call
+              */
               let centerLat = -84.5027069;
               let centerLong = 38.0417769;
-
-              map = new Map("map", {
+              //var lexingtonExtentAndSR = new esri.geometry.Extent(-85,37.5,-84,38.5, new esri.SpatialReference({"wkid":4326}));              
+              map = new esri.Map("map", {
                 center: [centerLat, centerLong],
                 zoom: 12
+                //extent: lexingtonExtentAndSR
               });
               
               // build map layers
@@ -394,28 +418,25 @@ export default class LocationScreen extends React.Component {
               map.addLayer(base_map);
               let road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
-
               // place marker
               let coords = []
-              dojo.connect(map, 'onClick', function(evt) {
-
+              dojo.connect(map, 'onClick', function(evt) {                           
                 map.graphics.clear();
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
-                  new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
-                  
+                  new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),                  
                   // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
                   coords.push(evt.mapPoint.x),
                   coords.push(evt.mapPoint.y),
-                  window.postMessage(coords)
                 ));
+                
+                window.postMessage(coords)
+
               });
             });
-
             // document.addEventListener("message", function(data) {
               // document.getElementById('data').innerHTML = 'location: ' + data.data;
             // });
-
           </script>
         </head>
         <body>
@@ -490,7 +511,7 @@ export default class LocationScreen extends React.Component {
                 height: mapHeight, 
               }]}
               onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
-              onMessage={(event) => {
+              onMessage={(event) => { // (this is called when the webview calls window.postMessage(...)
                 let coords = event.nativeEvent.data;
                 coords = coords.split(',');
                 this.updateLongitude(coords[0]);
