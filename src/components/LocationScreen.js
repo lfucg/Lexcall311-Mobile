@@ -350,13 +350,20 @@ export default class LocationScreen extends React.Component {
                 map.graphics.clear();
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
-                  new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183])
+                  new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
+                  document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y
                 ));
               });
             });
+
+            document.addEventListener("message", function(data) {
+              document.getElementById('data').innerHTML = 'location: ' + data.data;
+            });
+
           </script>
         </head>
         <body>
+          <div id="data"></div>
           <div id="map" class="map">
           </div>
         </body>
