@@ -236,7 +236,20 @@ export default class LocationScreen extends React.Component {
     });
     this.fetchLocationFromAPI(query);
   }
+  
+  updateLongitude(longitude) {
+    this.setState({ longitude: longitude });
+    this.props.navigation.navigate('Location', {
+      longitude: longitude,
+    });
+  }
 
+  updateLatitude(latitude) {
+    this.setState({ latitude: latitude });
+    this.props.navigation.navigate('Location', {
+      latitude: latitude,
+    });
+  }
 
   handleInputFocus() {
     // console.log('FOCUSED-------------');
@@ -345,20 +358,25 @@ export default class LocationScreen extends React.Component {
               map.addLayer(road_names);
 
               // place marker
+              let coords = []
               dojo.connect(map, 'onClick', function(evt) {
 
                 map.graphics.clear();
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
                   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
-                  document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y
+                  
+                  // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
+                  coords.push(evt.mapPoint.x),
+                  coords.push(evt.mapPoint.y),
+                  window.postMessage(coords)
                 ));
               });
             });
 
-            document.addEventListener("message", function(data) {
-              document.getElementById('data').innerHTML = 'location: ' + data.data;
-            });
+            // document.addEventListener("message", function(data) {
+              // document.getElementById('data').innerHTML = 'location: ' + data.data;
+            // });
 
           </script>
         </head>
@@ -435,8 +453,10 @@ export default class LocationScreen extends React.Component {
               }]}
               onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
               onMessage={(event) => {
-                let message = event.nativeEvent.data;
-                console.log('MESSAGE ---------: ', message);
+                let coords = event.nativeEvent.data;
+                coords = coords.split(',');
+                this.updateLongitude(coords[0]);
+                this.updateLatitude(coords[1]);
               }}
               ref={(r)=> { this.webview = r}}
               mixedContentMode='always'
