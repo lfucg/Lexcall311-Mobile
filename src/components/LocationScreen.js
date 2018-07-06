@@ -71,7 +71,7 @@ export default class LocationScreen extends React.Component {
       // "&SingleLine=" +
       // "&category=" +
       // "&outFields=" +
-      // "&outSR=" +
+      "&outSR=" + 4326 + // world geocoding coordinate system wkid (forces return of lat / lng)
       // "&searchExtent=" +
       // "&location=" +
       // "&distance=" +
@@ -86,15 +86,21 @@ export default class LocationScreen extends React.Component {
       // console.log(response);
       // console.log(response.candidates.length);
       let location_list = [];
-      let lat_list = [];
-      let lat = 0;
+      //let lat_list = [];
+      //let lat = 0;
       for (let i=0; i < response.candidates.length; i++) {
 
         // lat = response.candidates[i].location.y;
 
         // lat_list.push(lat);
+        var locationObj = {
+          'address':response.candidates[i].address,
+          'lat':response.candidates[i].location.y,
+          'lng':response.candidates[i].location.x
+        };
 
-        location_list.push(response.candidates[i].address);
+        //location_list.push(response.candidates[i].address);
+        location_list.push(locationObj);
       }
       // console.log('LAT LIST: ', lat_list);
 
@@ -229,13 +235,34 @@ export default class LocationScreen extends React.Component {
 
   };
 
-  updateQuery(query) {
+  // updateQuery(query) {
+  //   console.log('Updating Query ---------: ', query);
+  //   this.setState({ query: query });
+  //   this.props.navigation.navigate('Location', {
+  //     location: query,
+  //   });
+  //   this.fetchLocationFromAPI(query);
+  // }
+
+  updateQueryFromInput(query) {
+    console.log('Updating Query ---------: ', query);
     this.setState({ query: query });
     this.props.navigation.navigate('Location', {
       location: query,
     });
     this.fetchLocationFromAPI(query);
   }
+
+  updateQueryFromSelection(locationObj) {
+    console.log('User selected location ---------: ', JSON.stringify(locationObj));
+    this.setState({ query: locationObj.address });
+    this.props.navigation.navigate('Location', {
+      location: locationObj.address,
+    });
+    //this.webview.postMessage({'action':'place_marker', 'location': locationObj})
+    this.webview.postMessage('test');
+  }
+
 
 
   handleInputFocus() {
@@ -311,9 +338,19 @@ export default class LocationScreen extends React.Component {
 
           <script>
             // let location = 'Something';
-            // document.addEventListener("message", function(data) {
-            //   location = data.data;
-            // });
+            document.addEventListener("message", function(data) {
+              alert("message received: '" + JSON.stringify(data) + "'")
+              if data["action"] != null {
+                var action = data["action"];
+                if action == "place_marker" {
+                  alert(JSON.stringify(data["location"]);
+                } else {
+                  alert("unknown action: '" + action + "'");
+                }
+              } else {
+                alert("action undefined")
+              }              
+            });
           </script>
 
           <script>
@@ -353,7 +390,8 @@ export default class LocationScreen extends React.Component {
                   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183])
                 ));
               });
-            });
+            });          
+
           </script>
         </head>
         <body>
@@ -373,9 +411,9 @@ export default class LocationScreen extends React.Component {
             content={"Enter the address, use your current location or tap the map to place a marker near the issue."} 
           />
           { 
-          // <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
-          //   <Text> TEST OF THE OPERATING SYSTEM </Text>
-          // </TouchableOpacity>
+           <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
+             <Text> TEST OF THE OPERATING SYSTEM </Text>
+           </TouchableOpacity>
           }
         </View>
 
@@ -397,17 +435,18 @@ export default class LocationScreen extends React.Component {
             }}
             underlineColorAndroid='transparent'
             data={this.state.locations}
+            //data={this.state.locations.map(locationObj => locationObj.address) }
             defaultValue={this.state.query}
             onFocus={() => this.handleInputFocus()}
-            onChangeText={text => this.updateQuery(text)}
-            renderItem={item => (
+            onChangeText={text => this.updateQueryFromInput(text)}
+            renderItem={locationObj => (
               <TouchableOpacity
                 style={{
                   padding: 5,
                 }}
-                onPress={() => this.updateQuery(item)}
+                onPress={() => this.updateQueryFromSelection(locationObj)}
               >
-                <Text>{item}</Text>
+                <Text>{locationObj.address}</Text>
               </TouchableOpacity>
             )}
           >
