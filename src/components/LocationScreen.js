@@ -258,11 +258,25 @@ export default class LocationScreen extends React.Component {
     this.setState({ query: locationObj.address });
     this.props.navigation.navigate('Location', {
       location: locationObj.address,
+      longitude: locationObj.lng,
+      latitude: locationObj.lat,
     });
     //this.webview.postMessage({'action':'place_marker', 'location': locationObj})
     this.webview.postMessage('test');
   }
-
+  
+  updateLongitude(longitude) {
+    this.setState({ longitude: longitude });
+    this.props.navigation.navigate('Location', {
+      longitude: longitude,
+    });
+  }
+  updateLatitude(latitude) {
+    this.setState({ latitude: latitude });
+    this.props.navigation.navigate('Location', {
+      latitude: latitude,
+    });
+  }
 
 
   handleInputFocus() {
@@ -382,19 +396,30 @@ export default class LocationScreen extends React.Component {
               map.addLayer(road_names);
 
               // place marker
+              let coords = []
               dojo.connect(map, 'onClick', function(evt) {
 
                 map.graphics.clear();
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
-                  new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183])
+                  new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
+                  
+                  // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
+                  coords.push(evt.mapPoint.x),
+                  coords.push(evt.mapPoint.y),
+                  window.postMessage(coords)
                 ));
               });
-            });          
+            });
+
+            // document.addEventListener("message", function(data) {
+              // document.getElementById('data').innerHTML = 'location: ' + data.data;
+            // });
 
           </script>
         </head>
         <body>
+          <div id="data"></div>
           <div id="map" class="map">
           </div>
         </body>
@@ -411,9 +436,9 @@ export default class LocationScreen extends React.Component {
             content={"Enter the address, use your current location or tap the map to place a marker near the issue."} 
           />
           { 
-           <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
-             <Text> TEST OF THE OPERATING SYSTEM </Text>
-           </TouchableOpacity>
+           // <TouchableOpacity onPress={() => {this.webview.postMessage('BLAMMO')}}>
+           //   <Text> TEST OF THE OPERATING SYSTEM </Text>
+           // </TouchableOpacity>
           }
         </View>
 
@@ -435,7 +460,6 @@ export default class LocationScreen extends React.Component {
             }}
             underlineColorAndroid='transparent'
             data={this.state.locations}
-            //data={this.state.locations.map(locationObj => locationObj.address) }
             defaultValue={this.state.query}
             onFocus={() => this.handleInputFocus()}
             onChangeText={text => this.updateQueryFromInput(text)}
@@ -467,8 +491,10 @@ export default class LocationScreen extends React.Component {
               }]}
               onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
               onMessage={(event) => {
-                let message = event.nativeEvent.data;
-                console.log('MESSAGE ---------: ', message);
+                let coords = event.nativeEvent.data;
+                coords = coords.split(',');
+                this.updateLongitude(coords[0]);
+                this.updateLatitude(coords[1]);
               }}
               ref={(r)=> { this.webview = r}}
               mixedContentMode='always'
