@@ -12,6 +12,8 @@ import {
   WebView,
 } from 'react-native';
 
+import { Constants, Location, Permissions } from 'expo';
+
 import Autocomplete from 'react-native-autocomplete-input';
 
 
@@ -25,6 +27,7 @@ import Summary from './Summary.js';
 // images
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
 import search_img from '../assets/images/icon_search.png';
+import crosshair_img from '../assets/images/icon_crosshairs.png';
 
 export default class LocationScreen extends React.Component {
 
@@ -34,15 +37,16 @@ export default class LocationScreen extends React.Component {
       base_map: {},
       layer_map: {},
       locations: [],
-      latitude: 77,
-      longitude: 100,
+      longitude: 0,
+      latitude: 0,
       query: this.startingQuery(),  // this is the navigation param 'location'
       inputHeight: 42,
       inputMarginOffset: 0,
-      bbox_xmax: -9414495.222138507,
-      bbox_xmin: 4574321.311047046,
-      bbox_ymax: -9398863.84985421,
-      bbox_ymin: 4598093.2268437045,
+      // bbox_xmax: -9414495.222138507,
+      // bbox_xmin: 4574321.311047046,
+      // bbox_ymax: -9398863.84985421,
+      // bbox_ymin: 4598093.2268437045,
+      loadingOpacity: 0,
     };
   }
 
@@ -260,7 +264,9 @@ export default class LocationScreen extends React.Component {
     this.props.navigation.navigate('Location', {
       location: query,
     });
-    this.fetchLocationFromAPI(query);
+    if (query.length > 3) {  
+      this.fetchLocationFromAPI(query);
+    }
   }
 
   updateQueryFromSelection(locationObj) {
@@ -287,7 +293,6 @@ export default class LocationScreen extends React.Component {
       latitude: latitude,
     });
   }
-
 
   handleInputFocus() {
     // console.log('FOCUSED-------------');
@@ -325,6 +330,31 @@ export default class LocationScreen extends React.Component {
       });
     }
   }
+
+  getMyLocation = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status == 'granted') {
+      this.setState({ loadingOpacity: 100 });
+
+      let location = await Location.getCurrentPositionAsync({});
+
+      console.log("LOCATION: ", location);
+
+      this.setState({
+        loadingOpacity: 0,
+        longitude: location.coords.longitude,
+        latitude: location.coords.latitude,
+      });
+
+      this.props.navigation.navigate('Location', {
+        longitude: location.coords.longitude,
+        latitude: location.coords.latitude,
+      });
+
+      // TODO: place a marker, recenter map and zoom
+    }
+  };
+
 
   render() {
     console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
@@ -506,23 +536,40 @@ export default class LocationScreen extends React.Component {
             height: mapHeight, 
           }]}
         >
-            <WebView 
-              source={{html: map5, baseUrl: 'https://www.google.com/'}}
-              style={[styles.map_and_layers_wrap, { 
-                width: mapWidth, 
-                height: mapHeight, 
-              }]}
-              onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
-              onMessage={(event) => { // (this is called when the webview calls window.postMessage(...)
-                let coords = event.nativeEvent.data;
-                coords = coords.split(',');
-                this.updateLongitude(coords[0]);
-                this.updateLatitude(coords[1]);
-              }}
-              ref={(r)=> { this.webview = r}}
-              mixedContentMode='always'
-              javaScriptEnabled={true}
-            />
+
+          <View style={styles.locate}>
+            <TouchableOpacity
+              onPress={() => this.getMyLocation()}
+            >
+              <Image source={crosshair_img} resizeMode='cover'/>
+            </TouchableOpacity>
+          </View>
+
+          <View 
+            style={[styles.loading, {
+              opacity: this.state.loadingOpacity,
+            }]}>
+            <Text>LOADING...</Text>
+          </View>
+
+
+          <WebView 
+            source={{html: map5, baseUrl: 'https://www.google.com/'}}
+            style={[styles.map_and_layers_wrap, { 
+              width: mapWidth, 
+              height: mapHeight, 
+            }]}
+            onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
+            onMessage={(event) => { // (this is called when the webview calls window.postMessage(...)
+              let coords = event.nativeEvent.data;
+              coords = coords.split(',');
+              this.updateLongitude(coords[0]);
+              this.updateLatitude(coords[1]);
+            }}
+            ref={(r)=> { this.webview = r}}
+            mixedContentMode='always'
+            javaScriptEnabled={true}
+          />
         </View>
 
       </View>
@@ -541,6 +588,30 @@ const styles = StyleSheet.create({
   map_and_layers_wrap: {
     flex: 1,
     backgroundColor: '#ddd',
+  },
+  loading: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    width: 100,
+    backgroundColor: '#fff',
+    borderColor: '#585858',
+    borderWidth: 1,
+    zIndex: 10,
+  },
+  locate: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    top: 20,
+    left: 20,
+    zIndex: 1000,
+    width: 35,
+    height: 35,
+    borderWidth: 1,
+    borderColor: '#585858',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

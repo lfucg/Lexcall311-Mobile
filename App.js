@@ -22,7 +22,7 @@ const Root = createStackNavigator(
     Confirmation: ConfirmationScreen,
   },
   {
-    initialRouteName: 'Contact',
+    initialRouteName: 'Location',
     navigationOptions: {
       headerStyle: {
         elevation: 1,
@@ -37,3 +37,5 @@ export default class App extends React.Component {
     return <Root />;
   }
 }
+
+
