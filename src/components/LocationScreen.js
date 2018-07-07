@@ -10,7 +10,6 @@ import {
   TextInput,
   Dimensions,
   WebView,
-  // Modal,
   TouchableHighlight,
 } from 'react-native';
 
@@ -50,20 +49,19 @@ export default class LocationScreen extends React.Component {
       // bbox_ymax: -9398863.84985421,
       // bbox_ymin: 4598093.2268437045,
       loadingOpacity: 0,
-      modalVisible: false,
+      modalHasBeenChecked: false,
     };
   }
 
   componentDidMount() {
-    if (this.props.navigation.getParam('category') == 'traffic_light') {
-      console.log("TRAFFIC LIGHT!");
-      this.setModalVisible(true);
-    }
-    // this.fetchMapFromAPI();
   }
 
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+  modalCheck() {
+    if (this.props.navigation.getParam('category') == 'traffic_light' && this.state.modalHasBeenChecked == false) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   startingQuery() {
@@ -432,20 +430,15 @@ export default class LocationScreen extends React.Component {
       <View style={styles.container}>
 
         <Modal
-          isVisible={this.state.modalVisible}
+          isVisible={this.modalCheck()}
         >
-          <View 
-            style={[styles.modal, {
-              // backgroundColor: '#fff',
-              // height: dimensions.height/2,
-            }]}
-          >
+          <View style={styles.modal}>
             <Text 
               style={{ 
                 paddingTop: 20,
                 paddingBottom: 20,
                 fontSize: 20, 
-                fontWeight: '600' 
+                fontWeight: '600',
               }}
             >
               *ATTN
@@ -458,21 +451,21 @@ export default class LocationScreen extends React.Component {
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => {
+                  this.setState({ modalHasBeenChecked: true })
                   phonecall('8592583600', true);
                 }}
-                style={[styles.modal_button, {
-                }]}
+                style={styles.modal_button}
               >
-                <Text style={{ color: 'blue' }}>CALL</Text>
+                <Text style={styles.modal_button_text}>CALL</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.setModalVisible(false);
+                  this.setState({ modalHasBeenChecked: true });
+                  this.modalCheck();
                 }}
-                style={[styles.modal_button, {
-                }]}
+                style={styles.modal_button}
               >
-                <Text style={{ color: 'blue' }}>OK</Text>
+                <Text style={styles.modal_button_text}>OK</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -585,6 +578,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 20,
     margin: 20,
+  },
+  modal_button_text: {
+    color: 'blue', 
+    fontSize: 20, 
+    fontWeight: '600',
   },
   header: {
     height: 180,
