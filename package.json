@@ -27,6 +27,7 @@
     "react-native-communications": "^2.2.1",
     "react-native-keyboard-aware-view": "0.0.14",
     "react-native-keyboard-spacer": "^0.4.1",
+    "react-native-modal": "^6.4.0",
     "react-navigation": "^2.0.2"
   }
 }

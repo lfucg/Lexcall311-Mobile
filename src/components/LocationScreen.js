@@ -10,12 +10,15 @@ import {
   TextInput,
   Dimensions,
   WebView,
+  // Modal,
+  TouchableHighlight,
 } from 'react-native';
 
 import { Constants, Location, Permissions } from 'expo';
 
 import Autocomplete from 'react-native-autocomplete-input';
-
+import Modal from "react-native-modal";
+import { phonecall } from 'react-native-communications';
 
 // components
 import HeaderTitle from './HeaderTitle.js';
@@ -47,14 +50,20 @@ export default class LocationScreen extends React.Component {
       // bbox_ymax: -9398863.84985421,
       // bbox_ymin: 4598093.2268437045,
       loadingOpacity: 0,
+      modalVisible: false,
     };
   }
 
   componentDidMount() {
-    this.fetchMapFromAPI();
-    this.setState({
-      category: this.props.navigation.getParam('category'),  // TODO - handle street light category
-    });
+    if (this.props.navigation.getParam('category') == 'traffic_light') {
+      console.log("TRAFFIC LIGHT!");
+      this.setModalVisible(true);
+    }
+    // this.fetchMapFromAPI();
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
 
   startingQuery() {
@@ -151,92 +160,6 @@ export default class LocationScreen extends React.Component {
         />
       ),
     };
-  };
-
-  fetchMapFromAPI(map_scale=undefined) {
-    // console.log('MAP BEING FETCHED');
-
-    // const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
-    // const layer_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer/export?";
-    // let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
-
-    // if (map_scale==undefined) {
-    //   map_scale = this.state.map_scale;
-    // } 
-
-    // let base_params = (
-    //   // "&layerDefs=" +
-    //   // "&layerTimeOptions=" +
-    //   // "&layerRangeValues=" +
-    //   // "&dynamicLayers=" +
-    //   // "&layerParameterValues=" +
-    //   // "&time=" +
-    //   // "&gdbVersion=" +
-    //   // "&rotation=" +
-    //   // "&datumTransformations=" +
-    //   // "&mapRangeValues=" +
-    //   // "&layers=show:4,20" +
-    //   "bbox=" + bbox + 
-    //   "&mapScale=" + map_scale +
-    //   "&bboxSR=102100" + 
-    //   "&size=409,622" +
-    //   "&imageSR=102100" +
-    //   "&dpi=600" +
-    //   "&format=png32" +
-    //   "&transparent=true" +
-    //   "&f=json" 
-    // );
-    // let base_map_url = base_url + base_params;
-    // // console.log('URL: ', map_params);
-
-    // this.setState({
-    //   base_map_url: base_map_url,
-    // })
-
-
-    // let layer_params = (
-    //   // "&layerDefs=" +
-    //   // "&layerTimeOptions=" +
-    //   // "&layerRangeValues=" +
-    //   // "&dynamicLayers=" +
-    //   // "&layerParameterValues=" +
-    //   // "&time=" +
-    //   // "&gdbVersion=" +
-    //   // "&rotation=" +
-    //   // "&datumTransformations=" +
-    //   // "&mapRangeValues=" +
-    //   "bbox=" + bbox + 
-    //   // "&layers=show:4" +
-    //   "&mapScale=" + map_scale +
-    //   "&bboxSR=102100" + 
-    //   "&size=409,622" +
-    //   "&imageSR=102100" +
-    //   "&dpi=600" +
-    //   "&format=png32" +
-    //   "&transparent=true" +
-    //   "&f=json" 
-    // );
-    // let layer_map_url = layer_url + layer_params;
-
-
-    // fetch(base_map_url)
-    // .then(response => response.json())
-    // .then(response => {
-    //   // console.log(response);
-    //   this.setState({
-    //     base_map: response,
-    //   });
-    // });
-
-    // fetch(layer_map_url)
-    // .then(response => response.json())
-    // .then(response => {
-    //   // console.log(response);
-    //   this.setState({
-    //     layer_map: response,
-    //   });
-    // });
-
   };
 
   // updateQuery(query) {
@@ -507,6 +430,54 @@ export default class LocationScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+
+        <Modal
+          isVisible={this.state.modalVisible}
+        >
+          <View 
+            style={[styles.modal, {
+              // backgroundColor: '#fff',
+              // height: dimensions.height/2,
+            }]}
+          >
+            <Text 
+              style={{ 
+                paddingTop: 20,
+                paddingBottom: 20,
+                fontSize: 20, 
+                fontWeight: '600' 
+              }}
+            >
+              *ATTN
+            </Text>
+            <Text style={{textAlign: 'center'}}>
+              If this is regarding a downed stop sign, please contact the 
+              Division of Police at 859-258-3600 for immediate attention. 
+              Thank you.
+            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  phonecall('8592583600', true);
+                }}
+                style={[styles.modal_button, {
+                }]}
+              >
+                <Text style={{ color: 'blue' }}>CALL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setModalVisible(false);
+                }}
+                style={[styles.modal_button, {
+                }]}
+              >
+                <Text style={{ color: 'blue' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
         <View style={styles.header}>
           <NineOneOne />
           <Summary 
@@ -603,6 +574,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  modal: {
+    padding: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+    backgroundColor: "#fff",
+  },
+  modal_button: {
+    borderColor: '#585858',
+    borderWidth: 1,
+    padding: 20,
+    margin: 20,
+  },
   header: {
     height: 180,
   },
@@ -635,4 +618,95 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+
+
+
+  // fetchMapFromAPI(map_scale=undefined) {
+    // console.log('MAP BEING FETCHED');
+
+    // const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
+    // const layer_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer/export?";
+    // let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
+
+    // if (map_scale==undefined) {
+    //   map_scale = this.state.map_scale;
+    // } 
+
+    // let base_params = (
+    //   // "&layerDefs=" +
+    //   // "&layerTimeOptions=" +
+    //   // "&layerRangeValues=" +
+    //   // "&dynamicLayers=" +
+    //   // "&layerParameterValues=" +
+    //   // "&time=" +
+    //   // "&gdbVersion=" +
+    //   // "&rotation=" +
+    //   // "&datumTransformations=" +
+    //   // "&mapRangeValues=" +
+    //   // "&layers=show:4,20" +
+    //   "bbox=" + bbox + 
+    //   "&mapScale=" + map_scale +
+    //   "&bboxSR=102100" + 
+    //   "&size=409,622" +
+    //   "&imageSR=102100" +
+    //   "&dpi=600" +
+    //   "&format=png32" +
+    //   "&transparent=true" +
+    //   "&f=json" 
+    // );
+    // let base_map_url = base_url + base_params;
+    // // console.log('URL: ', map_params);
+
+    // this.setState({
+    //   base_map_url: base_map_url,
+    // })
+
+
+    // let layer_params = (
+    //   // "&layerDefs=" +
+    //   // "&layerTimeOptions=" +
+    //   // "&layerRangeValues=" +
+    //   // "&dynamicLayers=" +
+    //   // "&layerParameterValues=" +
+    //   // "&time=" +
+    //   // "&gdbVersion=" +
+    //   // "&rotation=" +
+    //   // "&datumTransformations=" +
+    //   // "&mapRangeValues=" +
+    //   "bbox=" + bbox + 
+    //   // "&layers=show:4" +
+    //   "&mapScale=" + map_scale +
+    //   "&bboxSR=102100" + 
+    //   "&size=409,622" +
+    //   "&imageSR=102100" +
+    //   "&dpi=600" +
+    //   "&format=png32" +
+    //   "&transparent=true" +
+    //   "&f=json" 
+    // );
+    // let layer_map_url = layer_url + layer_params;
+
+
+    // fetch(base_map_url)
+    // .then(response => response.json())
+    // .then(response => {
+    //   // console.log(response);
+    //   this.setState({
+    //     base_map: response,
+    //   });
+    // });
+
+    // fetch(layer_map_url)
+    // .then(response => response.json())
+    // .then(response => {
+    //   // console.log(response);
+    //   this.setState({
+    //     layer_map: response,
+    //   });
+    // });
+
+  // };
+
 
