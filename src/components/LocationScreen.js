@@ -95,25 +95,15 @@ export default class LocationScreen extends React.Component {
     .then(response => response.json())
     .then(response => {
       // console.log(response);
-      // console.log(response.candidates.length);
       let location_list = [];
-      //let lat_list = [];
-      //let lat = 0;
       for (let i=0; i < response.candidates.length; i++) {
-
-        // lat = response.candidates[i].location.y;
-
-        // lat_list.push(lat);
         var locationObj = {
           'address':response.candidates[i].address,
           'lat':response.candidates[i].location.y,
           'lng':response.candidates[i].location.x
         };
-
-        //location_list.push(response.candidates[i].address);
         location_list.push(locationObj);
       }
-      // console.log('LAT LIST: ', lat_list);
 
       this.updateInputHeight(location_list.length);
       
@@ -160,16 +150,6 @@ export default class LocationScreen extends React.Component {
     };
   };
 
-  // updateQuery(query) {
-  //   console.log('Updating Query ---------: ', query);
-  //   this.setState({ query: query });
-  //   this.props.navigation.navigate('Location', {
-  //     location: query,
-  //   });
-  //   this.fetchLocationFromAPI(query);
-  // }
-
-
 /*  TODO: updateQueryFromInput should probably only be triggered if query is a certain length (>= 3 chars?)
           and also only after 0.5 seconds of inaction from the user.  The reason for this is
           you end up with race conditions with this getting called every time the user strikes
@@ -198,6 +178,8 @@ export default class LocationScreen extends React.Component {
       longitude: locationObj.lng,
       latitude: locationObj.lat,
     });
+    // TODO:  Pass lat/long to webview once we know how to handle the coordinates
+    // this.webview.postMessage({})
     //this.webview.postMessage({'action':'place_marker', 'location': locationObj}) // TODO: this is no longer working?  We need a way to pass this lat and lng to the webview
     //this.webview.injectJavaScript("executeMessage({'action':'place_marker', 'location': locationObj})") // this is not working either
   }
@@ -259,7 +241,7 @@ export default class LocationScreen extends React.Component {
 
       let location = await Location.getCurrentPositionAsync({});
 
-      console.log("LOCATION: ", location);
+      console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
       this.setState({
         loadingOpacity: 0,
@@ -271,10 +253,10 @@ export default class LocationScreen extends React.Component {
         longitude: location.coords.longitude,
         latitude: location.coords.latitude,
       });
-
-      this.webview.postMessage([location.coords.longitude, location.coords.latitude]); // TODO: this is no longer working?  We need a way to pass this lat and lng to the webview
-
       
+      // posts through webview to the html map 
+      this.webview.postMessage([location.coords.longitude, location.coords.latitude]); 
+
       // TODO: place a marker, recenter map and zoom
     }
   };
@@ -328,6 +310,7 @@ export default class LocationScreen extends React.Component {
               "esri/InfoTemplate", 
               "dojo/dom", 
               "dojo/on",
+              "esri/geometry/webMercatorUtils",
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer, 
@@ -337,8 +320,9 @@ export default class LocationScreen extends React.Component {
               ProjectParameters, 
               SpatialReference,
               InfoTemplate, 
-              dom, 
-              on
+              dom,
+              webMercatorUtils,
+              on,
             ) {
               /*
                 // TODO: make this centerLat and centerLong constants (I don't know where an appropriate
@@ -352,7 +336,6 @@ export default class LocationScreen extends React.Component {
               map = new esri.Map("map", {
                 center: [centerLat, centerLong],
                 zoom: 12
-                //extent: lexingtonExtentAndSR
               });
               
               // build map layers
@@ -361,52 +344,42 @@ export default class LocationScreen extends React.Component {
               let road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
 
-// CRAZY COORDS:
-// x:   -9405613.528822668
-// y:   4584603.01810292
-
-// WKID: 4326 is lat/long?
-
-// "latestWkid": 3857,
-// "wkid": 102100,
-
-// 4269 is United States in geographic coordinate system
-
-              
-
-
               // place marker when user touches map
               dojo.connect(map, 'onClick', function(evt) { 
                 let coords = []
                 map.graphics.clear();
+
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
                   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),                  
                   // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
-
                 ));
 
-                // convert geographic coordinate system to latitude/longitude                
+                // converts geographic coordinate system to latitude/longitude and send back to app               
                 coords.push(evt.mapPoint.getLongitude());
                 coords.push(evt.mapPoint.getLatitude());
                 document.getElementById('data').innerHTML = 'marker coords: ' + coords;
-                
-                window.postMessage(coords) // TODO: coords are some crazy format - convert to lat/long
+                window.postMessage(coords);
               });
-
             });
 
             // place marker for phone location - called from getMyLocation() 
             document.addEventListener("message", function(data) {
-              document.getElementById('data').innerHTML = 'location:  ' + data.data;
+              lat_long_string = JSON.stringify(data.data);
+              lat_long_string = lat_long_string.split(',');
+              document.getElementById('data').innerHTML = 'GET MY LOCATION: Location:  ' + lat_long_string;
               map.graphics.clear();
-              // NOTE: this needs to happen.  But the data.data (lat/long) probably needs to be translated to the same projected coordinate system as above
-              // map.graphics.add(new esri.Graphic(
-              //   data.data,
-              //   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
-              // ));              
-            });
 
+
+              // TODO: translate lat / long into crazy coords and pass to new graphic
+              // NOTE: It may be possible to use a Point instead of a SimpleMarkerSymbol and feed it lat/long instead of crazy coordinates
+
+              // let pt = new esri.geometry.Point(centerLong, centerLat, new esri.SpatialReference({ 'wkid': 4326 }));  
+              // map.graphics.add(new esri.Graphic(
+                // esri.geometry.geographicToWebMercator(pt),
+                // new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
+              // ));            
+            });
           </script>
         </head>
         <body>
@@ -416,73 +389,6 @@ export default class LocationScreen extends React.Component {
         </body>
       </html>      
     `;
-
-
-
-
-  //var lexingtonExtentAndSR = new esri.geometry.Extent(-85,37.5,-84,38.5, new esri.SpatialReference({"wkid":4326}));              
-
-                  // var normalizedVal = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y);
-
-
-
-                // NOTE: - might be the right system?  Square_Mile_US   WKID: 109413  Conversion value: 2589998.4703195216 - projected coordinate systems
-                // NOTE: webMercatorUtils always breaks everything.  Not sure why.  Wrong conversion system?
-                // NOTE: The WKID seems to be the key to the translation?  Where do we plug in what WKID to use?  
-                // var value = webMercatorUtils.xyToLngLat(42215329, 1321748, true);
-                // let lat_long = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y, true);
-              
-// gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-// on(map, "load", projectToLatLong);
-
-
-// function projectToLatLong() {
-//     map.graphics.clear();
-
-//     m_mapPoint = [];
-//     m_mapPoint[0] = new esri.geometry.Point(1657272, 6100874, new esri.SpatialReference({ wkid: 2193 }));
-//     var outSR = new SpatialReference(3857);     
-
-//     var params = new esri.tasks.ProjectParameters();
-//     // add array of points
-//     params.geometries = m_mapPoint;
-//     // Output Spatial Reference in lat/long (wkid 3857 )            
-//     params.outSR = outSR;
-//     //gsvc.project(params, callback);
-//     gsvc.project(params, function callback(m_mapPoint) {
-//         pt = m_mapPoint[0];               
-//         var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 20,
-//                       new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-//                           new Color([255, 0, 0]), 2), new Color([0, 0, 0, 0])
-//                       );
-
-//             var graphic = new esri.Graphic(pt, symbol);                    
-//             map.graphics.add(graphic);
-
-//     });
-// }     
-
-
-                // var outSR = '4326';  // "YOUR_OUTPUT_COORDINATE_SYSTEM"; // wkid {number}
-                // var geometryService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-                // var inputpoint = new Point({
-                //   longitude: "YOUR_LONGITUDE_INPUT",
-                //   latitude: "YOUR_LATITUDE_INPUT"
-                // });
-
-                // var projectParams = new ProjectParameters();
-                // projectParams.geometries = [inputpoint];
-                // projectParams.outSR = new SpatialReference({ wkid: outSR });
-
-                // geometryService.project(projectParams, (result) => {
-                //   let outputpoint = result[0]; // outputpoint first element of result array
-                //   console.log("Result x:", outputpoint.x, "y :", outputpoint.y);
-                // });
-
-
-
-
-
 
     return (
       <View style={styles.container}>
@@ -604,6 +510,7 @@ export default class LocationScreen extends React.Component {
             }]}
             onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
             onMessage={(event) => { // (this is called when the webview calls window.postMessage(...)
+              // gets coordinates of map marker and assigns to state
               let coords = event.nativeEvent.data;
               coords = coords.split(',');
               this.updateLongitude(coords[0]);
@@ -678,6 +585,7 @@ const styles = StyleSheet.create({
 
 
 
+// NOTES ABOUT ORIGINAL API TO FETCH MAP - now handled in webview
 
   // fetchMapFromAPI(map_scale=undefined) {
     // console.log('MAP BEING FETCHED');
