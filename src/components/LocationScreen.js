@@ -315,58 +315,40 @@ export default class LocationScreen extends React.Component {
           <script src="https://js.arcgis.com/3.24/"></script>
 
           <script>
-            // FROM Justin: Sample function for handling communication from App -> Webview
-            // function executeMessage(data) {
-            //   alert("message received: '" + JSON.stringify(data) + "'")
-            //   if data["action"] != null {
-            //     var action = data["action"];
-            //     if action == "place_marker" {
-            //       alert(JSON.stringify(data["location"]));
-            //     } else {
-            //       alert("unknown action: '" + action + "'");
-            //     }
-            //   } else {
-            //     alert("action undefined");
-            //   }
-            // }
-
-            // FROM JUSTIN: this was how this was working before, but you got rid of react-native-webview-bridge
-            // so I don't think this works anymore
-            // FROM JASON: It works.  You can display the data like this:  document.getElementById('data').innerHTML = data.data
-            // document.addEventListener("message", function(data) {
-            //   executeMessage(data)
-            // });
-
-          </script>
-
-          <script>
-            function placeMarker() {
-
-            }
-
             let map;
             require([
               "esri/map", 
               "esri/layers/ArcGISTiledMapServiceLayer",
               "dojo/domReady!",
               "esri/graphic",
-              "esri/geometry/webMercatorUtils",
+              "esri/geometry/Point", 
+              "esri/tasks/GeometryService", 
+              "esri/tasks/ProjectParameters", 
+              "esri/SpatialReference", 
+              "esri/InfoTemplate", 
+              "dojo/dom", 
+              "dojo/on",
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer, 
               Graphic,
-              webMercatorUtils
+              Point, 
+              GeometryService, 
+              ProjectParameters, 
+              SpatialReference,
+              InfoTemplate, 
+              dom, 
+              on
             ) {
               /*
                 // TODO: make this centerLat and centerLong constants (I don't know where an appropriate
                           code-location for that is).  Use those constants here and also pass them with the
                           fetchLocationFromAPI call
               */
-              let centerLat = -84.5027069;
               let centerLong = 38.0417769;
+              let centerLat = -84.5027069;
 
 
-              //var lexingtonExtentAndSR = new esri.geometry.Extent(-85,37.5,-84,38.5, new esri.SpatialReference({"wkid":4326}));              
               map = new esri.Map("map", {
                 center: [centerLat, centerLong],
                 zoom: 12
@@ -379,6 +361,20 @@ export default class LocationScreen extends React.Component {
               let road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
 
+// CRAZY COORDS:
+// x:   -9405613.528822668
+// y:   4584603.01810292
+
+// WKID: 4326 is lat/long?
+
+// "latestWkid": 3857,
+// "wkid": 102100,
+
+// 4269 is United States in geographic coordinate system
+
+              
+
+
               // place marker when user touches map
               dojo.connect(map, 'onClick', function(evt) { 
                 let coords = []
@@ -387,18 +383,28 @@ export default class LocationScreen extends React.Component {
                   evt.mapPoint,
                   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),                  
                   // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
-                  // var normalizedVal = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y);
 
                 ));
 
-                // NOTE: - might be the right system?  Square_Mile_US   WKID: 109413  Conversion value: 2589998.4703195216 - projected coordinate systems
-                // NOTE: webMercatorUtils always breaks everything.  Not sure why.  Wrong conversion system?
-                // NOTE: The WKID seems to be the key to the translation?  Where do we plug in what WKID to use?  
-                // var value = webMercatorUtils.xyToLngLat(42215329, 1321748, true);
-                // let lat_long = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y, true);
+                // convert geographic coordinate system to latitude/longitude
+
+
+                function projectToLatLng() {
+                  document.getElementById('data').innerHTML = 'FUNCTION PROJECT TO LAT LNG: ';
+                }
+                projectToLatLng();
+
+                
+
+
+
+
+
+
+
                 coords.push(evt.mapPoint.x);
                 coords.push(evt.mapPoint.y);
-                document.getElementById('data').innerHTML = 'marker coords: ' + coords;
+                // document.getElementById('data').innerHTML = 'marker coords: ' + coords;
                 
                 window.postMessage(coords) // TODO: coords are some crazy format - convert to lat/long
               });
@@ -425,6 +431,73 @@ export default class LocationScreen extends React.Component {
         </body>
       </html>      
     `;
+
+
+
+
+  //var lexingtonExtentAndSR = new esri.geometry.Extent(-85,37.5,-84,38.5, new esri.SpatialReference({"wkid":4326}));              
+
+                  // var normalizedVal = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y);
+
+
+
+                // NOTE: - might be the right system?  Square_Mile_US   WKID: 109413  Conversion value: 2589998.4703195216 - projected coordinate systems
+                // NOTE: webMercatorUtils always breaks everything.  Not sure why.  Wrong conversion system?
+                // NOTE: The WKID seems to be the key to the translation?  Where do we plug in what WKID to use?  
+                // var value = webMercatorUtils.xyToLngLat(42215329, 1321748, true);
+                // let lat_long = webMercatorUtils.xyToLngLat(evt.mapPoint.x, evt.mapPoint.y, true);
+              
+// gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+// on(map, "load", projectToLatLong);
+
+
+// function projectToLatLong() {
+//     map.graphics.clear();
+
+//     m_mapPoint = [];
+//     m_mapPoint[0] = new esri.geometry.Point(1657272, 6100874, new esri.SpatialReference({ wkid: 2193 }));
+//     var outSR = new SpatialReference(3857);     
+
+//     var params = new esri.tasks.ProjectParameters();
+//     // add array of points
+//     params.geometries = m_mapPoint;
+//     // Output Spatial Reference in lat/long (wkid 3857 )            
+//     params.outSR = outSR;
+//     //gsvc.project(params, callback);
+//     gsvc.project(params, function callback(m_mapPoint) {
+//         pt = m_mapPoint[0];               
+//         var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 20,
+//                       new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+//                           new Color([255, 0, 0]), 2), new Color([0, 0, 0, 0])
+//                       );
+
+//             var graphic = new esri.Graphic(pt, symbol);                    
+//             map.graphics.add(graphic);
+
+//     });
+// }     
+
+
+                // var outSR = '4326';  // "YOUR_OUTPUT_COORDINATE_SYSTEM"; // wkid {number}
+                // var geometryService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+                // var inputpoint = new Point({
+                //   longitude: "YOUR_LONGITUDE_INPUT",
+                //   latitude: "YOUR_LATITUDE_INPUT"
+                // });
+
+                // var projectParams = new ProjectParameters();
+                // projectParams.geometries = [inputpoint];
+                // projectParams.outSR = new SpatialReference({ wkid: outSR });
+
+                // geometryService.project(projectParams, (result) => {
+                //   let outputpoint = result[0]; // outputpoint first element of result array
+                //   console.log("Result x:", outputpoint.x, "y :", outputpoint.y);
+                // });
+
+
+
+
+
 
     return (
       <View style={styles.container}>
