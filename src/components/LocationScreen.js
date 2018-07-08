@@ -386,25 +386,10 @@ export default class LocationScreen extends React.Component {
 
                 ));
 
-                // convert geographic coordinate system to latitude/longitude
-
-
-                function projectToLatLng() {
-                  document.getElementById('data').innerHTML = 'FUNCTION PROJECT TO LAT LNG: ';
-                }
-                projectToLatLng();
-
-                
-
-
-
-
-
-
-
-                coords.push(evt.mapPoint.x);
-                coords.push(evt.mapPoint.y);
-                // document.getElementById('data').innerHTML = 'marker coords: ' + coords;
+                // convert geographic coordinate system to latitude/longitude                
+                coords.push(evt.mapPoint.getLongitude());
+                coords.push(evt.mapPoint.getLatitude());
+                document.getElementById('data').innerHTML = 'marker coords: ' + coords;
                 
                 window.postMessage(coords) // TODO: coords are some crazy format - convert to lat/long
               });
