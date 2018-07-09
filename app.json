@@ -17,11 +17,11 @@
       }
     },
     "android": {
-      "package": "com.apaxsoftware.LexCall311App",
-      "permissions": [
-        "CAMERA",
-        "CAMERA_ROLL"
-      ]
+      "package": "com.apaxsoftware.LexCall311App"
+      // "permissions": [
+      //   "CAMERA",
+      //   "CAMERA_ROLL"
+      // ]
     },
     "splash": {
       "image": "./src/assets/images/loading.png",

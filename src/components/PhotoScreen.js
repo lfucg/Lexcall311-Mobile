@@ -21,7 +21,7 @@ import Summary from './Summary.js';
 import summary_camera_img from '../assets/images/summary_icon_camera.png';
 import camera_img from '../assets/images/icon_camera.png';
 
-import { ImagePicker, Camera, Permissions, Constants } from 'expo';
+import { ImagePicker, Permissions, Constants } from 'expo';
 
 export default class PhotoScreen extends React.Component {
 
@@ -31,9 +31,6 @@ export default class PhotoScreen extends React.Component {
       image1: this.startingImage1(),
       image2: this.startingImage2(),
       uploading: false,
-      hasCameraPermission: null,
-      type: Camera.Constants.Type.back,
-      hasCameraRollPermission: null,
       disabled_buttons: this.startingButtonState(),
     };
   }
@@ -128,58 +125,43 @@ export default class PhotoScreen extends React.Component {
   }
 
   askCameraPermission = async () => {
-    const { cameraStatus } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: cameraStatus === 'granted' });
+    await Permissions.askAsync(Permissions.CAMERA);
   }
 
   camera = async () => {
     console.log('CAMERA');
     await this.askCameraPermission();
-    const { hasCameraPermission } = this.state;
-    if (hasCameraPermission === null) {
-      return <View />;
-    } else if (hasCameraPermission === false) {
-      return <View />;
+    console.log("CAMERA PERMISSION GRANTED");
+    let image = await ImagePicker.launchCameraAsync({
+      allowsEditing: false,
+      aspect: [1,1],
+      base64: true,
+    });
+    if (!this.state.image1) {
+      this.updateImage1(image);
     } else {
-      let image = await ImagePicker.launchCameraAsync({
-        allowsEditing: false,
-        aspect: [1,1],
-        base64: true,
-      });
-      if (!this.state.image1) {
-        this.updateImage1(image);
-      } else {
-        this.setState({ disabled_buttons: true });
-        this.updateImage2(image);
-      }
+      this.setState({ disabled_buttons: true });
+      this.updateImage2(image);
     }
   }
 
   askCameraRollPermission = async () => {
-    const { rollStatus } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    this.setState({ hasCameraRollPermission: rollStatus === 'granted' });
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
   }
   
   gallery = async () => {
     console.log('GALLERY');
     await this.askCameraRollPermission();
-    const { hasCameraRollPermission } = this.state;
-    if (hasCameraRollPermission === null) {
-      return <View />;
-    } else if (hasCameraRollPermission === false) {
-      return <View />;
+    let image = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: false,
+      aspect: [1,1],
+      base64: true,
+    });
+    if (!this.state.image1) {
+      this.updateImage1(image);
     } else {
-      let image = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: false,
-        aspect: [1,1],
-        base64: true,
-      });
-      if (!this.state.image1) {
-        this.updateImage1(image);
-      } else {
-        this.setState({ disabled_buttons: true });
-        this.updateImage2(image);
-      }
+      this.setState({ disabled_buttons: true });
+      this.updateImage2(image);
     }
   }
 

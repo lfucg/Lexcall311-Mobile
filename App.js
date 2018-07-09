@@ -22,7 +22,7 @@ const Root = createStackNavigator(
     Confirmation: ConfirmationScreen,
   },
   {
-    initialRouteName: 'Photo',
+    initialRouteName: 'Home',
     navigationOptions: {
       headerStyle: {
         elevation: 1,
