@@ -124,49 +124,49 @@ export default class PhotoScreen extends React.Component {
     };
   }
 
-  askCameraPermission = async () => {
+  askCameraPermissions = async () => {
     await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
   }
 
   camera = async () => {
-    console.log('CAMERA');
-    await this.askCameraPermission();
-    console.log("CAMERA PERMISSION GRANTED");
+    // console.log('CAMERA');
+    await this.askCameraPermissions();
     let image = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
       aspect: [1,1],
       base64: true,
     });
-    if (!this.state.image1) {
-      this.updateImage1(image);
-    } else {
-      this.setState({ disabled_buttons: true });
-      this.updateImage2(image);
+    if (image['cancelled'] == false) {
+      if (!this.state.image1) {
+        this.updateImage1(image);
+      } else {
+        this.setState({ disabled_buttons: true });
+        this.updateImage2(image);
+      }
     }
-  }
-
-  askCameraRollPermission = async () => {
-    await Permissions.askAsync(Permissions.CAMERA_ROLL);
   }
   
   gallery = async () => {
-    console.log('GALLERY');
-    await this.askCameraRollPermission();
+    // console.log('GALLERY');
+    await this.askCameraPermissions();
     let image = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: false,
       aspect: [1,1],
       base64: true,
     });
-    if (!this.state.image1) {
-      this.updateImage1(image);
-    } else {
-      this.setState({ disabled_buttons: true });
-      this.updateImage2(image);
+    if (image['cancelled'] == false) {
+      if (!this.state.image1) {
+        this.updateImage1(image);
+      } else {
+        this.setState({ disabled_buttons: true });
+        this.updateImage2(image);
+      }
     }
   }
 
   render() {
-    console.log('PHOTO SCREEN PARAMS: ', this.props.navigation.state.params);
+    // console.log('PHOTO SCREEN PARAMS: ', this.props.navigation.state.params);
     
     let { image1 } = this.state;
     let { image2 } = this.state;
