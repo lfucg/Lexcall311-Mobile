@@ -247,6 +247,7 @@ export default class LocationScreen extends React.Component {
       // console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
       this.setState({ loadingOpacity: 0 });
+      this.updateQueryFromInput(undefined);
       this.updateLongitude(location.coords.longitude);
       this.updateLatitude(location.coords.latitude);
       
@@ -370,7 +371,7 @@ export default class LocationScreen extends React.Component {
                     mapCoordsPt,
                     new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
                   ));                  
-                  map.centerAndZoom(mapCoordsPt, 16); 
+                  map.centerAndZoom(mapCoordsPt, 16);
                 } else {
                   // document.getElementById('data').innerHTML ="unknown action: '" + action + "'";
                 }
