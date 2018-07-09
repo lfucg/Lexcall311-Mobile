@@ -46,10 +46,6 @@ export default class LocationScreen extends React.Component {
       inputHeight: 42,
       inputMarginOffset: 0,
       debounceTimeout: null,
-      // bbox_xmax: -9414495.222138507,
-      // bbox_xmin: 4574321.311047046,
-      // bbox_ymax: -9398863.84985421,
-      // bbox_ymin: 4598093.2268437045,
       loadingOpacity: 0,
       modalHasBeenChecked: false,
     };
@@ -76,15 +72,15 @@ export default class LocationScreen extends React.Component {
   }
 
   fetchLocationFromAPI(location) {
-    console.log('FETCH LOCATION FROM API: LOCATION: ', location);
+    // console.log('FETCH LOCATION FROM API: LOCATION: ', location);
 
     const location_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/locator/GeocodeServer/findAddressCandidates"
     const location_params = (
       "?Street=" + location +
+      "&outSR=" + 4326 + // world geocoding coordinate system wkid (forces return of lat / lng)
       // "&SingleLine=" +
       // "&category=" +
       // "&outFields=" +
-      "&outSR=" + 4326 + // world geocoding coordinate system wkid (forces return of lat / lng)
       // "&searchExtent=" +
       // "&location=" +
       // "&distance=" +
@@ -113,8 +109,6 @@ export default class LocationScreen extends React.Component {
       this.setState({
         locations: location_list,
       });
-
-      //this.webview.postMessage(location);
     });
 
   }
@@ -163,16 +157,22 @@ export default class LocationScreen extends React.Component {
   }
 
   updateQueryFromInput(query) {
-    console.log('Updating Query ---------: ', query);
-    this.setState({ query: query });
-    this.props.navigation.navigate('Location', {
-      location: query,
-    });
-    this.fetchLocationFromAPI(query);
+    // console.log('Updating Query ---------: ', query);
+    if (query != undefined) {
+      this.setState({ query: query });
+      this.props.navigation.navigate('Location', {
+        location: query,
+      });
+      this.fetchLocationFromAPI(query);
+    } else {
+      this.setState({ query: 'Enter address or describe location' });
+      this.props.navigation.navigate('Location', { location: undefined });
+      this.fetchLocationFromAPI(undefined);
+    }
   }
 
   updateQueryFromSelection(locationObj) {
-    console.log('User selected location ---------: ', JSON.stringify(locationObj));
+    // console.log('User selected location ---------: ', JSON.stringify(locationObj));
     this.setState({ query: locationObj.address });
     this.props.navigation.navigate('Location', {
       location: locationObj.address,
@@ -244,27 +244,20 @@ export default class LocationScreen extends React.Component {
       this.setState({ loadingOpacity: 100 });
 
       let location = await Location.getCurrentPositionAsync({});
+      // console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
-      console.log("GET MY LOCATION: LOCATION: ------------------", location);
-
-      this.setState({
-        loadingOpacity: 0,
-        longitude: location.coords.longitude,
-        latitude: location.coords.latitude,
-      });
-
-      this.props.navigation.navigate('Location', {
-        longitude: location.coords.longitude,
-        latitude: location.coords.latitude,
-      });
+      this.setState({ loadingOpacity: 0 });
+      this.updateLongitude(location.coords.longitude);
+      this.updateLatitude(location.coords.latitude);
       
       // posts through webview to the html map 
-      var message = { 'action':'place_marker',
-                      'longitude': location.coords.longitude,
-                      'latitude':location.coords.latitude,
-                      'is_user_location':true,
-                      'title':'My Location'
-                    }
+      let message = { 
+        'action':'place_marker',
+        'longitude': location.coords.longitude,
+        'latitude':location.coords.latitude,
+        'is_user_location':true,
+        'title':'My Location'
+      }
       this.webview.postMessage(JSON.stringify(message));       
     }
   };
@@ -313,37 +306,20 @@ export default class LocationScreen extends React.Component {
               "esri/graphic",
               "esri/geometry/Point", 
               "esri/SpatialReference", 
-              // "esri/geometry/webMercatorUtils",
-              // "esri/tasks/GeometryService", 
-              // "esri/tasks/ProjectParameters", 
-              // "esri/InfoTemplate", 
-              // "dojo/dom", 
-              // "dojo/on",
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer, 
               Graphic,
               Point, 
               SpatialReference,
-              // webMercatorUtils,
-              // GeometryService, 
-              // ProjectParameters, 
-              // InfoTemplate, 
-              // dom,
-              // on,
             ) {
-              /*
-                // TODO: make this centerLat and centerLong constants (I don't know where an appropriate
-                          code-location for that is).  Use those constants here and also pass them with the
-                          fetchLocationFromAPI call
-              */
+
+              // create map
               let centerLong = 38.0417769;
               let centerLat = -84.5027069;
-              let zoom = 12;
-
               map = new esri.Map("map", {
                 center: [centerLat, centerLong],
-                zoom: zoom
+                zoom: 12
               });
               
               // build map layers
@@ -356,7 +332,6 @@ export default class LocationScreen extends React.Component {
               dojo.connect(map, 'onClick', function(evt) { 
                 let coords = []
                 map.graphics.clear();
-
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
                   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),                  
@@ -373,8 +348,8 @@ export default class LocationScreen extends React.Component {
                 let zoom = 16;
                 if (map.getZoom() > 16) { zoom = map.getZoom() }
                 map.centerAndZoom(evt.mapPoint, zoom);
-                // document.getElementById('data').innerHTML = JSON.stringify(message);
                 window.postMessage(JSON.stringify(message));
+                // document.getElementById('data').innerHTML = JSON.stringify(message);
               });
             });
 
@@ -395,13 +370,12 @@ export default class LocationScreen extends React.Component {
                     mapCoordsPt,
                     new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
                   ));                  
-                  map.centerAndZoom(mapCoordsPt, 16); // map coords are off?
-                 
+                  map.centerAndZoom(mapCoordsPt, 16); 
                 } else {
-                  document.getElementById('data').innerHTML ="unknown action: '" + action + "'";
+                  // document.getElementById('data').innerHTML ="unknown action: '" + action + "'";
                 }
               } else {
-                document.getElementById('data').innerHTML += "<br />action undefined";
+                // document.getElementById('data').innerHTML += "<br />action undefined";
               }
             });
           </script>
@@ -532,12 +506,13 @@ export default class LocationScreen extends React.Component {
               width: mapWidth, 
               height: mapHeight, 
             }]}
-            onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
             onMessage={(event) => { // (this is called when the webview calls window.postMessage(...)
-              // gets coordinates of map marker and assigns to state
+              // gets coordinates of map marker (from touch or getting user location) and assigns to state
+              // console.log('WEBVIEW: ', event.nativeEvent.data);
               var message = JSON.parse(event.nativeEvent.data);
               this.updateLongitude(message.longitude);
               this.updateLatitude(message.latitude);
+              this.updateQueryFromInput(message.location);
             }}
             ref={(r)=> { this.webview = r}}
             mixedContentMode='always'
@@ -609,6 +584,10 @@ const styles = StyleSheet.create({
 
 
 // NOTES ABOUT ORIGINAL API TO FETCH MAP - now handled in webview
+  // bbox_xmax: -9414495.222138507,
+  // bbox_xmin: 4574321.311047046,
+  // bbox_ymax: -9398863.84985421,
+  // bbox_ymin: 4598093.2268437045,
 
   // fetchMapFromAPI(map_scale=undefined) {
     // console.log('MAP BEING FETCHED');
@@ -675,7 +654,6 @@ const styles = StyleSheet.create({
     // );
     // let layer_map_url = layer_url + layer_params;
 
-
     // fetch(base_map_url)
     // .then(response => response.json())
     // .then(response => {
@@ -693,7 +671,6 @@ const styles = StyleSheet.create({
     //     layer_map: response,
     //   });
     // });
-
   // };
 
 
