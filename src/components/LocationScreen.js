@@ -25,6 +25,7 @@ import HeaderBack from './HeaderBack.js';
 import HeaderNext from './HeaderNext.js';
 import NineOneOne from './NineOneOne.js';
 import Summary from './Summary.js';
+import { debounce } from "./DebounceFunction.js";
 
 // images
 import marker_img from '../assets/images/summary_icon_map-marker-alt.png';
@@ -44,6 +45,7 @@ export default class LocationScreen extends React.Component {
       query: this.startingQuery(),  // this is the navigation param 'location'
       inputHeight: 42,
       inputMarginOffset: 0,
+      debounceTimeout: null,
       // bbox_xmax: -9414495.222138507,
       // bbox_xmin: 4574321.311047046,
       // bbox_ymax: -9398863.84985421,
@@ -99,8 +101,8 @@ export default class LocationScreen extends React.Component {
       for (let i=0; i < response.candidates.length; i++) {
         var locationObj = {
           'address':response.candidates[i].address,
-          'lat':response.candidates[i].location.y,
-          'lng':response.candidates[i].location.x
+          'latitude':response.candidates[i].location.y,
+          'longitude':response.candidates[i].location.x
         };
         location_list.push(locationObj);
       }
@@ -112,7 +114,7 @@ export default class LocationScreen extends React.Component {
         locations: location_list,
       });
 
-      this.webview.postMessage(location);
+      //this.webview.postMessage(location);
     });
 
   }
@@ -149,25 +151,24 @@ export default class LocationScreen extends React.Component {
       ),
     };
   };
+  
+  debounceUpdateQueryFromInput(query) {    
+    clearTimeout(this.state.debounceTimeout);
+    let thisScreen = this
 
-/*  TODO: updateQueryFromInput should probably only be triggered if query is a certain length (>= 3 chars?)
-          and also only after 0.5 seconds of inaction from the user.  The reason for this is
-          you end up with race conditions with this getting called every time the user strikes
-          a key on the keyboard.  You could have several requests that aren't yet complete and
-          the order they finish is not predictable, so while typing 348 east main street, you
-          may end up with a result for '348' finishing after a previous result for '348 east m'
-          finished, resulting in a jittery UI and also worse results
+    this.setState({ debounceTimeout: setTimeout(function() {
+        thisScreen.updateQueryFromInput(query);
+      }, 300)
+    });
+  }
 
-*/
   updateQueryFromInput(query) {
     console.log('Updating Query ---------: ', query);
     this.setState({ query: query });
     this.props.navigation.navigate('Location', {
       location: query,
     });
-    if (query.length > 3) {  
-      this.fetchLocationFromAPI(query);
-    }
+    this.fetchLocationFromAPI(query);
   }
 
   updateQueryFromSelection(locationObj) {
@@ -175,13 +176,16 @@ export default class LocationScreen extends React.Component {
     this.setState({ query: locationObj.address });
     this.props.navigation.navigate('Location', {
       location: locationObj.address,
-      longitude: locationObj.lng,
-      latitude: locationObj.lat,
+      longitude: locationObj.longitude,
+      latitude: locationObj.latitude,
     });
-    // TODO:  Pass lat/long to webview once we know how to handle the coordinates
-    // this.webview.postMessage({})
-    //this.webview.postMessage({'action':'place_marker', 'location': locationObj}) // TODO: this is no longer working?  We need a way to pass this lat and lng to the webview
-    //this.webview.injectJavaScript("executeMessage({'action':'place_marker', 'location': locationObj})") // this is not working either
+    var message = { 'action':'place_marker',
+                    'longitude': locationObj.longitude,
+                    'latitude':locationObj.latitude,
+                    'is_user_location':false,
+                    'title':locationObj.address
+                  };
+    this.webview.postMessage(JSON.stringify(message));
   }
   
   updateLongitude(longitude) {
@@ -255,9 +259,13 @@ export default class LocationScreen extends React.Component {
       });
       
       // posts through webview to the html map 
-      this.webview.postMessage([location.coords.longitude, location.coords.latitude]); 
-
-      // TODO: place a marker, recenter map and zoom
+      var message = { 'action':'place_marker',
+                      'longitude': location.coords.longitude,
+                      'latitude':location.coords.latitude,
+                      'is_user_location':true,
+                      'title':'My Location'
+                    }
+      this.webview.postMessage(JSON.stringify(message));       
     }
   };
 
@@ -356,35 +364,49 @@ export default class LocationScreen extends React.Component {
                 ));
 
                 // converts geographic coordinate system to latitude/longitude and send back to app               
-                coords.push(evt.mapPoint.getLongitude());
-                coords.push(evt.mapPoint.getLatitude());
-                document.getElementById('data').innerHTML = 'marker coords: ' + coords;
-                window.postMessage(coords);
+                
+                var message = { 'action':'user_tapped_map',
+                      'longitude': evt.mapPoint.getLongitude(),
+                      'latitude': evt.mapPoint.getLatitude(),
+                      'is_user_location':false,
+                      'title':''
+                    }
+                document.getElementById('data').innerHTML = 'marker coords: ' + JSON.stringify(message);
+                window.postMessage(JSON.stringify(message));
               });
             });
 
             // place marker for phone location - called from getMyLocation() 
-            document.addEventListener("message", function(data) {
-              lat_long_string = JSON.stringify(data.data);
-              lat_long_string = lat_long_string.split(',');
-              document.getElementById('data').innerHTML = 'GET MY LOCATION: Location:  ' + lat_long_string;
-              map.graphics.clear();
-
-
-              // TODO: translate lat / long into crazy coords and pass to new graphic
-              // NOTE: It may be possible to use a Point instead of a SimpleMarkerSymbol and feed it lat/long instead of crazy coordinates
-
-              // let pt = new esri.geometry.Point(centerLong, centerLat, new esri.SpatialReference({ 'wkid': 4326 }));  
-              // map.graphics.add(new esri.Graphic(
-                // esri.geometry.geographicToWebMercator(pt),
-                // new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
-              // ));            
+            document.addEventListener("message", function(data) {              
+              var message = JSON.parse(data.data);
+              document.getElementById('data').innerHTML = "message received: '" + JSON.stringify(message) + "'";
+              
+              if (message.action != null) {
+                var action = message.action;
+                if (action == "place_marker") {
+                  document.getElementById('data').innerHTML = 'Location received in webview:  ' + JSON.stringify(message);
+                  
+                  let pt = new esri.geometry.Point(message.longitude, message.latitude, new esri.SpatialReference({ 'wkid': 4326 }));  
+                  let mapCoordsPt = esri.geometry.geographicToWebMercator(pt);
+                  map.graphics.clear();
+                  map.graphics.add(new esri.Graphic(
+                    mapCoordsPt,
+                    new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
+                  ));                  
+                  map.centerAt(mapCoordsPt, 16); // Zoom not working?
+                 
+                } else {
+                  document.getElementById('data').innerHTML ="unknown action: '" + action + "'";
+                }
+              } else {
+                document.getElementById('data').innerHTML += "<br />action undefined";
+              }
             });
           </script>
         </head>
         <body>
           <div id="map" class="map">
-            <div id="data" style=""></div>
+            <div id="data" style="width:95%; word-wrap:break-word"></div>
           </div>
         </body>
       </html>      
@@ -464,7 +486,7 @@ export default class LocationScreen extends React.Component {
             data={this.state.locations}
             defaultValue={this.state.query}
             onFocus={() => this.handleInputFocus()}
-            onChangeText={text => this.updateQueryFromInput(text)}
+            onChangeText={text => this.debounceUpdateQueryFromInput(text)}
             renderItem={locationObj => (
               <TouchableOpacity
                 style={{
@@ -511,10 +533,9 @@ export default class LocationScreen extends React.Component {
             onMessage={(event) => console.log('WEBVIEW: ', event.nativeEvent.data)}
             onMessage={(event) => { // (this is called when the webview calls window.postMessage(...)
               // gets coordinates of map marker and assigns to state
-              let coords = event.nativeEvent.data;
-              coords = coords.split(',');
-              this.updateLongitude(coords[0]);
-              this.updateLatitude(coords[1]);
+              var message = JSON.parse(event.nativeEvent.data);
+              this.updateLongitude(message.longitude);
+              this.updateLatitude(message.latitude);
             }}
             ref={(r)=> { this.webview = r}}
             mixedContentMode='always'
