@@ -179,7 +179,7 @@ export default class LocationScreen extends React.Component {
       longitude: locationObj.longitude,
       latitude: locationObj.latitude,
     });
-    var message = { 'action':'place_marker',
+    let message = { 'action':'place_marker',
                     'longitude': locationObj.longitude,
                     'latitude':locationObj.latitude,
                     'is_user_location':false,
@@ -312,25 +312,25 @@ export default class LocationScreen extends React.Component {
               "dojo/domReady!",
               "esri/graphic",
               "esri/geometry/Point", 
-              "esri/tasks/GeometryService", 
-              "esri/tasks/ProjectParameters", 
               "esri/SpatialReference", 
-              "esri/InfoTemplate", 
-              "dojo/dom", 
-              "dojo/on",
-              "esri/geometry/webMercatorUtils",
+              // "esri/geometry/webMercatorUtils",
+              // "esri/tasks/GeometryService", 
+              // "esri/tasks/ProjectParameters", 
+              // "esri/InfoTemplate", 
+              // "dojo/dom", 
+              // "dojo/on",
             ], function(
               Map, 
               ArcGISTiledMapServiceLayer, 
               Graphic,
               Point, 
-              GeometryService, 
-              ProjectParameters, 
               SpatialReference,
-              InfoTemplate, 
-              dom,
-              webMercatorUtils,
-              on,
+              // webMercatorUtils,
+              // GeometryService, 
+              // ProjectParameters, 
+              // InfoTemplate, 
+              // dom,
+              // on,
             ) {
               /*
                 // TODO: make this centerLat and centerLong constants (I don't know where an appropriate
@@ -339,11 +339,11 @@ export default class LocationScreen extends React.Component {
               */
               let centerLong = 38.0417769;
               let centerLat = -84.5027069;
-
+              let zoom = 12;
 
               map = new esri.Map("map", {
                 center: [centerLat, centerLong],
-                zoom: 12
+                zoom: zoom
               });
               
               // build map layers
@@ -360,18 +360,20 @@ export default class LocationScreen extends React.Component {
                 map.graphics.add(new esri.Graphic(
                   evt.mapPoint,
                   new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),                  
-                  // document.getElementById('data').innerHTML = 'longitude: ' + evt.mapPoint.x + '  Latitude: ' + evt.mapPoint.y,
                 ));
 
-                // converts geographic coordinate system to latitude/longitude and send back to app               
-                
-                var message = { 'action':'user_tapped_map',
-                      'longitude': evt.mapPoint.getLongitude(),
-                      'latitude': evt.mapPoint.getLatitude(),
-                      'is_user_location':false,
-                      'title':''
-                    }
-                document.getElementById('data').innerHTML = 'marker coords: ' + JSON.stringify(message);
+                // convert geographic coordinate system to latitude/longitude and send back to app 
+                let message = { 
+                  'action':'user_tapped_map',
+                  'longitude': evt.mapPoint.getLongitude(),
+                  'latitude': evt.mapPoint.getLatitude(),
+                  'is_user_location':false,
+                  'title':''
+                }
+                let zoom = 16;
+                if (map.getZoom() > 16) { zoom = map.getZoom() }
+                map.centerAndZoom(evt.mapPoint, zoom);
+                // document.getElementById('data').innerHTML = JSON.stringify(message);
                 window.postMessage(JSON.stringify(message));
               });
             });
@@ -379,12 +381,12 @@ export default class LocationScreen extends React.Component {
             // place marker for phone location - called from getMyLocation() 
             document.addEventListener("message", function(data) {              
               var message = JSON.parse(data.data);
-              document.getElementById('data').innerHTML = "message received: '" + JSON.stringify(message) + "'";
+              // document.getElementById('data').innerHTML = "message received: '" + JSON.stringify(message) + "'";
               
               if (message.action != null) {
                 var action = message.action;
                 if (action == "place_marker") {
-                  document.getElementById('data').innerHTML = 'Location received in webview:  ' + JSON.stringify(message);
+                  // document.getElementById('data').innerHTML = 'Phone Location:  ' + JSON.stringify(message);
                   
                   let pt = new esri.geometry.Point(message.longitude, message.latitude, new esri.SpatialReference({ 'wkid': 4326 }));  
                   let mapCoordsPt = esri.geometry.geographicToWebMercator(pt);
@@ -393,7 +395,7 @@ export default class LocationScreen extends React.Component {
                     mapCoordsPt,
                     new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
                   ));                  
-                  map.centerAt(mapCoordsPt, 16); // Zoom not working?
+                  map.centerAndZoom(mapCoordsPt, 16); // map coords are off?
                  
                 } else {
                   document.getElementById('data').innerHTML ="unknown action: '" + action + "'";
