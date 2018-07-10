@@ -351,6 +351,14 @@ export default class LocationScreen extends React.Component {
               let road_names = new ArcGISTiledMapServiceLayer("https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer")
               map.addLayer(road_names);
 
+              // listen for zoom events - limit outer zoom
+              map.on("zoom-end", capZoomLevels);
+              function capZoomLevels(evt) {
+                if (evt.level < 11) {
+                  map.centerAndZoom(map.center, 11);
+                }
+              };
+
               // place marker when user touches map
               dojo.connect(map, 'onClick', function(evt) { 
                 let coords = []
