@@ -174,7 +174,7 @@ export default class LocationScreen extends React.Component {
 
   updateQueryFromInput(query) {
     // console.log('Updating Query ---------: ', query);
-    if (query != undefined) {
+    if (query != undefined && query != '') {
       this.setState({ query: query });
       this.props.navigation.navigate('Location', {
         location: query,
@@ -481,18 +481,32 @@ export default class LocationScreen extends React.Component {
           }]}
         >  
           <Autocomplete 
-            style={{ 
-              paddingLeft: 10, 
-              height: 42,
-            }}
+            style={{ }}
             listStyle={{
               padding: 10,
             }}
-            underlineColorAndroid='transparent'
             data={this.state.locations}
-            defaultValue={this.state.query}
-            onFocus={() => this.handleInputFocus()}
-            onChangeText={text => this.debounceUpdateQueryFromInput(text)}
+            renderTextInput={(text) => (
+              <TouchableOpacity 
+                style={{ 
+                  flexDirection: 'row', 
+                  height: 42, 
+                  alignItems: 'center',
+                }}
+              >
+                <Image 
+                  style={{ height: 20, width: 20, marginLeft: 5 }} 
+                  source={search_img}
+                />
+                <TextInput 
+                  style={{ marginLeft: 10 }}
+                  onFocus={() => this.handleInputFocus()}
+                  onChangeText={text => this.debounceUpdateQueryFromInput(text)}
+                  underlineColorAndroid='transparent'
+                  defaultValue={this.state.query}
+                />
+              </TouchableOpacity>
+            )}
             renderItem={locationObj => (
               <TouchableOpacity
                 style={{
