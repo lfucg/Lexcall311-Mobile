@@ -37,6 +37,10 @@ export default class ContactScreen extends React.Component {
       email: this.startingEmail(),
       phone: this.startingPhone(),
       screenOffset: 0,
+      firstNameColor: '#888',
+      lastNameColor: '#888',
+      emailColor: '#888',
+      phoneColor: '#888',
     };
   }
 
@@ -66,6 +70,7 @@ export default class ContactScreen extends React.Component {
   startingFirstName() {
     currentFirstName = this.props.navigation.getParam('firstName');
     if (currentFirstName) {
+      this.setState({ firstNameColor: '#000' })
       return currentFirstName;
     } else {
       return 'First Name';
@@ -75,6 +80,7 @@ export default class ContactScreen extends React.Component {
   startingLastName() {
     currentLastName = this.props.navigation.getParam('lastName');
     if (currentLastName) {
+      this.setState({ lastNameColor: '#000' })
       return currentLastName;
     } else {
       return 'Last Name';
@@ -84,6 +90,7 @@ export default class ContactScreen extends React.Component {
   startingEmail() {
     currentEmail = this.props.navigation.getParam('email');
     if (currentEmail) {
+      this.setState({ emailColor: '#000' })
       return currentEmail;
     } else {
       return 'Email Address';
@@ -93,6 +100,7 @@ export default class ContactScreen extends React.Component {
   startingPhone() {
     currentPhone = this.props.navigation.getParam('phone');
     if (currentPhone) {
+      this.setState({ phoneColor: '#000' })
       return currentPhone;
     } else {
       return 'Phone Number';
@@ -101,6 +109,7 @@ export default class ContactScreen extends React.Component {
 
   updateFirstName(firstName) {
     this.setState({
+      firstNameColor: '#000',
       firstName: firstName,
     });
     this.props.navigation.navigate('Contact', {
@@ -110,6 +119,7 @@ export default class ContactScreen extends React.Component {
 
   updateLastName(lastName) {
     this.setState({
+      lastNameColor: '#000',
       lastName: lastName,
     });
     this.props.navigation.navigate('Contact', {
@@ -119,6 +129,7 @@ export default class ContactScreen extends React.Component {
 
   updateEmail(email) {
     this.setState({
+      emailColor: '#000',
       email: email,
     });
     this.props.navigation.navigate('Contact', {
@@ -128,6 +139,7 @@ export default class ContactScreen extends React.Component {
 
   updatePhone(phone) {
     this.setState({
+      phoneColor: '#000',
       phone: phone,
     });
     this.props.navigation.navigate('Contact', {
@@ -138,6 +150,7 @@ export default class ContactScreen extends React.Component {
   firstNameCheck() {
     if (this.state.firstName == "") {
       this.setState({
+        firstNameColor: '#888',
         firstName: 'First Name',
       });
     }
@@ -145,6 +158,7 @@ export default class ContactScreen extends React.Component {
   lastNameCheck() {
     if (this.state.lastName == "") {
       this.setState({
+        lastNameColor: '#888',
         lastName: 'Last Name',
       });
     }
@@ -152,6 +166,7 @@ export default class ContactScreen extends React.Component {
   emailCheck() {
     if (this.state.email == "") {
       this.setState({
+        emailColor: '#888',
         email: 'Email Address',
       });
     }
@@ -159,22 +174,43 @@ export default class ContactScreen extends React.Component {
   phoneCheck() {
     if (this.state.phone == "") {
       this.setState({
+        phoneColor: '#888',
         phone: 'Phone Number',
       });
     }
   }
 
   handleFocusFirstName(field) {
-    if (this.state.firstName == "First Name") { this.setState({ firstName: '' }) }
+    if (this.state.firstName == "First Name") { 
+      this.setState({ 
+        firstName: '',
+        firstNameColor: '#888',
+      }) 
+    }
   }
   handleFocusLastName(field) {
-    if (this.state.lastName == "Last Name") { this.setState({ lastName: '' }) }
+    if (this.state.lastName == "Last Name") { 
+      this.setState({ 
+        lastName: '',
+        lastNameColor: '#888',
+      }) 
+    }
   }
   handleFocusEmail(field) {
-    if (this.state.email == "Email Address") { this.setState({ email: '' }) }
+    if (this.state.email == "Email Address") { 
+      this.setState({ 
+        email: '',
+        emailColor: '#888',
+      }) 
+    }
   }
   handleFocusPhone(field) { 
-    if (this.state.phone == "Phone Number") { this.setState({ phone: '' }) }
+    if (this.state.phone == "Phone Number") { 
+      this.setState({ 
+        phone: '',
+        phoneColor: '#888',
+      }) 
+    }
   }
 
   static navigationOptions = ({navigation}) => {
@@ -253,7 +289,7 @@ export default class ContactScreen extends React.Component {
               <View style={styles.contact_wrap}>
                 <TextInput 
                   onFocus={() => this.handleFocusFirstName('first')}
-                  style={styles.contact}
+                  style={[styles.contact, { color: this.state.firstNameColor }]}
                   onChangeText={(firstName) => this.updateFirstName(firstName)}
                   value={this.state.firstName}
                   underlineColorAndroid='transparent'
@@ -263,7 +299,7 @@ export default class ContactScreen extends React.Component {
               <View style={styles.contact_wrap}>
                 <TextInput 
                   onFocus={() => this.handleFocusLastName('last')}
-                  style={styles.contact}
+                  style={[styles.contact, { color: this.state.lastNameColor }]}
                   onChangeText={(lastName) => this.updateLastName(lastName)}
                   value={this.state.lastName}
                   underlineColorAndroid='transparent'
@@ -273,7 +309,7 @@ export default class ContactScreen extends React.Component {
               <View style={styles.contact_wrap}>
                 <TextInput 
                   onFocus={() => this.handleFocusEmail('email')}
-                  style={styles.contact}
+                  style={[styles.contact, { color: this.state.emailColor }]}
                   onChangeText={(email) => this.updateEmail(email)}
                   value={this.state.email}
                   underlineColorAndroid='transparent'
@@ -284,7 +320,7 @@ export default class ContactScreen extends React.Component {
               <View style={styles.contact_wrap}>
                 <TextInput 
                   onFocus={() => this.handleFocusPhone('phone')}
-                  style={styles.contact}
+                  style={[styles.contact, { color: this.state.phoneColor }]}
                   onChangeText={(phone) => this.updatePhone(phone)}
                   value={this.state.phone}
                   underlineColorAndroid='transparent'

@@ -43,6 +43,7 @@ export default class LocationScreen extends React.Component {
       longitude: 0,
       latitude: 0,
       query: this.startingQuery(),  // this is the navigation param 'location'
+      queryColor: '#888',
       inputHeight: 42,
       inputMarginOffset: 0,
       debounceTimeout: null,
@@ -51,9 +52,6 @@ export default class LocationScreen extends React.Component {
       modalHasBeenChecked: false,
       map_error: null,
     };
-  }
-
-  componentDidMount() {
   }
 
   modalCheck() {
@@ -67,6 +65,7 @@ export default class LocationScreen extends React.Component {
   startingQuery() {
     currentQuery = this.props.navigation.getParam('location');
     if (currentQuery) {
+      this.setState({ queryColor: '#000' });
       return currentQuery;
     } else {
       return 'Enter address or describe location';
@@ -175,13 +174,16 @@ export default class LocationScreen extends React.Component {
   updateQueryFromInput(query) {
     // console.log('Updating Query ---------: ', query);
     if (query != undefined) {
-      this.setState({ query: query });
+      this.setState({ query: query, queryColor: '#000' });
       this.props.navigation.navigate('Location', {
         location: query,
       });
       this.fetchLocationFromAPI(query);
     } else {
-      this.setState({ query: 'Enter address or describe location' });
+      this.setState({ 
+        queryColor: '#888',
+        query: 'Enter address or describe location', 
+      });
       this.props.navigation.navigate('Location', { location: undefined });
       this.fetchLocationFromAPI(undefined);
     }
@@ -189,7 +191,7 @@ export default class LocationScreen extends React.Component {
 
   updateQueryFromSelection(locationObj) {
     // console.log('User selected location ---------: ', JSON.stringify(locationObj));
-    this.setState({ query: locationObj.address });
+    this.setState({ query: locationObj.address, queryColor: '#000' });
     this.props.navigation.navigate('Location', {
       location: locationObj.address,
       longitude: locationObj.longitude,
@@ -499,7 +501,7 @@ export default class LocationScreen extends React.Component {
                   source={search_img}
                 />
                 <TextInput 
-                  style={{ marginLeft: 10 }}
+                  style={{ marginLeft: 10, color: this.state.queryColor }}
                   onFocus={() => this.handleInputFocus()}
                   onChangeText={text => this.debounceUpdateQueryFromInput(text)}
                   underlineColorAndroid='transparent'

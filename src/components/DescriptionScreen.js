@@ -22,12 +22,14 @@ export default class DescriptionScreen extends React.Component {
     super(props);
     this.state = {
       description: this.startingDescription(),
+      descriptionColor: '#888',
     };
   }
 
   startingDescription() {
     currentDescription = this.props.navigation.getParam('description');
     if (currentDescription) {
+      this.setState({ descriptionColor: "#000" });
       return currentDescription;
     } else {
       return 'Add description here...';
@@ -36,12 +38,23 @@ export default class DescriptionScreen extends React.Component {
 
   updateDescription(description) {
     this.setState({
+      descriptionColor: "#000",
       description: description,
     });
     this.props.navigation.navigate('Description', {
       description: description,
     });
   }
+
+  descriptionCheck() {
+    if (this.state.description == "") {
+      this.setState({
+        descriptionColor: '#888',
+        description: 'Add description here...',
+      });
+    }
+  }
+  
 
   static navigationOptions = ({navigation}) => {
     return {
@@ -103,12 +116,12 @@ export default class DescriptionScreen extends React.Component {
         <View style={styles.description_wrap}>
           <TextInput
             onFocus={() => this.setState({description : ''})}
-            style={styles.description}
+            style={[styles.description, { color: this.state.descriptionColor }]}
             onChangeText={(description) => this.updateDescription(description)}
             value={this.state.description}
             multiline={true}
-            // editable={true}
             underlineColorAndroid='transparent'
+            onBlur={() => this.descriptionCheck()}
           />
         </View>
       </View>
