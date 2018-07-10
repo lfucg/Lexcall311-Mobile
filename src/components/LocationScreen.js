@@ -118,7 +118,7 @@ export default class LocationScreen extends React.Component {
       headerLeft: (
         <HeaderBack
           navigation={navigation}
-          text={"< Back"}
+          text={"Back"}
           nav_link={"Category"}
         />
       ),
@@ -128,7 +128,7 @@ export default class LocationScreen extends React.Component {
       headerRight: (
         <HeaderNext 
           navigation={navigation}
-          text={"Next >"}
+          text={"Next"}
           nav_link={"Description"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}

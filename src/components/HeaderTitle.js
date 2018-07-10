@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 
-import horse from '../assets/images/header_logo-horse-blue.png';
+import horse_img from '../assets/images/header_logo-horse-blue.png';
 
 export default class HeaderTitle extends React.Component {
   render() {
@@ -16,7 +16,7 @@ export default class HeaderTitle extends React.Component {
       <View style={styles.container}>
         <View style={styles.wrap}>
         {
-          <Image source={horse} style={styles.horse} />
+          <Image source={horse_img} style={styles.horse} />
         }
           <Text style={styles.title}>{this.props.text}</Text>
         </View>

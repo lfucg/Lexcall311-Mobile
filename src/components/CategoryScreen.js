@@ -34,7 +34,7 @@ export default class CategoryScreen extends React.Component {
       headerLeft: (
         <HeaderBack
           navigation={navigation}
-          text={"< Home"}
+          text={"Home"}
           nav_link={"Home"}
         />
       ),

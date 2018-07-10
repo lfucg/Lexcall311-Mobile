@@ -5,7 +5,7 @@ export default class NineOneOne extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>call 911 for emergencies</Text>
+        <Text style={styles.text}>Call 911 for Emergencies</Text>
       </View>
     );
   }

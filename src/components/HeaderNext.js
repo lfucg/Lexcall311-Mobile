@@ -5,9 +5,12 @@ import {
   View, 
   Platform,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 
 import env from '../env.js';
+import chevron_right_img from '../assets/images/icon_chevron-right.png';
+
 
 export default class HeaderNext extends React.Component {
   constructor(props) {
@@ -199,11 +202,18 @@ export default class HeaderNext extends React.Component {
         onPress={() => this.nextPageOrSubmit()}
       >
         <View style={styles.wrap}>
-
           <Text style={styles.text}>
             {this.props.text}
           </Text>
-    
+
+          {
+            this.props.text ? (
+              <Image 
+                style={styles.chevron}
+                source={chevron_right_img} 
+              /> 
+            ) : null
+          }
         </View>
       </TouchableOpacity>
     );
@@ -214,6 +224,17 @@ const styles = StyleSheet.create({
   container: {
   },
   wrap: {
+    flexDirection: 'row',
+  },
+  chevron: {
+    height: 20,
+    width: 20,
+    tintColor: '#007aff',
+    ...Platform.select({
+      android: {
+        marginTop: 3,
+      },
+    }),
   },
   text: {
     ...Platform.select({
@@ -226,6 +247,5 @@ const styles = StyleSheet.create({
     }),
     fontWeight: '600',
     color: '#007aff',
-    paddingRight: 10,
   },
 });

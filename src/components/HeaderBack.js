@@ -5,7 +5,10 @@ import {
   View, 
   Platform,
   TouchableOpacity,
+  Image,
 } from 'react-native';
+
+import chevron_left_img from '../assets/images/icon_chevron-left.png';
 
 
 export default class HeaderBack extends React.Component {
@@ -29,6 +32,14 @@ export default class HeaderBack extends React.Component {
         })}
       >
         <View style={styles.wrap}>
+          {
+            this.props.text ? (
+              <Image 
+                style={styles.chevron}
+                source={chevron_left_img} 
+              /> 
+            ) : null
+          }
 
           <Text style={styles.text}> 
             {this.props.text}
@@ -44,6 +55,17 @@ const styles = StyleSheet.create({
   container: {
   },
   wrap: {
+    flexDirection: 'row',
+  },
+  chevron: {
+    height: 20,
+    width: 20,
+    tintColor: '#007aff',
+    ...Platform.select({
+      android: {
+        marginTop: 3,
+      },
+    }),
   },
   text: {
     ...Platform.select({
@@ -56,6 +78,5 @@ const styles = StyleSheet.create({
     }),
     fontWeight: '600',
     color: '#007aff',
-    paddingLeft: 10,
   },
 });
