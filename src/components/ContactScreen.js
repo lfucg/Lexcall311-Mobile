@@ -169,7 +169,7 @@ export default class ContactScreen extends React.Component {
       headerLeft: (
         <HeaderBack
           navigation={navigation}
-          text={"< Back"}
+          text={"Back"}
           nav_link={"Photo"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
@@ -190,7 +190,7 @@ export default class ContactScreen extends React.Component {
       headerRight: (
         <HeaderNext 
           navigation={navigation}
-          text={"Submit >"}
+          text={"Submit"}
           nav_link={"Home"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}

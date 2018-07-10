@@ -277,7 +277,6 @@ export default class LocationScreen extends React.Component {
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
           <meta name="viewport" content="width=device-width,user-scalable=no">
           
-          <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
           <title>Maps Toolbar</title>
           
           <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">

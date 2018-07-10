@@ -22,7 +22,7 @@ export default class ConfirmationScreen extends React.Component {
       headerLeft: (
         <HeaderBack
           navigation={navigation}
-          text={"< Home"}
+          text={"Home"}
           nav_link={"Home"}
         />
       ),

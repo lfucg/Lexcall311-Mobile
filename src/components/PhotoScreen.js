@@ -85,7 +85,7 @@ export default class PhotoScreen extends React.Component {
       headerLeft: (
         <HeaderBack
           navigation={navigation}
-          text={"< Back"}
+          text={"Back"}
           nav_link={"Description"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}
@@ -106,7 +106,7 @@ export default class PhotoScreen extends React.Component {
       headerRight: (
         <HeaderNext 
           navigation={navigation}
-          text={"Next >"}
+          text={"Next"}
           nav_link={"Contact"}
           category={navigation.getParam('category')}
           location={navigation.getParam('location')}

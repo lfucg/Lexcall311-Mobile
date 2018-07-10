@@ -29,7 +29,7 @@ export default class HeaderNext extends React.Component {
   }
 
   nextPageOrSubmit() {
-    if (this.props.text == 'Submit >') {
+    if (this.props.text == 'Submit') {
       console.log('SUBMIT TO API');
 
       // is report anonymous?
