@@ -106,6 +106,8 @@ export default class DescriptionScreen extends React.Component {
             style={styles.description}
             onChangeText={(description) => this.updateDescription(description)}
             value={this.state.description}
+            multiline={true}
+            // editable={true}
             underlineColorAndroid='transparent'
           />
         </View>

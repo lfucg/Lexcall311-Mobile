@@ -164,6 +164,19 @@ export default class ContactScreen extends React.Component {
     }
   }
 
+  handleFocusFirstName(field) {
+    if (this.state.firstName == "First Name") { this.setState({ firstName: '' }) }
+  }
+  handleFocusLastName(field) {
+    if (this.state.lastName == "Last Name") { this.setState({ lastName: '' }) }
+  }
+  handleFocusEmail(field) {
+    if (this.state.email == "Email Address") { this.setState({ email: '' }) }
+  }
+  handleFocusPhone(field) { 
+    if (this.state.phone == "Phone Number") { this.setState({ phone: '' }) }
+  }
+
   static navigationOptions = ({navigation}) => {
     return {
       headerLeft: (
@@ -239,7 +252,7 @@ export default class ContactScreen extends React.Component {
 
               <View style={styles.contact_wrap}>
                 <TextInput 
-                  onFocus={() => this.setState({firstName: ''})}
+                  onFocus={() => this.handleFocusFirstName('first')}
                   style={styles.contact}
                   onChangeText={(firstName) => this.updateFirstName(firstName)}
                   value={this.state.firstName}
@@ -249,7 +262,7 @@ export default class ContactScreen extends React.Component {
               </View>
               <View style={styles.contact_wrap}>
                 <TextInput 
-                  onFocus={() => this.setState({lastName: ''})}
+                  onFocus={() => this.handleFocusLastName('last')}
                   style={styles.contact}
                   onChangeText={(lastName) => this.updateLastName(lastName)}
                   value={this.state.lastName}
@@ -259,7 +272,7 @@ export default class ContactScreen extends React.Component {
               </View>
               <View style={styles.contact_wrap}>
                 <TextInput 
-                  onFocus={() => this.setState({email: ''})}
+                  onFocus={() => this.handleFocusEmail('email')}
                   style={styles.contact}
                   onChangeText={(email) => this.updateEmail(email)}
                   value={this.state.email}
@@ -270,7 +283,7 @@ export default class ContactScreen extends React.Component {
               </View>
               <View style={styles.contact_wrap}>
                 <TextInput 
-                  onFocus={() => this.setState({phone: ''})}
+                  onFocus={() => this.handleFocusPhone('phone')}
                   style={styles.contact}
                   onChangeText={(phone) => this.updatePhone(phone)}
                   value={this.state.phone}
@@ -299,7 +312,7 @@ const styles = StyleSheet.create({
     height: 190,
     borderBottomWidth: 1,
     borderColor: '#585858',
-    marginBottom: 30,
+    marginBottom: 10,
   },
   all_contact_wrap: {
     flex: 1,
@@ -307,15 +320,15 @@ const styles = StyleSheet.create({
   contact_wrap: {
   },
   contact: {
-    marginLeft: 10,
     marginRight: 10,
-    paddingLeft: 20,
+    marginBottom: 10,
+    marginLeft: 10,
+    paddingTop: 10,
     paddingRight: 20,
+    paddingBottom: 10,
+    paddingLeft: 20,
     borderColor: '#585858',
     borderWidth: 1,
-    marginBottom: 10,
-    paddingTop: 20,
-    paddingBottom: 20,
   },
 });
 

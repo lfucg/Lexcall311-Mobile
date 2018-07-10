@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   },
   img_remove: {
     position: 'absolute',
-    bottom: 0,
+    top: 0,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center', 

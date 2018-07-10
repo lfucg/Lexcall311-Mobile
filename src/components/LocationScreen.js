@@ -174,7 +174,7 @@ export default class LocationScreen extends React.Component {
 
   updateQueryFromInput(query) {
     // console.log('Updating Query ---------: ', query);
-    if (query != undefined && query != '') {
+    if (query != undefined) {
       this.setState({ query: query });
       this.props.navigation.navigate('Location', {
         location: query,
