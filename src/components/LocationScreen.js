@@ -527,7 +527,7 @@ export default class LocationScreen extends React.Component {
                 <TouchableOpacity
                   onPress={() => this.getMyLocation()}
                 >
-                  <Image source={crosshair_img} resizeMode='cover'/>
+                  <Image style={styles.lacate_img} source={crosshair_img} resizeMode='cover'/>
                 </TouchableOpacity>
               </View>
             )
@@ -619,6 +619,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  lacate_img: {
+    width: 25,
+    height: 25,
+  }
 });
 
 
