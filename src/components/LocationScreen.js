@@ -11,6 +11,7 @@ import {
   Dimensions,
   WebView,
   TouchableHighlight,
+  Keyboard,
 } from 'react-native';
 
 import { Constants, Location, Permissions } from 'expo';
@@ -42,17 +43,45 @@ export default class LocationScreen extends React.Component {
       locations: [],
       longitude: 0,
       latitude: 0,
-      query: this.startingQuery(),  // this is the navigation param 'location'
+      query: '',  // this is the navigation param 'location'
       queryColor: '#888',
       inputHeight: 42,
-      inputMarginOffset: 0,
+      // inputMarginOffset: 0,
       debounceTimeout: null,
       debounceMapErrorTimeout: null,
       loadingOpacity: 0,
       modalHasBeenChecked: false,
       map_error: null,
+      showDropdown: false,
+      screenOffset: 0,
     };
   }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
+  }
+
+  componentDidMount() {
+    this.startingQuery();
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowSub.remove();
+    this.keyboardDidHideSub.remove();
+  }
+
+  keyboardDidShow = (event) => {
+    this.setState({
+      screenOffset: -180,
+    });
+  };
+
+  keyboardDidHide = (event) => {
+    this.setState({
+      screenOffset: 0,
+    });
+  };
 
   modalCheck() {
     if (this.props.navigation.getParam('category') == 'traffic_light' && this.state.modalHasBeenChecked == false) {
@@ -65,10 +94,15 @@ export default class LocationScreen extends React.Component {
   startingQuery() {
     currentQuery = this.props.navigation.getParam('location');
     if (currentQuery) {
-      this.setState({ queryColor: '#000' });
-      return currentQuery;
+      this.setState({ 
+        queryColor: '#000',
+        query: currentQuery,
+      });
     } else {
-      return 'Enter address or describe location';
+      this.setState({ 
+        queryColor: '#888', 
+        query: 'Enter address or describe location',
+      });
     }
   }
 
@@ -174,13 +208,18 @@ export default class LocationScreen extends React.Component {
   updateQueryFromInput(query) {
     // console.log('Updating Query ---------: ', query);
     if (query != undefined) {
-      this.setState({ query: query, queryColor: '#000' });
+      this.setState({ 
+        showDropdown: true,
+        query: query, 
+        queryColor: '#000', 
+      });
       this.props.navigation.navigate('Location', {
         location: query,
       });
       this.fetchLocationFromAPI(query);
     } else {
-      this.setState({ 
+      this.setState({
+        showDropdown: false,
         queryColor: '#888',
         query: 'Enter address or describe location', 
       });
@@ -191,7 +230,11 @@ export default class LocationScreen extends React.Component {
 
   updateQueryFromSelection(locationObj) {
     // console.log('User selected location ---------: ', JSON.stringify(locationObj));
-    this.setState({ query: locationObj.address, queryColor: '#000' });
+    this.setState({ 
+      query: locationObj.address, 
+      queryColor: '#000',
+      showDropdown: false,
+    });
     this.props.navigation.navigate('Location', {
       location: locationObj.address,
       longitude: locationObj.longitude,
@@ -222,7 +265,9 @@ export default class LocationScreen extends React.Component {
   handleInputFocus() {
     // console.log('FOCUSED-------------');
     if (this.state.query == 'Enter address or describe location') {
-      this.setState({ query: '' })
+      this.setState({ 
+        query: '',
+      })
     }
   }
 
@@ -231,27 +276,27 @@ export default class LocationScreen extends React.Component {
     if (locationCount == 0) {
       this.setState({ 
         inputHeight: 42, 
-        inputMarginOffset: 0 
+        // inputMarginOffset: 0 
       });
     } else if (locationCount == 1) {
       this.setState({ 
         inputHeight: 84, 
-        inputMarginOffset: -29 
+        // inputMarginOffset: -29 
       });
     } else if (locationCount == 2) {
       this.setState({
         inputHeight: 126, 
-        inputMarginOffset: -71 
+        // inputMarginOffset: -71 
       });
     } else if (locationCount == 3) {
       this.setState({
         inputHeight: 146, 
-        inputMarginOffset: -91 
+        // inputMarginOffset: -91 
       });
     } else {
       this.setState({ 
         inputHeight: 170, 
-        inputMarginOffset: -115 
+        // inputMarginOffset: -115 
       });
     }
   }
@@ -268,7 +313,7 @@ export default class LocationScreen extends React.Component {
         let location = await Location.getCurrentPositionAsync({});
         // console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
-        this.setState({ loadingOpacity: 0 });
+        this.setState({ loadingOpacity: 0, showDropdown: true, });
         this.updateQueryFromInput(undefined);
         this.updateLongitude(location.coords.longitude);
         this.updateLatitude(location.coords.latitude);
@@ -290,7 +335,7 @@ export default class LocationScreen extends React.Component {
 
 
   render() {
-    console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
+    console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params,  ' DROPDOWN: ', this.state.showDropdown);
     const dimensions = Dimensions.get('window');
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;
@@ -422,7 +467,11 @@ export default class LocationScreen extends React.Component {
     `;
 
     return (
-      <View style={styles.container}>
+      <View 
+        style={[styles.container, { 
+          marginTop: this.state.screenOffset,
+        }]} 
+      >
 
         <Modal
           isVisible={this.modalCheck()}
@@ -479,7 +528,7 @@ export default class LocationScreen extends React.Component {
           style={[styles.location_input, {
             backgroundColor: '#fff',
             height: this.state.inputHeight,
-            marginTop: this.state.inputMarginOffset,
+            // marginTop: this.state.inputMarginOffset,
           }]}
         >  
           <Autocomplete 
@@ -511,9 +560,7 @@ export default class LocationScreen extends React.Component {
             )}
             renderItem={locationObj => (
               <TouchableOpacity
-                style={{
-                  padding: 5,
-                }}
+                style={{ padding: 5 }}
                 onPress={() => this.updateQueryFromSelection(locationObj)}
               >
                 <Text>{locationObj.address}</Text>
@@ -596,19 +643,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   modal: {
-    padding: 40,
+    padding: 20,
     borderRadius: 10,
     alignItems: 'center',
     backgroundColor: "#fff",
   },
   modal_button: {
     borderColor: '#585858',
-    borderWidth: 1,
+    borderWidth: 2,
     padding: 20,
     margin: 20,
+    width: 100,
   },
   modal_button_text: {
-    color: 'blue', 
+    color: '#000',
+    textAlign: 'center', 
     fontSize: 20, 
     fontWeight: '600',
   },

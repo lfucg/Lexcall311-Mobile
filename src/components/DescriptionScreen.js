@@ -21,18 +21,27 @@ export default class DescriptionScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: this.startingDescription(),
+      description: '',
       descriptionColor: '#888',
     };
+  }
+
+  componentDidMount() {
+    this.startingDescription();
   }
 
   startingDescription() {
     currentDescription = this.props.navigation.getParam('description');
     if (currentDescription) {
-      this.setState({ descriptionColor: "#000" });
-      return currentDescription;
+      this.setState({ 
+        descriptionColor: "#000", 
+        description: currentDescription,
+      });
     } else {
-      return 'Add description here...';
+      this.setState({
+        descriptionColor: '#888',
+        description: 'Add description here...',
+      });
     }
   }
 

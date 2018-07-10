@@ -32,21 +32,24 @@ export default class ContactScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: this.startingFirstName(),
-      lastName: this.startingLastName(),
-      email: this.startingEmail(),
-      phone: this.startingPhone(),
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
       screenOffset: 0,
-      firstNameColor: '#888',
-      lastNameColor: '#888',
-      emailColor: '#888',
-      phoneColor: '#888',
     };
   }
 
   componentWillMount() {
     this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
+    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentDidMount() {
+    this.startingFirstName();
+    this.startingLastName();
+    this.startingEmail();
+    this.startingPhone();
   }
 
   componentWillUnmount() {
@@ -56,7 +59,7 @@ export default class ContactScreen extends React.Component {
 
   keyboardDidShow = (event) => {
     this.setState({
-      screenOffset: -200,
+      screenOffset: -190,
     });
   };
 
@@ -70,40 +73,60 @@ export default class ContactScreen extends React.Component {
   startingFirstName() {
     currentFirstName = this.props.navigation.getParam('firstName');
     if (currentFirstName) {
-      this.setState({ firstNameColor: '#000' })
-      return currentFirstName;
+      this.setState({ 
+        firstNameColor: '#000',
+        firstName: currentFirstName,
+      });
     } else {
-      return 'First Name';
+      this.setState({ 
+        firstNameColor: '#888',
+        firstName: 'First Name',
+      });
     }
   }
 
   startingLastName() {
     currentLastName = this.props.navigation.getParam('lastName');
     if (currentLastName) {
-      this.setState({ lastNameColor: '#000' })
-      return currentLastName;
+      this.setState({ 
+        lastNameColor: '#000', 
+        lastName: currentLastName,
+      });
     } else {
-      return 'Last Name';
+      this.setState({ 
+        lastNameColor: '#888',
+        lastName: 'Last Name',
+      });
     }
   }
 
   startingEmail() {
     currentEmail = this.props.navigation.getParam('email');
     if (currentEmail) {
-      this.setState({ emailColor: '#000' })
-      return currentEmail;
+      this.setState({ 
+        emailColor: '#000',
+        email: currentEmail,
+      });
     } else {
-      return 'Email Address';
+      this.setState({ 
+        emailColor: '#888', 
+        email: 'Email Address',
+      });
     }
   }
 
   startingPhone() {
     currentPhone = this.props.navigation.getParam('phone');
     if (currentPhone) {
-      this.setState({ phoneColor: '#000' })
-      return currentPhone;
+      this.setState({ 
+        phoneColor: '#000',
+        phone: currentPhone,
+      });
     } else {
-      return 'Phone Number';
+      this.setState({ 
+        phoneColor: '#888', 
+        phone: 'Phone Number',
+      });
     }
   }
 
