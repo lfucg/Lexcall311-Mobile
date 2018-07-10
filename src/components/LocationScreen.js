@@ -46,8 +46,10 @@ export default class LocationScreen extends React.Component {
       inputHeight: 42,
       inputMarginOffset: 0,
       debounceTimeout: null,
+      debounceMapErrorTimeout: null,
       loadingOpacity: 0,
       modalHasBeenChecked: false,
+      map_error: null,
     };
   }
 
@@ -148,12 +150,26 @@ export default class LocationScreen extends React.Component {
   
   debounceUpdateQueryFromInput(query) {    
     clearTimeout(this.state.debounceTimeout);
-    let thisScreen = this
+    let thisScreen = this;
 
     this.setState({ debounceTimeout: setTimeout(function() {
         thisScreen.updateQueryFromInput(query);
       }, 300)
     });
+  }
+
+  mapError(error) {    
+    clearTimeout(this.state.debounceTimeout);
+    let thisScreen = this;
+    this.setState({ map_error: error });
+    this.setState({ debounceMapErrorTimeout: setTimeout(function() {
+        thisScreen.clearMapError();
+      }, 4000)
+    });
+  }
+
+  clearMapError() {
+    this.setState({ map_error: null });
   }
 
   updateQueryFromInput(query) {
@@ -241,25 +257,32 @@ export default class LocationScreen extends React.Component {
   getMyLocation = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status == 'granted') {
-      this.setState({ loadingOpacity: 100 });
+      // check if phone location is turned on
+      let locationEnabled = await Location.getProviderStatusAsync();
+      if (locationEnabled.locationServicesEnabled) {
+        
+        this.setState({ loadingOpacity: 100 });
 
-      let location = await Location.getCurrentPositionAsync({});
-      // console.log("GET MY LOCATION: LOCATION: ------------------", location);
+        let location = await Location.getCurrentPositionAsync({});
+        // console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
-      this.setState({ loadingOpacity: 0 });
-      this.updateQueryFromInput(undefined);
-      this.updateLongitude(location.coords.longitude);
-      this.updateLatitude(location.coords.latitude);
-      
-      // posts through webview to the html map 
-      let message = { 
-        'action':'place_marker',
-        'longitude': location.coords.longitude,
-        'latitude':location.coords.latitude,
-        'is_user_location':true,
-        'title':'My Location'
+        this.setState({ loadingOpacity: 0 });
+        this.updateQueryFromInput(undefined);
+        this.updateLongitude(location.coords.longitude);
+        this.updateLatitude(location.coords.latitude);
+        
+        // posts through webview to the html map 
+        let message = { 
+          'action':'place_marker',
+          'longitude': location.coords.longitude,
+          'latitude':location.coords.latitude,
+          'is_user_location':true,
+          'title':'My Location'
+        }
+        this.webview.postMessage(JSON.stringify(message));       
+      } else {
+        this.mapError("Phone location is turned off.  Please enable and then try again.");
       }
-      this.webview.postMessage(JSON.stringify(message));       
     }
   };
 
@@ -442,7 +465,6 @@ export default class LocationScreen extends React.Component {
           />
         </View>
 
-
         <View
           style={[styles.location_input, {
             backgroundColor: '#fff',
@@ -483,14 +505,33 @@ export default class LocationScreen extends React.Component {
             height: mapHeight, 
           }]}
         >
-
-          <View style={styles.locate}>
-            <TouchableOpacity
-              onPress={() => this.getMyLocation()}
-            >
-              <Image source={crosshair_img} resizeMode='cover'/>
-            </TouchableOpacity>
-          </View>
+          {
+            this.state.map_error ? (
+              <View style={{zIndex: 1000}}>
+                <Text 
+                  style={{ 
+                    color: 'red', 
+                    textAlign: 'center',
+                    fontWeight: '600',
+                    fontSize: 18,
+                  }}
+                >
+                  {this.state.map_error}
+                </Text>
+              </View>
+            ) : null
+          }
+          {
+            this.state.map_error ? null : (
+              <View style={styles.locate}>
+                <TouchableOpacity
+                  onPress={() => this.getMyLocation()}
+                >
+                  <Image source={crosshair_img} resizeMode='cover'/>
+                </TouchableOpacity>
+              </View>
+            )
+          }
 
           <View 
             style={[styles.loading, {
@@ -569,7 +610,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     top: 20,
     left: 20,
-    zIndex: 1000,
+    zIndex: 100,
     width: 35,
     height: 35,
     borderWidth: 1,
