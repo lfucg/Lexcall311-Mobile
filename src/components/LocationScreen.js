@@ -355,6 +355,9 @@ export default class LocationScreen extends React.Component {
             #map_zoom_slider {
               top: 75%;
             }
+            :focus {
+              outline: none;
+            }
           </style>
           
           <script src="https://js.arcgis.com/3.24/"></script>
