@@ -62,6 +62,15 @@ export default class PhotoScreen extends React.Component {
     });
   }
 
+  removeImage1() {
+    this.setState({ 
+      image1: null, 
+    });
+    this.props.navigation.navigate('Photo', {
+      image1: null,
+    });
+  }
+
   startingImage2() {
     currentImage2 = this.props.navigation.getParam('image2');
     if (currentImage2) {
@@ -77,6 +86,16 @@ export default class PhotoScreen extends React.Component {
     });
     this.props.navigation.navigate('Photo', {
       image2: image2,
+    });
+  }
+
+  removeImage2() {
+    this.setState({ 
+      image2: null, 
+      disabled_buttons: false,
+    });
+    this.props.navigation.navigate('Photo', {
+      image2: null,
     });
   }
 
@@ -230,7 +249,7 @@ export default class PhotoScreen extends React.Component {
               <View style={styles.img_display}>
                 <ImageBackground source={image1} style={styles.img_in_display} resizeMode='cover'>
                   <TouchableOpacity
-                    onPress={() => this.setState({ image1: null })}
+                    onPress={() => this.removeImage1()}
                     style={styles.img_remove}
                   >
                     <Text style={styles.img_remove_text}>Remove</Text>
@@ -276,15 +295,12 @@ export default class PhotoScreen extends React.Component {
                   style={[styles.img_multiple_in_display, 
                     { 
                       width: imageWidth, 
-                      height: imageHeight
+                      height: imageHeight,
                     }]} 
                   resizeMode='cover' 
                 >
                   <TouchableOpacity
-                    onPress={() => this.setState({ 
-                      image2: null, 
-                      disabled_buttons: false,
-                    })}
+                    onPress={() => this.removeImage2()}
                     style={styles.img_remove}
                   >
                     <Text style={styles.img_remove_text}>Remove</Text>
