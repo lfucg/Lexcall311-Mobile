@@ -3,6 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
+  Clipboard,
+  TouchableOpacity,
 } from 'react-native';
 
 // components
@@ -32,6 +34,13 @@ export default class ConfirmationScreen extends React.Component {
     };
   }
 
+
+  writeToClipboard = async () => {
+    await Clipboard.setString(this.props.navigation.state.params.trackingID);
+    alert('Copied to Clipboard!');
+  };
+
+
   render() {
     console.log('CONFIRMATION SCREEN PARAMS: ', this.props.navigation.state.params);
 
@@ -52,12 +61,15 @@ export default class ConfirmationScreen extends React.Component {
           <Text style={styles.text}>
             Your report has been queued and will be handled by the next available LexCall representative.  You can use the tracking number below to track your request on our website lexingtonky.gov.
           </Text>
-          <Text style={styles.trackingID}>
+            <Text style={styles.trackingID}>
+            
             Tracking ID:
           </Text>
-          <Text style={styles.trackingID_number}>
-            {this.props.navigation.state.params.trackingID}
-          </Text>
+          <TouchableOpacity onPress={() => this.writeToClipboard()}>
+            <Text style={styles.trackingID_number}>
+              {this.props.navigation.state.params.trackingID}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.text}>
             If you have any questions or comments, you can call LexCall at (859) 425-2255.
           </Text>
