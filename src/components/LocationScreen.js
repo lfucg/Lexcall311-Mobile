@@ -304,22 +304,33 @@ export default class LocationScreen extends React.Component {
         this.setState({ loadingOpacity: 100 });
 
         let location = await Location.getCurrentPositionAsync({});
-        // console.log("GET MY LOCATION: LOCATION: ------------------", location);
+        console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
-        this.setState({ loadingOpacity: 0 });
-        this.updateQueryFromInput(undefined);
-        this.updateLongitude(location.coords.longitude);
-        this.updateLatitude(location.coords.latitude);
-        
-        // posts through webview to the html map 
-        let message = { 
-          'action':'place_marker',
-          'longitude': location.coords.longitude,
-          'latitude':location.coords.latitude,
-          'is_user_location':true,
-          'title':'My Location'
+        // is the location inside Lexington?
+        if (
+          location.longitude < -84.65900458371425 &&
+          location.longitude > -84.28812106396902 &&
+          location.latitude < 38.20051239630375 && 
+          location.latitude > 37.84919867780019
+        ) {
+          this.setState({ loadingOpacity: 0 });
+          this.updateQueryFromInput(undefined);
+          this.updateLongitude(location.coords.longitude);
+          this.updateLatitude(location.coords.latitude);
+          
+          // posts through webview to the html map 
+          let message = { 
+            'action':'place_marker',
+            'longitude': location.coords.longitude,
+            'latitude':location.coords.latitude,
+            'is_user_location':true,
+            'title':'My Location'
+          }
+          this.webview.postMessage(JSON.stringify(message));       
+        } else {
+          this.mapError("We're sorry.  Your current location is not supported.");
+          this.setState({ loadingOpacity: 0 });
         }
-        this.webview.postMessage(JSON.stringify(message));       
       } else {
         this.mapError("Phone location is turned off.  Please enable and then try again.");
       }
@@ -327,7 +338,7 @@ export default class LocationScreen extends React.Component {
   };
 
   render() {
-    console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params,  ' DROPDOWN: ', this.state.showDropdown);
+    console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get('window');
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;

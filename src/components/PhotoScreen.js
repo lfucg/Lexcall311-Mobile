@@ -28,31 +28,20 @@ export default class PhotoScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image1: this.startingImage1(),
-      image2: this.startingImage2(),
+      image1: null,
+      image2: null,
       uploading: false,
-      disabled_buttons: this.startingButtonState(),
       loadingOpacity: 0,
       loadingHeight: 0,
     };
   }
 
-  startingButtonState() {
-    currentImage2 = this.props.navigation.getParam('image2');
-    if (currentImage2) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  startingImage1() {
-    currentImage1 = this.props.navigation.getParam('image1');
-    if (currentImage1) {
-      return currentImage1;
-    } else {
-      return null;
-    }
+  componentDidMount() {
+    this.setState ({
+      image1: this.props.navigation.getParam('image1') ? this.props.navigation.getParam('image1') : null,
+      image2: this.props.navigation.getParam('image2') ? this.props.navigation.getParam('image2') : null,
+    });
+    
   }
 
   updateImage1(image1) {
@@ -73,15 +62,6 @@ export default class PhotoScreen extends React.Component {
     });
   }
 
-  startingImage2() {
-    currentImage2 = this.props.navigation.getParam('image2');
-    if (currentImage2) {
-      return currentImage2;
-    } else {
-      return null;
-    }
-  }
-
   updateImage2(image2) {
     this.setState({
       image2: image2,
@@ -94,7 +74,6 @@ export default class PhotoScreen extends React.Component {
   removeImage2() {
     this.setState({ 
       image2: null, 
-      disabled_buttons: false,
     });
     this.props.navigation.navigate('Photo', {
       image2: null,
@@ -165,19 +144,14 @@ export default class PhotoScreen extends React.Component {
     if (image['cancelled'] == false) {
       if (!this.state.image1) {
         this.updateImage1(image);
-        this.setState({ 
-          loadingOpacity: 0,
-          loadingHeight: 0,
-        });
       } else {
-        this.setState({ 
-          disabled_buttons: true, 
-          loadingOpacity: 0,
-          loadingHeight: 0,
-        });
         this.updateImage2(image);
       }
     }
+    this.setState({
+      loadingOpacity: 0,
+      loadingHeight: 0,
+    });
   }
   
   gallery = async () => {
@@ -195,24 +169,18 @@ export default class PhotoScreen extends React.Component {
     if (image['cancelled'] == false) {
       if (!this.state.image1) {
         this.updateImage1(image);
-        this.setState({ 
-          loadingOpacity: 0,
-          loadingHeight: 0,
-        });
       } else {
-        this.setState({ 
-          disabled_buttons: true, 
-          loadingOpacity: 0,
-          loadingHeight: 0, 
-        });
         this.updateImage2(image);
       }
     }
+    this.setState({
+      loadingOpacity: 0,
+      loadingHeight: 0,
+    });
   }
 
   render() {
     // console.log('PHOTO SCREEN PARAMS: ', this.props.navigation.state.params);
-    
     let { image1 } = this.state;
     let { image2 } = this.state;
     const { hasCameraRollPermission } = this.state;
@@ -236,8 +204,8 @@ export default class PhotoScreen extends React.Component {
           <View style={styles.button_wrap}>
             <TouchableOpacity 
               onPress={this.camera} 
-              style={this.state.disabled_buttons ? styles.button_disabled : styles.button}
-              disabled={this.state.disabled_buttons}
+              style={this.state.image2 ? styles.button_disabled : styles.button}
+              disabled={this.state.image2 ? true : false}
             >
               <Text style={styles.button_text}>
                 Camera
@@ -246,8 +214,8 @@ export default class PhotoScreen extends React.Component {
 
             <TouchableOpacity 
               onPress={this.gallery} 
-              style={this.state.disabled_buttons ? styles.button_disabled : styles.button}
-              disabled={this.state.disabled_buttons}
+              style={this.state.image2 ? styles.button_disabled : styles.button}
+              disabled={this.state.image2 ? true : false}
             >
               <Text style={styles.button_text}>
                 Gallery
@@ -316,7 +284,6 @@ export default class PhotoScreen extends React.Component {
                     onPress={() => this.setState({
                       image1: image2,
                       image2: null,
-                      disabled_buttons: false,
                     })}
                     style={styles.img_remove}
                   >
