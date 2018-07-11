@@ -16,21 +16,27 @@ export default class HeaderNext extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      email: this.email(),
+      email: '',
+      loading: false,
     };
+  }
+
+  componentDidMount() {
+    this.email();
   }
 
   email() {
     if (this.props.email == undefined) {
-      return '';
+      this.setState({ email: '' })
     } else {
-      return this.props.email;
+      this.setState({ email: this.props.email })
     }
   }
 
   nextPageOrSubmit() {
     if (this.props.text == 'Submit') {
-      console.log('SUBMIT TO API');
+      // console.log('SUBMIT TO API');
+      this.setState({ loading: true })
 
       // is report anonymous?
       let anonymous = true;
@@ -201,20 +207,35 @@ export default class HeaderNext extends React.Component {
         activeOpacity={.6}
         onPress={() => this.nextPageOrSubmit()}
       >
-        <View style={styles.wrap}>
-          <Text style={styles.text}>
-            {this.props.text}
-          </Text>
+        {
+          this.props.text ? (
+            <View>
 
-          {
-            this.props.text ? (
-              <Image 
-                style={styles.chevron}
-                source={chevron_right_img} 
-              /> 
-            ) : null
-          }
-        </View>
+              {
+                this.state.loading ? (
+                  <View 
+                    style={[styles.loading, {
+                      opacity: this.state.loadingOpacity,
+                      height: this.state.loadingHeight,
+                    }]}>
+                    <Text>LOADING...</Text>
+                  </View>
+                ) : (
+                  <View style={styles.wrap}>
+                    <Text style={styles.text}>
+                      {this.props.text}
+                    </Text>
+                    <Image 
+                      style={styles.chevron}
+                      source={chevron_right_img} 
+                    />
+                  </View>
+                )
+              }
+
+            </View>
+          ) : null
+        }
       </TouchableOpacity>
     );
   }
@@ -247,5 +268,15 @@ const styles = StyleSheet.create({
     }),
     fontWeight: '600',
     color: '#007aff',
+  },
+  loading: {
+    justifyContent: 'center',
+    paddingLeft: 2,
+    width: 80,
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#585858',
+    borderWidth: 1,
+    zIndex: 100,
   },
 });
