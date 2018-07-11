@@ -63,7 +63,7 @@ export default class HeaderNext extends React.Component {
         },
         body: auth_params,
       }).then(auth => auth.json())
-        .catch(error => console.error('ERROR: ', error))
+        .catch(error => console.error('AUTH ERROR: ', error))
         .then(auth_response => {
           console.log('AUTH SUCCESS: ', auth_response);
           let category = 'other';

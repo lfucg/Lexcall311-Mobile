@@ -13,7 +13,9 @@
       "supportsTablet": false,
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "LexCall 311 needs access to image gallery to include photographs of your issue.",
-        "NSCameraUsageDescription": "LexCall 311 needs access to your camera to include photographs of your issue."
+        "NSCameraUsageDescription": "LexCall 311 needs access to your camera to include photographs of your issue.",
+        "NSLocationWhenInUseUsageDescription": "LexCall 311 needs access to your phone location to find you on the map.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "LexCall 311 needs access to your phone location to find you on the map."
       }
     },
     "android": {
