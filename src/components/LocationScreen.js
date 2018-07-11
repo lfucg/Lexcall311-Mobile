@@ -672,6 +672,7 @@ const styles = StyleSheet.create({
     borderColor: '#585858',
     borderWidth: 1,
     zIndex: 10,
+    paddingLeft: 2,
   },
   locate: {
     position: 'absolute',

@@ -32,6 +32,8 @@ export default class PhotoScreen extends React.Component {
       image2: this.startingImage2(),
       uploading: false,
       disabled_buttons: this.startingButtonState(),
+      loadingOpacity: 0,
+      loadingHeight: 0,
     };
   }
 
@@ -151,6 +153,10 @@ export default class PhotoScreen extends React.Component {
   camera = async () => {
     // console.log('CAMERA');
     await this.askCameraPermissions();
+    this.setState({ 
+      loadingOpacity: 100, 
+      loadingHeight: 25,
+    });
     let image = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
       aspect: [1,1],
@@ -159,8 +165,16 @@ export default class PhotoScreen extends React.Component {
     if (image['cancelled'] == false) {
       if (!this.state.image1) {
         this.updateImage1(image);
+        this.setState({ 
+          loadingOpacity: 0,
+          loadingHeight: 0,
+        });
       } else {
-        this.setState({ disabled_buttons: true });
+        this.setState({ 
+          disabled_buttons: true, 
+          loadingOpacity: 0,
+          loadingHeight: 0,
+        });
         this.updateImage2(image);
       }
     }
@@ -169,6 +183,10 @@ export default class PhotoScreen extends React.Component {
   gallery = async () => {
     // console.log('GALLERY');
     await this.askCameraPermissions();
+    this.setState({ 
+      loadingOpacity: 100, 
+      loadingHeight: 30, 
+    });
     let image = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: false,
       aspect: [1,1],
@@ -177,8 +195,16 @@ export default class PhotoScreen extends React.Component {
     if (image['cancelled'] == false) {
       if (!this.state.image1) {
         this.updateImage1(image);
+        this.setState({ 
+          loadingOpacity: 0,
+          loadingHeight: 0,
+        });
       } else {
-        this.setState({ disabled_buttons: true });
+        this.setState({ 
+          disabled_buttons: true, 
+          loadingOpacity: 0,
+          loadingHeight: 0, 
+        });
         this.updateImage2(image);
       }
     }
@@ -229,6 +255,13 @@ export default class PhotoScreen extends React.Component {
             </TouchableOpacity>
           </View>
 
+          <View 
+            style={[styles.loading, {
+              opacity: this.state.loadingOpacity,
+              height: this.state.loadingHeight,
+            }]}>
+            <Text>LOADING...</Text>
+          </View>
 
           { !image1 &&
             <View style={styles.img_display}>
@@ -275,7 +308,7 @@ export default class PhotoScreen extends React.Component {
                   style={[styles.img_multiple_in_display, 
                     { 
                       width: imageWidth, 
-                      height: imageHeight
+                      height: imageHeight,
                     }]} 
                   resizeMode='cover' 
                 >
@@ -308,7 +341,7 @@ export default class PhotoScreen extends React.Component {
                 </ImageBackground>
               </View>
             </View>
-          }  
+          }
 
         </View>
       </View>
@@ -394,6 +427,16 @@ const styles = StyleSheet.create({
   },
   img_remove_text: {
     color: '#fff',
+  },
+  loading: {
+    justifyContent: 'center',
+    paddingLeft: 2,
+    width: 100,
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#585858',
+    borderWidth: 1,
+    zIndex: 100,
   },
 });
 
