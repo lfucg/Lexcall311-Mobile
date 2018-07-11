@@ -9,7 +9,7 @@
     "primaryColor": "#0057a8",
     "ios": {
       "bundleIdentifier": "com.apaxsoftware.Lexcall",
-      "buildNumber": "2.0.1",
+      "buildNumber": "2.0.2",
       "supportsTablet": false,
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "LexCall 311 needs access to image gallery to include photographs of your issue.",
