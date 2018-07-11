@@ -53,7 +53,9 @@ export default class HeaderNext extends React.Component {
       )
 
       // get authorization
-      fetch("https://test.salesforce.com/services/oauth2/token", {
+      // to submit to sandbox use https://test.salesforce,  user: lexcallmobile@lexingtonky.gov.lexcall.devlex311
+      // to submit to production use https://login.salesforce,  user: lexcallmobile@lexingtonky.gov.lexcall
+      fetch("https://login.salesforce.com/services/oauth2/token", {
         method: 'POST',
         headers: {
           "Accept": 'application/json',
