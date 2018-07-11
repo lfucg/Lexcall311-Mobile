@@ -46,13 +46,11 @@ export default class LocationScreen extends React.Component {
       query: '',  // this is the navigation param 'location'
       queryColor: '#888',
       inputHeight: 42,
-      // inputMarginOffset: 0,
       debounceTimeout: null,
       debounceMapErrorTimeout: null,
       loadingOpacity: 0,
       modalHasBeenChecked: false,
       map_error: null,
-      showDropdown: false,
       screenOffset: 0,
     };
   }
@@ -138,6 +136,7 @@ export default class LocationScreen extends React.Component {
         location_list.push(locationObj);
       }
 
+      // hide dropdown of suggestions
       this.updateInputHeight(location_list.length);
       
       // console.log('LOCATION SCREEN: FETCH LOCATION FROM API: LOCATION LIST: ', location_list);
@@ -209,7 +208,6 @@ export default class LocationScreen extends React.Component {
     // console.log('Updating Query ---------: ', query);
     if (query != undefined) {
       this.setState({ 
-        showDropdown: true,
         query: query, 
         queryColor: '#000', 
       });
@@ -219,7 +217,6 @@ export default class LocationScreen extends React.Component {
       this.fetchLocationFromAPI(query);
     } else {
       this.setState({
-        showDropdown: false,
         queryColor: '#888',
         query: 'Enter address or describe location', 
       });
@@ -233,19 +230,20 @@ export default class LocationScreen extends React.Component {
     this.setState({ 
       query: locationObj.address, 
       queryColor: '#000',
-      showDropdown: false,
     });
     this.props.navigation.navigate('Location', {
       location: locationObj.address,
       longitude: locationObj.longitude,
       latitude: locationObj.latitude,
     });
-    let message = { 'action':'place_marker',
-                    'longitude': locationObj.longitude,
-                    'latitude':locationObj.latitude,
-                    'is_user_location':false,
-                    'title':locationObj.address
-                  };
+    this.updateInputHeight(0);
+    let message = { 
+      'action':'place_marker',
+      'longitude': locationObj.longitude,
+      'latitude':locationObj.latitude,
+      'is_user_location':false,
+      'title':locationObj.address
+    };
     this.webview.postMessage(JSON.stringify(message));
   }
   
@@ -276,27 +274,22 @@ export default class LocationScreen extends React.Component {
     if (locationCount == 0) {
       this.setState({ 
         inputHeight: 42, 
-        // inputMarginOffset: 0 
       });
     } else if (locationCount == 1) {
       this.setState({ 
         inputHeight: 84, 
-        // inputMarginOffset: -29 
       });
     } else if (locationCount == 2) {
       this.setState({
         inputHeight: 126, 
-        // inputMarginOffset: -71 
       });
     } else if (locationCount == 3) {
       this.setState({
         inputHeight: 146, 
-        // inputMarginOffset: -91 
       });
     } else {
       this.setState({ 
         inputHeight: 170, 
-        // inputMarginOffset: -115 
       });
     }
   }
@@ -313,7 +306,7 @@ export default class LocationScreen extends React.Component {
         let location = await Location.getCurrentPositionAsync({});
         // console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
-        this.setState({ loadingOpacity: 0, showDropdown: true, });
+        this.setState({ loadingOpacity: 0 });
         this.updateQueryFromInput(undefined);
         this.updateLongitude(location.coords.longitude);
         this.updateLatitude(location.coords.latitude);
@@ -332,7 +325,6 @@ export default class LocationScreen extends React.Component {
       }
     }
   };
-
 
   render() {
     console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params,  ' DROPDOWN: ', this.state.showDropdown);

@@ -12,11 +12,6 @@ import {
   Platform,
 } from 'react-native';
 
-import KeyboardSpacer from 'react-native-keyboard-spacer';
-
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { KeyboardAwareView } from 'react-native-keyboard-aware-view'
-
 // components
 import HeaderTitle from './HeaderTitle.js';
 import HeaderBack from './HeaderBack.js';

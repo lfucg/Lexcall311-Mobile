@@ -4,6 +4,7 @@ import {
   Text,
   View,
   TextInput,
+  Keyboard,
 } from 'react-native';
 
 // components
@@ -23,12 +24,35 @@ export default class DescriptionScreen extends React.Component {
     this.state = {
       description: '',
       descriptionColor: '#888',
+      screenOffset: 0,
     };
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
   }
 
   componentDidMount() {
     this.startingDescription();
   }
+
+  componentWillUnmount() {
+    this.keyboardDidShowSub.remove();
+    this.keyboardDidHideSub.remove();
+  }
+
+  keyboardDidShow = (event) => {
+    this.setState({
+      screenOffset: -160,
+    });
+  };
+
+  keyboardDidHide = (event) => {
+    this.setState({
+      screenOffset: 0,
+    });
+  };
 
   startingDescription() {
     currentDescription = this.props.navigation.getParam('description');
@@ -113,7 +137,12 @@ export default class DescriptionScreen extends React.Component {
     console.log('DESCRIPTION SCREEN PARAMS: ', this.props.navigation.state.params);
 
     return (
-      <View style={styles.container}>
+      <View 
+        style={[styles.container, { 
+          paddingBottom: this.keyboardHeight,
+          marginTop: this.state.screenOffset,
+        }]} 
+      >
         <View style={styles.header}>
           <NineOneOne />
           <Summary 
