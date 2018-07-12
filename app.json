@@ -4,7 +4,7 @@
     "orientation": "portrait",
     "name": "LexCall 311",
     "icon": "./src/assets/images/app-icon.png",
-    "version": "2.01",
+    "version": "2.0",
     "slug": "lexcall311",
     "primaryColor": "#0057a8",
     "ios": {
@@ -19,7 +19,8 @@
       }
     },
     "android": {
-      "package": "com.apaxsoftware.LexCall311App"
+      "package": "com.apaxsoftware.LexCall311App",
+      "versionCode": "2"
     },
     "splash": {
       "image": "./src/assets/images/loading.png",
