@@ -4,7 +4,7 @@
     "orientation": "portrait",
     "name": "LexCall 311",
     "icon": "./src/assets/images/app-icon.png",
-    "version": "2.0",
+    "version": "2.01",
     "slug": "lexcall311",
     "primaryColor": "#0057a8",
     "ios": {
