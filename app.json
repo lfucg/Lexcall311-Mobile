@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.apaxsoftware.LexCall311App",
-      "versionCode": "2"
+      "versionCode": 2
     },
     "splash": {
       "image": "./src/assets/images/loading.png",
