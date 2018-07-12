@@ -20,7 +20,13 @@
     },
     "android": {
       "package": "com.apaxsoftware.LexCall311App",
-      "versionCode": 2
+      "versionCode": 3,
+      "permissions": [
+        "CAMERA",
+        "CAMERA_ROLL",
+        "LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
     "splash": {
       "image": "./src/assets/images/loading.png",
