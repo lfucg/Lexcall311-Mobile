@@ -22,7 +22,6 @@
       "package": "com.apaxsoftware.LexCall311App",
       "versionCode": 4,
       "permissions": [
-        "CAMERA_ROLL",
         "LOCATION",
         "ACCESS_COARSE_LOCATION"
       ]
