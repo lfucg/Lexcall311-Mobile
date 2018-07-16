@@ -25,7 +25,7 @@ export default class IndexCreateReport extends React.Component {
             style={styles.pencil_img}
           />
           <Text style={styles.text}>
-            Create a 311 Report
+            Create a New 311 Report
           </Text>
         </View>
       </TouchableOpacity>
@@ -35,8 +35,18 @@ export default class IndexCreateReport extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1.5,
+    backgroundColor: '#fff',
+    borderColor: '#585858',
+    borderTopWidth: 2,
+  },
+  wrap: {
     backgroundColor: '#0456A8',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',    
+    justifyContent: 'center',
+    margin: 5,
     ...Platform.select({
       ios: {
         shadowOffset:{ width: 0, height: 1, },
@@ -48,12 +58,6 @@ const styles = StyleSheet.create({
         elevation: 5,
       },
     }),
-  },
-  wrap: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',    
-    justifyContent: 'center',
   },
   pencil_img: {
     height: 18,

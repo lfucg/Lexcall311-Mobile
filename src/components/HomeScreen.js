@@ -44,7 +44,6 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <HeaderImg />
-          <IndexCreateReport navigation={this.props.navigation} />
         </View>
         <View style={styles.menu}>
           {
@@ -85,6 +84,7 @@ export default class HomeScreen extends React.Component {
             img={external_link_alt_img} 
             text={"Visit lexingtonky.gov"} 
           />
+          <IndexCreateReport navigation={this.props.navigation} />
         </View>
       </View>
     );
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   header: {
-    flex: 5,
+    flex: 4,
   },
 });
 
