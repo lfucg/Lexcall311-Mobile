@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry, Image, StyleSheet, View } from 'react-native';
+import { 
+  Image, 
+  StyleSheet, 
+  View,
+} from 'react-native';
 
 import header_pic from '../assets/images/home_sunrise.jpg';
 import header_pic2 from '../assets/images/home_thoroughbred.jpg';
@@ -22,7 +26,12 @@ export default class HeaderImg extends Component {
 
   render() {
     return (
-      <Image source={this.randomImage()} style={styles.header_pic} resizeMode='cover' />
+      <Image 
+        source={this.randomImage()} 
+        style={styles.header_pic} 
+        resizeMode='cover'
+        fadeDuration = {null}
+      />
     );
   }
 }
