@@ -22,8 +22,7 @@
       "package": "com.apaxsoftware.LexCall311App",
       "versionCode": 4,
       "permissions": [
-        "LOCATION",
-        "ACCESS_COARSE_LOCATION"
+        "LOCATION"
       ]
     },
     "splash": {
