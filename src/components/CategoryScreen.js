@@ -74,7 +74,7 @@ export default class CategoryScreen extends React.Component {
             navigation={this.props.navigation}
             nav_link={'Location'} 
             img={trash_img} 
-            text={"Bulky Trash Pickup"}
+            text={"Appliance / Tires"}
             category={"trash_pickup"}
           />
           <MenuOption 
