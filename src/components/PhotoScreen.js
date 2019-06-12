@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button,
   Image,
   ImageBackground,
   Dimensions,
@@ -21,7 +20,8 @@ import Summary from './Summary.js';
 import summary_camera_img from '../assets/images/summary_icon_camera.png';
 import camera_img from '../assets/images/icon_camera.png';
 
-import { ImagePicker, Permissions, Constants } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 export default class PhotoScreen extends React.Component {
 
