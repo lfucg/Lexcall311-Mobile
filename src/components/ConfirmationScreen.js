@@ -42,7 +42,7 @@ export default class ConfirmationScreen extends React.Component {
 
 
   render() {
-    console.log('CONFIRMATION SCREEN PARAMS: ', this.props.navigation.state.params);
+    // console.log('CONFIRMATION SCREEN PARAMS: ', this.props.navigation.state.params);
 
 
     return (

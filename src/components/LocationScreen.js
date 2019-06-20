@@ -4,17 +4,15 @@ import {
   Text,
   View,
   Image,
-  ImageBackground,
-  Button,
   TouchableOpacity,
   TextInput,
   Dimensions,
   WebView,
-  TouchableHighlight,
   Keyboard,
 } from 'react-native';
 
-import { Constants, Location, Permissions } from 'expo';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 import Autocomplete from 'react-native-autocomplete-input';
 import Modal from "react-native-modal";
@@ -304,7 +302,7 @@ export default class LocationScreen extends React.Component {
         this.setState({ loadingOpacity: 100 });
 
         let location = await Location.getCurrentPositionAsync({});
-        console.log("GET MY LOCATION: LOCATION: ------------------", location);
+        // console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
         this.setState({ loadingOpacity: 0 });
         this.updateQueryFromInput(undefined);
@@ -327,7 +325,7 @@ export default class LocationScreen extends React.Component {
   };
 
   render() {
-    console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
+    // console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get('window');
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * .54;

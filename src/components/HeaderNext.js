@@ -46,7 +46,7 @@ export default class HeaderNext extends React.Component {
 
       const auth_params = (
         'username=' + env.data.username +
-        '&password=' + env.data.password +
+        '&password=' + env.data.password + env.data.token +
         '&grant_type=password' + 
         '&client_id=' + env.data.client_id +
         '&client_secret=' + env.data.client_secret
@@ -55,6 +55,7 @@ export default class HeaderNext extends React.Component {
       // get authorization
       // to submit to sandbox use https://test.salesforce,  user: lexcallmobile@lexingtonky.gov.lexcall.devlex311
       // to submit to production use https://login.salesforce,  user: lexcallmobile@lexingtonky.gov.lexcall
+      // fetch("https://test.salesforce.com/services/oauth2/token", {
       fetch("https://login.salesforce.com/services/oauth2/token", {
         method: 'POST',
         headers: {
@@ -107,7 +108,7 @@ export default class HeaderNext extends React.Component {
 
               // create image1 as attachment
               if (this.props.image1) {
-                console.log('IMAGE1 BEING ATTACHED: ');
+                // console.log('IMAGE1 BEING ATTACHED: ');
                 fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Attachment/', {
                   method: 'POST',
                   headers: {
@@ -122,13 +123,13 @@ export default class HeaderNext extends React.Component {
                 }).then(image1_res => image1_res.json())
                   .catch(error => console.error('ERROR: ', error))
                   .then(image1_response => {
-                    console.log('Image1 attachment SUCCESS: ', image1_response);
+                    // console.log('Image1 attachment SUCCESS: ', image1_response);
                 });
               }
 
               // create image2 as attachment
               if (this.props.image2) {
-                console.log('IMAGE2 BEING ATTACHED: ');
+                // console.log('IMAGE2 BEING ATTACHED: ');
                 fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Attachment/', {
                   method: 'POST',
                   headers: {
@@ -143,7 +144,7 @@ export default class HeaderNext extends React.Component {
                 }).then(image2_res => image2_res.json())
                   .catch(error => console.error('ERROR: ', error))
                   .then(image2_response => {
-                    console.log('Image2 attachment SUCCESS: ', image2_response);
+                    // console.log('Image2 attachment SUCCESS: ', image2_response);
                 });
               }
 

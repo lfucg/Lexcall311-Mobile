@@ -134,7 +134,7 @@ export default class DescriptionScreen extends React.Component {
   }
 
   render() {
-    console.log('DESCRIPTION SCREEN PARAMS: ', this.props.navigation.state.params);
+    // console.log('DESCRIPTION SCREEN PARAMS: ', this.props.navigation.state.params);
 
     return (
       <View 

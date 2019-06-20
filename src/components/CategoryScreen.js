@@ -50,7 +50,7 @@ export default class CategoryScreen extends React.Component {
   }
 
   render() {
-    console.log('CATEGORY SCREEN PARAMS: ', this.props.navigation.state.params);
+    // console.log('CATEGORY SCREEN PARAMS: ', this.props.navigation.state.params);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
