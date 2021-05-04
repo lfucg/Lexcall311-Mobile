@@ -1,6 +1,5 @@
 {
   "expo": {
-    "sdkVersion": "33.0.0",
     "orientation": "portrait",
     "name": "LexCall 311",
     "icon": "./src/assets/images/app-icon.png",
