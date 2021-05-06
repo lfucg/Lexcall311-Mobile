@@ -239,6 +239,7 @@ export default class LocationScreen extends React.Component {
       latitude: locationObj.item.latitude,
     });
     this.updateInputHeight(0);
+
     let message = {
       action: "place_marker",
       longitude: locationObj.item.longitude,
@@ -246,19 +247,14 @@ export default class LocationScreen extends React.Component {
       is_user_location: false,
       title: locationObj.item.address,
     };
-    console.log("message", message);
-    this.webView.injectJavaScript(`
-      alert("receiving message");
-      try {
-        window.postMessage(${JSON.stringify(message)}, "*");
-        alert("after message");
-      }
-      catch(err) {
-        alert(err, "message error");
-      }
-      true;
-      alert("message sent");
-      `);
+
+    let stringMessage = JSON.stringify(message);
+    const updatePin = `
+        window.postMessage(${stringMessage});  
+    `;
+    setTimeout(() => {
+      this.webView.injectJavaScript(updatePin);
+    }, 500);
   }
 
   updateLongitude(longitude) {
@@ -371,7 +367,6 @@ export default class LocationScreen extends React.Component {
               outline: none;
             }
           </style>
-          
           <script src="https://js.arcgis.com/3.24/"></script>
 
           <script>
@@ -440,9 +435,9 @@ export default class LocationScreen extends React.Component {
 
 
             // place marker for phone location - called from getMyLocation() 
-            document.addEventListener("message", function(data) {              
-              var message = JSON.parse(data.data);
-              alert(message);
+              window.addEventListener("message", (event) => {  
+              var data = JSON.stringify(event.data);
+              var message = JSON.parse(data);
               //document.getElementById('data').innerHTML = "message received: '" + JSON.stringify(message) + "'";
               
               if (message.action != null) {
@@ -466,11 +461,13 @@ export default class LocationScreen extends React.Component {
               }
             });
           </script>
+          
         </head>
         <body>
           <div id="map" class="map">
             <div id="data" style="width:95%; word-wrap:break-word"></div>
           </div>
+          
         </body>
       </html>      
     `;
@@ -653,8 +650,6 @@ export default class LocationScreen extends React.Component {
                 `${message.latitude} latitude, ${message.longitude} longitude`
               );
             }}
-            mixedContentMode="always"
-            javaScriptEnabled={true}
           />
         </View>
       </View>
