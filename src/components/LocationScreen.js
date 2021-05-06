@@ -34,7 +34,6 @@ import crosshair_img from "../assets/images/icon_crosshairs.png";
 export default class LocationScreen extends React.Component {
   constructor(props) {
     super(props);
-    console.log("In location screen component");
     this.state = {
       base_map: {},
       layer_map: {},
@@ -112,8 +111,6 @@ export default class LocationScreen extends React.Component {
   }
 
   fetchLocationFromAPI(location) {
-    // console.log('FETCH LOCATION FROM API: LOCATION: ', location);
-
     const location_url =
       "https://maps.lexingtonky.gov/lfucggis/rest/services/locator/GeocodeServer/findAddressCandidates";
     const location_params =
@@ -134,7 +131,6 @@ export default class LocationScreen extends React.Component {
     fetch(location_url_and_params)
       .then((response) => response.json())
       .then((response) => {
-        // console.log(response);
         let location_list = [];
         for (let i = 0; i < response.candidates.length; i++) {
           var locationObj = {
@@ -143,29 +139,28 @@ export default class LocationScreen extends React.Component {
             longitude: response.candidates[i].location.x,
           };
           location_list.push(locationObj);
+          // hide dropdown of suggestions
+          this.updateInputHeight(location_list.length);
+
+          this.setState({
+            ...this.state,
+            locations: location_list,
+          });
         }
-
-        // hide dropdown of suggestions
-        this.updateInputHeight(location_list.length);
-
-        // console.log('LOCATION SCREEN: FETCH LOCATION FROM API: LOCATION LIST: ', location_list);
-        this.setState({
-          locations: location_list,
-        });
       });
   }
 
   static navigationOptions = ({ navigation }) => {
     return {
-      headerLeft: (
+      headerLeft: () => (
         <HeaderBack
           navigation={navigation}
           text={"Back"}
           nav_link={"Category"}
         />
       ),
-      headerTitle: <HeaderTitle text={"Create A Report"} />,
-      headerRight: (
+      headerTitle: () => <HeaderTitle text={"Create A Report"} />,
+      headerRight: () => (
         <HeaderNext
           navigation={navigation}
           text={"Next"}
@@ -234,25 +229,36 @@ export default class LocationScreen extends React.Component {
   }
 
   updateQueryFromSelection(locationObj) {
-    // console.log('User selected location ---------: ', JSON.stringify(locationObj));
     this.setState({
-      query: locationObj.address,
+      query: locationObj.item.address,
       queryColor: "#000",
     });
     this.props.navigation.navigate("Location", {
-      location: locationObj.address,
-      longitude: locationObj.longitude,
-      latitude: locationObj.latitude,
+      location: locationObj.item.address,
+      longitude: locationObj.item.longitude,
+      latitude: locationObj.item.latitude,
     });
     this.updateInputHeight(0);
     let message = {
       action: "place_marker",
-      longitude: locationObj.longitude,
-      latitude: locationObj.latitude,
+      longitude: locationObj.item.longitude,
+      latitude: locationObj.item.latitude,
       is_user_location: false,
-      title: locationObj.address,
+      title: locationObj.item.address,
     };
-    this.webview.postMessage(JSON.stringify(message));
+    console.log("message", message);
+    this.webView.injectJavaScript(`
+      alert("receiving message");
+      try {
+        window.postMessage(${JSON.stringify(message)}, "*");
+        alert("after message");
+      }
+      catch(err) {
+        alert(err, "message error");
+      }
+      true;
+      alert("message sent");
+      `);
   }
 
   updateLongitude(longitude) {
@@ -269,7 +275,6 @@ export default class LocationScreen extends React.Component {
   }
 
   handleInputFocus() {
-    // console.log('FOCUSED-------------');
     if (this.state.query == "Enter address or describe location") {
       this.setState({
         query: "",
@@ -278,7 +283,6 @@ export default class LocationScreen extends React.Component {
   }
 
   updateInputHeight(locationCount) {
-    // console.log('HEIGHT UPDATE----------------')
     if (locationCount == 0) {
       this.setState({
         inputHeight: 42,
@@ -326,7 +330,7 @@ export default class LocationScreen extends React.Component {
           is_user_location: true,
           title: "My Location",
         };
-        this.webview.postMessage(JSON.stringify(message));
+        this.webView.postMessage(JSON.stringify(message));
       } else {
         this.mapError(
           "Phone location is turned off.  Please enable and then try again."
@@ -336,7 +340,6 @@ export default class LocationScreen extends React.Component {
   };
 
   render() {
-    // console.log('LOCATION SCREEN PARAMS: ', this.props.navigation.state.params);
     const dimensions = Dimensions.get("window");
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * 0.54;
@@ -430,15 +433,17 @@ export default class LocationScreen extends React.Component {
                 let zoom = 16;
                 if (map.getZoom() > 16) { zoom = map.getZoom() }
                 map.centerAndZoom(evt.mapPoint, zoom);
-                window.postMessage(JSON.stringify(message));
+                window.ReactNativeWebView.postMessage(JSON.stringify(message));
                 // document.getElementById('data').innerHTML = JSON.stringify(message);
               });
             });
 
+
             // place marker for phone location - called from getMyLocation() 
             document.addEventListener("message", function(data) {              
               var message = JSON.parse(data.data);
-              // document.getElementById('data').innerHTML = "message received: '" + JSON.stringify(message) + "'";
+              alert(message);
+              //document.getElementById('data').innerHTML = "message received: '" + JSON.stringify(message) + "'";
               
               if (message.action != null) {
                 var action = message.action;
@@ -536,16 +541,15 @@ export default class LocationScreen extends React.Component {
             {
               backgroundColor: "#fff",
               height: this.state.inputHeight,
-              // marginTop: this.state.inputMarginOffset,
             },
           ]}
         >
           <Autocomplete
-            style={{}}
+            data={this.state.locations}
+            value={this.state.query}
             listStyle={{
               padding: 10,
             }}
-            data={this.state.locations}
             renderTextInput={(text) => (
               <TouchableOpacity
                 style={{
@@ -569,14 +573,16 @@ export default class LocationScreen extends React.Component {
                 />
               </TouchableOpacity>
             )}
-            renderItem={(locationObj) => (
-              <TouchableOpacity
-                style={{ padding: 5 }}
-                onPress={() => this.updateQueryFromSelection(locationObj)}
-              >
-                <Text>{locationObj.address}</Text>
-              </TouchableOpacity>
-            )}
+            flatListProps={{
+              renderItem: (locationObj) => (
+                <TouchableOpacity
+                  style={{ padding: 5 }}
+                  onPress={() => this.updateQueryFromSelection(locationObj)}
+                >
+                  <Text>{locationObj.item.address}</Text>
+                </TouchableOpacity>
+              ),
+            }}
           ></Autocomplete>
         </View>
 
@@ -627,6 +633,7 @@ export default class LocationScreen extends React.Component {
           </View>
 
           <WebView
+            ref={(webView) => (this.webView = webView)}
             source={{ html: map5, baseUrl: "https://www.google.com/" }}
             style={[
               styles.map_and_layers_wrap,
@@ -636,16 +643,15 @@ export default class LocationScreen extends React.Component {
               },
             ]}
             onMessage={(event) => {
-              // (this is called when the webview calls window.postMessage(...)
+              // (this is called when the webview calls window.ReactNativeWebView.postMessage(...)
               // gets coordinates of map marker (from touch or getting user location) and assigns to state
-              // console.log('WEBVIEW: ', event.nativeEvent.data);
+              console.log("WEBVIEW: ", event.nativeEvent.data);
               var message = JSON.parse(event.nativeEvent.data);
               this.updateLongitude(message.longitude);
               this.updateLatitude(message.latitude);
-              this.updateQueryFromInput(message.location);
-            }}
-            ref={(r) => {
-              this.webview = r;
+              this.updateQueryFromInput(
+                `${message.latitude} latitude, ${message.longitude} longitude`
+              );
             }}
             mixedContentMode="always"
             javaScriptEnabled={true}
