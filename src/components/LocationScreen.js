@@ -208,7 +208,6 @@ export default class LocationScreen extends React.Component {
   }
 
   updateQueryFromInput(query) {
-    // console.log('Updating Query ---------: ', query);
     if (query != undefined) {
       this.setState({
         query: query,
@@ -311,7 +310,6 @@ export default class LocationScreen extends React.Component {
         this.setState({ loadingOpacity: 100 });
 
         let location = await Location.getCurrentPositionAsync({});
-        // console.log("GET MY LOCATION: LOCATION: ------------------", location);
 
         this.setState({ loadingOpacity: 0 });
         this.updateQueryFromInput(undefined);
@@ -326,7 +324,13 @@ export default class LocationScreen extends React.Component {
           is_user_location: true,
           title: "My Location",
         };
-        this.webView.postMessage(JSON.stringify(message));
+        let stringMessage = JSON.stringify(message);
+        const updatePin = `
+        window.postMessage(${stringMessage});  
+        `;
+        setTimeout(() => {
+          this.webView.injectJavaScript(updatePin);
+        }, 500);
       } else {
         this.mapError(
           "Phone location is turned off.  Please enable and then try again."
@@ -336,6 +340,8 @@ export default class LocationScreen extends React.Component {
   };
 
   render() {
+    console.log(this.state.latitude);
+    console.log(this.state.longitude);
     const dimensions = Dimensions.get("window");
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * 0.54;
@@ -429,7 +435,6 @@ export default class LocationScreen extends React.Component {
                 if (map.getZoom() > 16) { zoom = map.getZoom() }
                 map.centerAndZoom(evt.mapPoint, zoom);
                 window.ReactNativeWebView.postMessage(JSON.stringify(message));
-                // document.getElementById('data').innerHTML = JSON.stringify(message);
               });
             });
 
@@ -438,13 +443,10 @@ export default class LocationScreen extends React.Component {
               window.addEventListener("message", (event) => {  
               var data = JSON.stringify(event.data);
               var message = JSON.parse(data);
-              //document.getElementById('data').innerHTML = "message received: '" + JSON.stringify(message) + "'";
               
               if (message.action != null) {
                 var action = message.action;
                 if (action == "place_marker") {
-                  // document.getElementById('data').innerHTML = 'Phone Location:  ' + JSON.stringify(message);
-                  
                   let pt = new esri.geometry.Point(message.longitude, message.latitude, new esri.SpatialReference({ 'wkid': 4326 }));  
                   let mapCoordsPt = esri.geometry.geographicToWebMercator(pt);
                   map.graphics.clear();
@@ -453,12 +455,8 @@ export default class LocationScreen extends React.Component {
                     new esri.symbol.SimpleMarkerSymbol().setColor([0, 92, 183]),
                   ));                  
                   map.centerAndZoom(mapCoordsPt, 16);
-                } else {
-                  // document.getElementById('data').innerHTML ="unknown action: '" + action + "'";
-                }
-              } else {
-                // document.getElementById('data').innerHTML += "<br />action undefined";
-              }
+                } 
+              } 
             });
           </script>
           
@@ -466,8 +464,7 @@ export default class LocationScreen extends React.Component {
         <body>
           <div id="map" class="map">
             <div id="data" style="width:95%; word-wrap:break-word"></div>
-          </div>
-          
+          </div>   
         </body>
       </html>      
     `;
@@ -571,6 +568,7 @@ export default class LocationScreen extends React.Component {
               </TouchableOpacity>
             )}
             flatListProps={{
+              keyExtractor: (_, idx) => idx.toString(),
               renderItem: (locationObj) => (
                 <TouchableOpacity
                   style={{ padding: 5 }}
@@ -642,13 +640,9 @@ export default class LocationScreen extends React.Component {
             onMessage={(event) => {
               // (this is called when the webview calls window.ReactNativeWebView.postMessage(...)
               // gets coordinates of map marker (from touch or getting user location) and assigns to state
-              console.log("WEBVIEW: ", event.nativeEvent.data);
               var message = JSON.parse(event.nativeEvent.data);
               this.updateLongitude(message.longitude);
               this.updateLatitude(message.latitude);
-              this.updateQueryFromInput(
-                `${message.latitude} latitude, ${message.longitude} longitude`
-              );
             }}
           />
         </View>
@@ -718,92 +712,3 @@ const styles = StyleSheet.create({
     height: 25,
   },
 });
-
-// NOTES ABOUT ORIGINAL API TO FETCH MAP - now handled in webview
-// bbox_xmax: -9414495.222138507,
-// bbox_xmin: 4574321.311047046,
-// bbox_ymax: -9398863.84985421,
-// bbox_ymin: 4598093.2268437045,
-
-// fetchMapFromAPI(map_scale=undefined) {
-// console.log('MAP BEING FETCHED');
-
-// const base_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/basemap_lexcall/MapServer/export?";
-// const layer_url = "https://maps.lexingtonky.gov/lfucggis/rest/services/labels/MapServer/export?";
-// let bbox = this.state.bbox_xmax + "%2C" + this.state.bbox_xmin + "%2C" + this.state.bbox_ymax + "%2C" + this.state.bbox_ymin;
-
-// if (map_scale==undefined) {
-//   map_scale = this.state.map_scale;
-// }
-
-// let base_params = (
-//   // "&layerDefs=" +
-//   // "&layerTimeOptions=" +
-//   // "&layerRangeValues=" +
-//   // "&dynamicLayers=" +
-//   // "&layerParameterValues=" +
-//   // "&time=" +
-//   // "&gdbVersion=" +
-//   // "&rotation=" +
-//   // "&datumTransformations=" +
-//   // "&mapRangeValues=" +
-//   // "&layers=show:4,20" +
-//   "bbox=" + bbox +
-//   "&mapScale=" + map_scale +
-//   "&bboxSR=102100" +
-//   "&size=409,622" +
-//   "&imageSR=102100" +
-//   "&dpi=600" +
-//   "&format=png32" +
-//   "&transparent=true" +
-//   "&f=json"
-// );
-// let base_map_url = base_url + base_params;
-// // console.log('URL: ', map_params);
-
-// this.setState({
-//   base_map_url: base_map_url,
-// })
-
-// let layer_params = (
-//   // "&layerDefs=" +
-//   // "&layerTimeOptions=" +
-//   // "&layerRangeValues=" +
-//   // "&dynamicLayers=" +
-//   // "&layerParameterValues=" +
-//   // "&time=" +
-//   // "&gdbVersion=" +
-//   // "&rotation=" +
-//   // "&datumTransformations=" +
-//   // "&mapRangeValues=" +
-//   "bbox=" + bbox +
-//   // "&layers=show:4" +
-//   "&mapScale=" + map_scale +
-//   "&bboxSR=102100" +
-//   "&size=409,622" +
-//   "&imageSR=102100" +
-//   "&dpi=600" +
-//   "&format=png32" +
-//   "&transparent=true" +
-//   "&f=json"
-// );
-// let layer_map_url = layer_url + layer_params;
-
-// fetch(base_map_url)
-// .then(response => response.json())
-// .then(response => {
-//   // console.log(response);
-//   this.setState({
-//     base_map: response,
-//   });
-// });
-
-// fetch(layer_map_url)
-// .then(response => response.json())
-// .then(response => {
-//   // console.log(response);
-//   this.setState({
-//     layer_map: response,
-//   });
-// });
-// };
