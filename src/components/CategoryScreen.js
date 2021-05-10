@@ -114,6 +114,20 @@ export default class CategoryScreen extends React.Component {
           <MenuOption
             navigation={this.props.navigation}
             nav_link={"Location"}
+            img={sign_img}
+            text={"Housing Complaint/Non-Emergency"}
+            category={"housing_complaint"}
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_link={"Location"}
+            img={sign_img}
+            text={"Sidewalk Complaint"}
+            category={"sidewalk_complaint"}
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_link={"Location"}
             img={ellipsis_img}
             text={"Other"}
             category={"other"}
