@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 // components
 import HeaderTitle from "./HeaderTitle.js";

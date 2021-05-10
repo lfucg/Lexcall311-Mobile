@@ -52,7 +52,7 @@ export default class LocationScreen extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.keyboardDidShowSub = Keyboard.addListener(
       "keyboardDidShow",
       this.keyboardDidShow
@@ -340,8 +340,6 @@ export default class LocationScreen extends React.Component {
   };
 
   render() {
-    console.log(this.state.latitude);
-    console.log(this.state.longitude);
     const dimensions = Dimensions.get("window");
     const mapWidth = dimensions.width;
     const mapHeight = dimensions.height * 0.54;

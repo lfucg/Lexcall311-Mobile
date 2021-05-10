@@ -1,16 +1,10 @@
-import React, { Component } from 'react';
-import { 
-  Image, 
-  StyleSheet, 
-  View,
-} from 'react-native';
+import React, { Component } from "react";
+import { Image, StyleSheet } from "react-native";
 
-import header_pic from '../assets/images/home_sunrise.jpg';
-import header_pic2 from '../assets/images/home_thoroughbred.jpg';
+import header_pic from "../assets/images/home_sunrise.jpg";
+import header_pic2 from "../assets/images/home_thoroughbred.jpg";
 
 export default class HeaderImg extends Component {
-
-
   getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
@@ -26,11 +20,11 @@ export default class HeaderImg extends Component {
 
   render() {
     return (
-      <Image 
-        source={this.randomImage()} 
-        style={styles.header_pic} 
-        resizeMode='cover'
-        fadeDuration = {null}
+      <Image
+        source={this.randomImage()}
+        style={styles.header_pic}
+        resizeMode="cover"
+        fadeDuration={null}
       />
     );
   }

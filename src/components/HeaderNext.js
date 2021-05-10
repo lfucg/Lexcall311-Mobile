@@ -34,9 +34,8 @@ export default class HeaderNext extends React.Component {
 
   nextPageOrSubmit() {
     if (this.props.text == "Submit") {
-      // console.log('SUBMIT TO API');
       this.setState({ loading: true });
-
+      console.log(this.props);
       // is report anonymous?
       let anonymous = true;
       if (this.props.firstName || this.props.lastName) {
@@ -59,106 +58,119 @@ export default class HeaderNext extends React.Component {
       // to submit to sandbox use https://test.salesforce,  user: lexcallmobile@lexingtonky.gov.lexcall.devlex311
       // to submit to production use https://login.salesforce,  user: lexcallmobile@lexingtonky.gov.lexcall
       // fetch("https://test.salesforce.com/services/oauth2/token", {
-      // fetch("https://login.salesforce.com/services/oauth2/token", {
-      //   method: 'POST',
-      //   headers: {
-      //     "Accept": 'application/json',
-      //     "Content-Type": "application/x-www-form-urlencoded",
-      //   },
-      //   body: auth_params,
-      // }).then(auth => auth.json())
-      //   .catch(error => console.error('AUTH ERROR: ', error))
-      //   .then(auth_response => {
-      //     console.log('AUTH SUCCESS: ', auth_response);
-      //     let category = 'other';
-      //     if (this.props.category) { category = this.props.category }
-      //     let latitude = '';
-      //     if (this.props.latitude) { latitude = this.props.latitude }
-      //     let longitude = '';
-      //     if (this.props.longitude) { longitude = this.props.longitude }
+      fetch("https://login.salesforce.com/services/oauth2/token", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: auth_params,
+      })
+        .then((auth) => auth.json())
+        .catch((error) => console.error("AUTH ERROR: ", error))
+        .then((auth_response) => {
+          let category = "other";
+          if (this.props.category) {
+            category = this.props.category;
+          }
+          let latitude = "";
+          if (this.props.latitude) {
+            latitude = this.props.latitude;
+          }
+          let longitude = "";
+          if (this.props.longitude) {
+            longitude = this.props.longitude;
+          }
 
-      //     // create new case
-      //     fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Case/', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Authorization': "Bearer " + auth_response.access_token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         RecordTypeId: "01241000001IK5KAAW",   // RecordTypeId (Id): '01241000001IK5KAAW'
-      //         Status: "Open",   // Status (picklist): 'Open'
-      //         Origin: "Mobile App",   // Origin (picklist): 'Mobile App'
-      //         Priority: "Normal",   // Priority (picklist): 'Normal'
-      //         Anonymous__c: anonymous,
+          // create new case
+          fetch(
+            auth_response.instance_url + "/services/data/v20.0/sobjects/Case/",
+            {
+              method: "POST",
+              headers: {
+                Authorization: "Bearer " + auth_response.access_token,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                RecordTypeId: "01241000001IK5KAAW", // RecordTypeId (Id): '01241000001IK5KAAW'
+                Status: "Open", // Status (picklist): 'Open'
+                Origin: "Mobile App", // Origin (picklist): 'Mobile App'
+                Priority: "Normal", // Priority (picklist): 'Normal'
+                Anonymous__c: anonymous,
 
-      //         Subject: `${category}`,   // Subject (text/255): Main subject or summary of the request. In our current web-to-case form, we are mapping a picklist of "concern" values to this Subject field.
-      //         Description: `${this.props.description}`,   // Description (text/32000): Details of the request.
-      //         Anonymous__c: `${anonymous}`,   // Anonymous__c (true/false): Set to true if the requestor does not wish to furnish their name. Set to false otherwise. There is validation to ensure that this field must be set to true if first and last name are blank, and it must be set to false if either first or last name is not blank. Email and phone are optional either way.
-      //         Case_Contact_First_Name__c: `${this.props.firstName}`,   // Case_Contact_First_Name__c (text/50): First name of the requestor
-      //         Case_Contact_Last_Name__c: `${this.props.lastName}`,   // Case_Contact_Last_Name__c (text/50): Last name of the requestor
-      //         Case_Contact_Email__c: `${this.state.email}`,   // Case_Contact_Email__c (email): Email address of the requestor
-      //         Case_Contact_Phone__c: `${this.props.phone}`,   // Case_Contact_Phone__c (phone): Phone number of the requestor
+                Subject: `${category}`, // Subject (text/255): Main subject or summary of the request. In our current web-to-case form, we are mapping a picklist of "concern" values to this Subject field.
+                Description: `${this.props.description}`, // Description (text/32000): Details of the request.
+                Anonymous__c: `${anonymous}`, // Anonymous__c (true/false): Set to true if the requestor does not wish to furnish their name. Set to false otherwise. There is validation to ensure that this field must be set to true if first and last name are blank, and it must be set to false if either first or last name is not blank. Email and phone are optional either way.
+                Case_Contact_First_Name__c: `${this.props.firstName}`, // Case_Contact_First_Name__c (text/50): First name of the requestor
+                Case_Contact_Last_Name__c: `${this.props.lastName}`, // Case_Contact_Last_Name__c (text/50): Last name of the requestor
+                Case_Contact_Email__c: `${this.state.email}`, // Case_Contact_Email__c (email): Email address of the requestor
+                Case_Contact_Phone__c: `${this.props.phone}`, // Case_Contact_Phone__c (phone): Phone number of the requestor
 
-      //         Location_Description__c: `${this.props.location}`, // (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
-      //         Location__Latitude__s: `${latitude}`, // (double) The latitude of the geolocation.
-      //         Location__Longitude__s: `${longitude}`,  // (double) The longitude of the geolocation.
-      //       })
-      //     }).then(case_res => case_res.json())
-      //       .catch(error => console.error('ERROR: ', error))
-      //       .then(case_response => {
-      //         console.log('CASE SUCCESS: ', case_response);
+                Location_Description__c: `${this.props.location}`, // (text/1000): The user can be given the option to describe the location rather than supply a point on a map.
+                Location__Latitude__s: `${latitude}`, // (double) The latitude of the geolocation.
+                Location__Longitude__s: `${longitude}`, // (double) The longitude of the geolocation.
+              }),
+            }
+          )
+            .then((case_res) => case_res.json())
+            .catch((error) => console.error("ERROR: ", error))
+            .then((case_response) => {
+              console.log("CASE SUCCESS: ", case_response);
 
-      //         // create image1 as attachment
-      //         if (this.props.image1) {
-      //           // console.log('IMAGE1 BEING ATTACHED: ');
-      //           fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Attachment/', {
-      //             method: 'POST',
-      //             headers: {
-      //               'Authorization': "Bearer " + auth_response.access_token,
-      //               "Content-Type": "application/json",
-      //             },
-      //             body: JSON.stringify({
-      //               ParentId: `${case_response.id}`,
-      //               Name: "LexCall_image_1",
-      //               Body: `${this.props.image1.base64}`,
-      //             })
-      //           }).then(image1_res => image1_res.json())
-      //             .catch(error => console.error('ERROR: ', error))
-      //             .then(image1_response => {
-      //               // console.log('Image1 attachment SUCCESS: ', image1_response);
-      //           });
-      //         }
+              // create image1 as attachment
+              if (this.props.image1) {
+                fetch(
+                  auth_response.instance_url +
+                    "/services/data/v20.0/sobjects/Attachment/",
+                  {
+                    method: "POST",
+                    headers: {
+                      Authorization: "Bearer " + auth_response.access_token,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      ParentId: `${case_response.id}`,
+                      Name: "LexCall_image_1",
+                      Body: `${this.props.image1.base64}`,
+                    }),
+                  }
+                )
+                  .then((image1_res) => image1_res.json())
+                  .catch((error) => console.error("ERROR: ", error))
+                  .then((image1_response) => {});
+              }
 
-      //         // create image2 as attachment
-      //         if (this.props.image2) {
-      //           // console.log('IMAGE2 BEING ATTACHED: ');
-      //           fetch(auth_response.instance_url + '/services/data/v20.0/sobjects/Attachment/', {
-      //             method: 'POST',
-      //             headers: {
-      //               'Authorization': "Bearer " + auth_response.access_token,
-      //               "Content-Type": "application/json",
-      //             },
-      //             body: JSON.stringify({
-      //               ParentId: `${case_response.id}`,
-      //               Name: "LexCall_image_2",
-      //               Body: `${this.props.image2.base64}`,
-      //             })
-      //           }).then(image2_res => image2_res.json())
-      //             .catch(error => console.error('ERROR: ', error))
-      //             .then(image2_response => {
-      //               // console.log('Image2 attachment SUCCESS: ', image2_response);
-      //           });
-      //         }
+              // create image2 as attachment
+              if (this.props.image2) {
+                fetch(
+                  auth_response.instance_url +
+                    "/services/data/v20.0/sobjects/Attachment/",
+                  {
+                    method: "POST",
+                    headers: {
+                      Authorization: "Bearer " + auth_response.access_token,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      ParentId: `${case_response.id}`,
+                      Name: "LexCall_image_2",
+                      Body: `${this.props.image2.base64}`,
+                    }),
+                  }
+                )
+                  .then((image2_res) => image2_res.json())
+                  .catch((error) => console.error("ERROR: ", error))
+                  .then((image2_response) => {});
+              }
 
-      //         if (case_response.id) {
-      //           this.props.navigation.navigate('Confirmation', {
-      //             firstName: this.props.firstName,
-      //             trackingID: case_response.id,
-      //           });
-      //         }
-      //     });
-
-      // });
+              if (case_response.id) {
+                this.props.navigation.navigate("Confirmation", {
+                  firstName: this.props.firstName,
+                  trackingID: case_response.id,
+                });
+              }
+            });
+        });
 
       // **************** OTHER API SUBMISSION FIELDS ****************
       // Street_Number__c: "625",   // (text/10)

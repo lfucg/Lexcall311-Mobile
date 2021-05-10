@@ -26,11 +26,13 @@ import ellipsis_img from "../assets/images/icon_ellipsis-h.png";
 export default class CategoryScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      headerLeft: (
+      headerLeft: () => (
         <HeaderBack navigation={navigation} text={"Home"} nav_link={"Home"} />
       ),
-      headerTitle: <HeaderTitle text={"Create A Report"} />,
-      headerRight: <HeaderNext category={navigation.getParam("category")} />,
+      headerTitle: () => <HeaderTitle text={"Create A Report"} />,
+      headerRight: () => (
+        <HeaderNext category={navigation.getParam("category")} />
+      ),
     };
   };
 
