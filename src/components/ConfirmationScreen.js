@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Clipboard,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import Clipboard from "@react-native-community/clipboard";
 
 // components
 import HeaderTitle from "./HeaderTitle.js";

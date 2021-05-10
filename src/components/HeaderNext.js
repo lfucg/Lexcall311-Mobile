@@ -35,7 +35,7 @@ export default class HeaderNext extends React.Component {
   nextPageOrSubmit() {
     if (this.props.text == "Submit") {
       this.setState({ loading: true });
-      console.log(this.props);
+
       // is report anonymous?
       let anonymous = true;
       if (this.props.firstName || this.props.lastName) {
