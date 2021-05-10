@@ -329,6 +329,8 @@ export default class ContactScreen extends React.Component {
                   value={this.state.email}
                   underlineColorAndroid="transparent"
                   keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
                   onBlur={() => this.emailCheck()}
                 />
               </View>
