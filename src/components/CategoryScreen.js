@@ -1,142 +1,125 @@
-import React from 'react';
-import { 
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
 // components
-import HeaderTitle from './HeaderTitle.js';
-import HeaderBack from './HeaderBack.js';
-import HeaderNext from './HeaderNext.js';
-import MenuOption from './MenuOption.js';
-import NineOneOne from './NineOneOne.js';
-import Summary from './Summary.js';
+import HeaderTitle from "./HeaderTitle.js";
+import HeaderBack from "./HeaderBack.js";
+import HeaderNext from "./HeaderNext.js";
+import MenuOption from "./MenuOption.js";
+import NineOneOne from "./NineOneOne.js";
+import Summary from "./Summary.js";
 
 // images
-import check_img from '../assets/images/summary_icon_check-circle.png';
-import trash_img from '../assets/images/icon_trash-alt.png';
-import road_img from '../assets/images/icon_road.png';
-import truck_img from '../assets/images/icon_truck.png';
-import volume_img from '../assets/images/icon_volume-up.png';
-import wrench_img from '../assets/images/icon_wrench.png';
-import car_img from '../assets/images/icon_car.png';
-import question_img from '../assets/images/icon_question.png';
-import recycle_img from '../assets/images/icon_recycle.png';
-import sign_img from '../assets/images/icon_map-signs.png';
-import tree_img from '../assets/images/icon_tree.png';
-import ellipsis_img from '../assets/images/icon_ellipsis-h.png';
+import check_img from "../assets/images/summary_icon_check-circle.png";
+import trash_img from "../assets/images/icon_trash-alt.png";
+import road_img from "../assets/images/icon_road.png";
+import truck_img from "../assets/images/icon_truck.png";
+import volume_img from "../assets/images/icon_volume-up.png";
+import wrench_img from "../assets/images/icon_wrench.png";
+import car_img from "../assets/images/icon_car.png";
+import question_img from "../assets/images/icon_question.png";
+import recycle_img from "../assets/images/icon_recycle.png";
+import sign_img from "../assets/images/icon_map-signs.png";
+import tree_img from "../assets/images/icon_tree.png";
+import ellipsis_img from "../assets/images/icon_ellipsis-h.png";
 
 export default class CategoryScreen extends React.Component {
-
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({ navigation }) => {
     return {
       headerLeft: (
-        <HeaderBack
-          navigation={navigation}
-          text={"Home"}
-          nav_link={"Home"}
-        />
+        <HeaderBack navigation={navigation} text={"Home"} nav_link={"Home"} />
       ),
-      headerTitle: (
-        <HeaderTitle text={"Create A Report"}/>
-      ),
-      headerRight: (
-        <HeaderNext 
-          category={navigation.getParam('category')}
-        />
-      ),
+      headerTitle: <HeaderTitle text={"Create A Report"} />,
+      headerRight: <HeaderNext category={navigation.getParam("category")} />,
     };
-  }
+  };
 
   render() {
-    // console.log('CATEGORY SCREEN PARAMS: ', this.props.navigation.state.params);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <NineOneOne />
-          <Summary 
-            icon={check_img} 
+          <Summary
+            icon={check_img}
             heading={"Select a Category"}
             content={"Select which type of issue you are reporting."}
           />
         </View>
         <View style={styles.menu}>
-
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={truck_img} 
+            nav_link={"Location"}
+            img={truck_img}
             text={"Garbage Collection"}
             category={"garbage_collection"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={trash_img} 
+            nav_link={"Location"}
+            img={trash_img}
             text={"Appliance / Tires"}
             category={"trash_pickup"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={tree_img} 
+            nav_link={"Location"}
+            img={tree_img}
             text={"Yard Waste Collection"}
             category={"yard_waste"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={recycle_img} 
+            nav_link={"Location"}
+            img={recycle_img}
             text={"Recycling Collection"}
             category={"recycling"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={car_img} 
+            nav_link={"Location"}
+            img={car_img}
             text={"Pothole Repair"}
             category={"pothole"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={volume_img} 
+            nav_link={"Location"}
+            img={volume_img}
             text={"Nuisance Complaint"}
             category={"nuisance_complaint"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={wrench_img} 
+            nav_link={"Location"}
+            img={wrench_img}
             text={"Park Maintenance"}
             category={"park_maintenance"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={road_img} 
+            nav_link={"Location"}
+            img={road_img}
             text={"Dead Animal Removal"}
             category={"dead_animal"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={sign_img} 
+            nav_link={"Location"}
+            img={sign_img}
             text={"Traffic Light/Sign"}
             category={"traffic_light"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={ellipsis_img} 
+            nav_link={"Location"}
+            img={ellipsis_img}
             text={"Other"}
             category={"other"}
           />
-          <MenuOption 
+          <MenuOption
             navigation={this.props.navigation}
-            nav_link={'Location'} 
-            img={question_img} 
+            nav_link={"Location"}
+            img={question_img}
             text={"Questions and/or Comments"}
             category={"question"}
           />
@@ -149,7 +132,7 @@ export default class CategoryScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     height: 170,
@@ -158,4 +141,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
