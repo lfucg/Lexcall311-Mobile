@@ -22,6 +22,8 @@ import recycle_img from "../assets/images/icon_recycle.png";
 import sign_img from "../assets/images/icon_map-signs.png";
 import tree_img from "../assets/images/icon_tree.png";
 import ellipsis_img from "../assets/images/icon_ellipsis-h.png";
+import house_img from "../assets/images/icon_house.png";
+import sidewalk_img from "../assets/images/icon_sidewalk.png";
 
 export default class CategoryScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -59,7 +61,7 @@ export default class CategoryScreen extends React.Component {
             navigation={this.props.navigation}
             nav_link={"Location"}
             img={trash_img}
-            text={"Appliance / Tires"}
+            text={"Appliance/Tires"}
             category={"trash_pickup"}
           />
           <MenuOption
@@ -110,6 +112,20 @@ export default class CategoryScreen extends React.Component {
             img={sign_img}
             text={"Traffic Light/Sign"}
             category={"traffic_light"}
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_link={"Location"}
+            img={house_img}
+            text={"Housing Complaint/Non-Emergency"}
+            category={"housing_complaint"}
+          />
+          <MenuOption
+            navigation={this.props.navigation}
+            nav_link={"Location"}
+            img={sidewalk_img}
+            text={"Sidewalk Complaint"}
+            category={"sidewalk_complaint"}
           />
           <MenuOption
             navigation={this.props.navigation}
