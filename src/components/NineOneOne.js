@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 export default class NineOneOne extends React.Component {
   render() {
@@ -13,12 +13,12 @@ export default class NineOneOne extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f1f0f0',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f1f0f0",
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
-    color: '#e3423e',
+    color: "#e3423e",
     fontSize: 18,
     padding: 10,
   },
