@@ -254,8 +254,8 @@ export default class ContactScreen extends React.Component {
       headerRight: () => (
         <HeaderNext
           navigation={navigation}
-          text={"Submit"}
-          nav_link={"Home"}
+          text={"Next"}
+          nav_link={"Review"}
           category={navigation.getParam("category")}
           location={navigation.getParam("location")}
           latitude={navigation.getParam("latitude")}
