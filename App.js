@@ -8,6 +8,7 @@ import LocationScreen from "./src/components/LocationScreen.js";
 import DescriptionScreen from "./src/components/DescriptionScreen.js";
 import PhotoScreen from "./src/components/PhotoScreen.js";
 import ContactScreen from "./src/components/ContactScreen.js";
+import ReviewScreen from "./src/components/ReviewScreen.js";
 import ConfirmationScreen from "./src/components/ConfirmationScreen.js";
 
 const Root = createAppContainer(
@@ -19,6 +20,7 @@ const Root = createAppContainer(
       Description: DescriptionScreen,
       Photo: PhotoScreen,
       Contact: ContactScreen,
+      Review: ReviewScreen,
       Confirmation: ConfirmationScreen,
     },
     {
