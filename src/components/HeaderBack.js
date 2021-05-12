@@ -16,8 +16,8 @@ export default class HeaderBack extends React.Component {
     super(props);
   }
 
-  navigateBackToPrevious() {
-    this.props.navigation.navigate(this.props.nav_link, {
+  getParams() {
+    return {
       category: this.props.category,
       location: this.props.location,
       latitude: this.props.latitude,
@@ -29,23 +29,15 @@ export default class HeaderBack extends React.Component {
       lastName: this.props.lastName,
       email: this.props.email,
       phone: this.props.phone,
-    });
+    };
+  }
+
+  navigateBackToPrevious() {
+    this.props.navigation.navigate(this.props.nav_link, this.getParams());
   }
 
   returnToLocationScreen() {
-    this.props.navigation.navigate("Location", {
-      category: this.props.category,
-      location: this.props.location,
-      latitude: this.props.latitude,
-      longitude: this.props.longitude,
-      description: this.props.description,
-      image1: this.props.image1,
-      image2: this.props.image2,
-      firstName: this.props.firstName,
-      lastName: this.props.lastName,
-      email: this.props.email,
-      phone: this.props.phone,
-    });
+    this.props.navigation.navigate("Location", this.getParams());
   }
 
   backToCategoryScreen() {
