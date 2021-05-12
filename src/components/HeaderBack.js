@@ -16,6 +16,22 @@ export default class HeaderBack extends React.Component {
     super(props);
   }
 
+  navigateBackToPrevious() {
+    this.props.navigation.navigate(this.props.nav_link, {
+      category: this.props.category,
+      location: this.props.location,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude,
+      description: this.props.description,
+      image1: this.props.image1,
+      image2: this.props.image2,
+      firstName: this.props.firstName,
+      lastName: this.props.lastName,
+      email: this.props.email,
+      phone: this.props.phone,
+    });
+  }
+
   returnToLocationScreen() {
     this.props.navigation.navigate("Location", {
       category: this.props.category,
@@ -33,19 +49,7 @@ export default class HeaderBack extends React.Component {
   }
 
   backToCategoryScreen() {
-    this.props.navigation.navigate(this.props.nav_link, {
-      category: this.props.category,
-      location: this.props.location,
-      latitude: this.props.latitude,
-      longitude: this.props.longitude,
-      description: this.props.description,
-      image1: this.props.image1,
-      image2: this.props.image2,
-      firstName: this.props.firstName,
-      lastName: this.props.lastName,
-      email: this.props.email,
-      phone: this.props.phone,
-    });
+    this.navigateBackToPrevious();
   }
 
   alertUser() {
@@ -71,19 +75,7 @@ export default class HeaderBack extends React.Component {
     if (this.props.nav_link === "Category") {
       this.alertUser();
     } else {
-      this.props.navigation.navigate(this.props.nav_link, {
-        category: this.props.category,
-        location: this.props.location,
-        latitude: this.props.latitude,
-        longitude: this.props.longitude,
-        description: this.props.description,
-        image1: this.props.image1,
-        image2: this.props.image2,
-        firstName: this.props.firstName,
-        lastName: this.props.lastName,
-        email: this.props.email,
-        phone: this.props.phone,
-      });
+      this.navigateBackToPrevious();
     }
   }
 
