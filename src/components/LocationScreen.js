@@ -70,6 +70,9 @@ export default class LocationScreen extends React.Component {
   componentWillUnmount() {
     this.keyboardDidShowSub.remove();
     this.keyboardDidHideSub.remove();
+    if (this.unsubscribe) {
+      return this.unsubscribe;
+    }
   }
 
   keyboardDidShow = (event) => {
@@ -157,6 +160,17 @@ export default class LocationScreen extends React.Component {
           navigation={navigation}
           text={"Back"}
           nav_link={"Category"}
+          category={navigation.getParam("category")}
+          location={navigation.getParam("location")}
+          latitude={navigation.getParam("latitude")}
+          longitude={navigation.getParam("longitude")}
+          description={navigation.getParam("description")}
+          image1={navigation.getParam("image1")}
+          image2={navigation.getParam("image2")}
+          firstName={navigation.getParam("firstName")}
+          lastName={navigation.getParam("lastName")}
+          email={navigation.getParam("email")}
+          phone={navigation.getParam("phone")}
         />
       ),
       headerTitle: () => <HeaderTitle text={"Create A Report"} />,
