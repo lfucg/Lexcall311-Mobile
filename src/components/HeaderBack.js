@@ -1,50 +1,105 @@
-import React from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
   Platform,
   TouchableOpacity,
   Image,
-} from 'react-native';
+  Alert,
+} from "react-native";
 
-import chevron_left_img from '../assets/images/icon_chevron-left.png';
-
+import chevron_left_img from "../assets/images/icon_chevron-left.png";
 
 export default class HeaderBack extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  returnToLocationScreen() {
+    this.props.navigation.navigate("Location", {
+      category: this.props.category,
+      location: this.props.location,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude,
+      description: this.props.description,
+      image1: this.props.image1,
+      image2: this.props.image2,
+      firstName: this.props.firstName,
+      lastName: this.props.lastName,
+      email: this.props.email,
+      phone: this.props.phone,
+    });
+  }
+
+  backToCategoryScreen() {
+    this.props.navigation.navigate(this.props.nav_link, {
+      category: this.props.category,
+      location: this.props.location,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude,
+      description: this.props.description,
+      image1: this.props.image1,
+      image2: this.props.image2,
+      firstName: this.props.firstName,
+      lastName: this.props.lastName,
+      email: this.props.email,
+      phone: this.props.phone,
+    });
+  }
+
+  alertUser() {
+    Alert.alert(
+      "Discard changes?",
+      "Your report information will be lost if you confirm.",
+      [
+        {
+          text: "No, continue editing",
+          onPress: () => this.returnToLocationScreen(),
+        },
+        {
+          text: "Yes, discard changes",
+          onPress: () => this.backToCategoryScreen(),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  }
+
+  backOrAbort() {
+    if (this.props.nav_link === "Category") {
+      this.alertUser();
+    } else {
+      this.props.navigation.navigate(this.props.nav_link, {
+        category: this.props.category,
+        location: this.props.location,
+        latitude: this.props.latitude,
+        longitude: this.props.longitude,
+        description: this.props.description,
+        image1: this.props.image1,
+        image2: this.props.image2,
+        firstName: this.props.firstName,
+        lastName: this.props.lastName,
+        email: this.props.email,
+        phone: this.props.phone,
+      });
+    }
+  }
+
   render() {
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.container}
-        activeOpacity={.6}
-        onPress={() => this.props.navigation.navigate(this.props.nav_link, {
-          category: this.props.category,
-          location: this.props.location,
-          latitude: this.props.latitude,
-          longitude: this.props.longitude,
-          description: this.props.description,
-          image1: this.props.image1,
-          image2: this.props.image2,
-          firstName: this.props.firstName,
-          lastName: this.props.lastName,
-          email: this.props.email,
-          phone: this.props.phone,
-        })}
+        activeOpacity={0.6}
+        onPress={() => this.backOrAbort()}
       >
         <View style={styles.wrap}>
-          {
-            this.props.text ? (
-              <Image 
-                style={styles.chevron}
-                source={chevron_left_img} 
-              /> 
-            ) : null
-          }
+          {this.props.text ? (
+            <Image style={styles.chevron} source={chevron_left_img} />
+          ) : null}
 
-          <Text style={styles.text}> 
-            {this.props.text}
-          </Text>
-
+          <Text style={styles.text}>{this.props.text}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -52,15 +107,14 @@ export default class HeaderBack extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   wrap: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   chevron: {
     height: 20,
     width: 20,
-    tintColor: '#007aff',
+    tintColor: "#007aff",
     ...Platform.select({
       android: {
         marginTop: 3,
@@ -76,7 +130,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
       },
     }),
-    fontWeight: '600',
-    color: '#007aff',
+    fontWeight: "600",
+    color: "#007aff",
   },
 });

@@ -127,7 +127,11 @@ export default class ReviewScreen extends React.Component {
           <Text style={styles.review_item}>Category: {report.category}</Text>
           <Text style={styles.review_item}>
             Location:{" "}
-            {report.location ? report.location : "map location submitted"}
+            {report.location
+              ? report.location
+              : report.latitude
+              ? "map location submitted"
+              : ""}
           </Text>
           <Text style={styles.review_item}>
             Description: {report.description}{" "}
