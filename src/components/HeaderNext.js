@@ -32,6 +32,43 @@ export default class HeaderNext extends React.Component {
     }
   }
 
+  navigateToNext() {
+    this.props.navigation.navigate(this.props.nav_link, {
+      category: this.props.category,
+      location: this.props.location,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude,
+      description: this.props.description,
+      image1: this.props.image1,
+      image2: this.props.image2,
+      firstName: this.props.firstName,
+      lastName: this.props.lastName,
+      email: this.props.email,
+      phone: this.props.phone,
+    });
+  }
+
+  checkRequiredData(nextPage) {
+    if (nextPage === "Photo") {
+      if (
+        this.props.description === "" ||
+        this.props.description === undefined ||
+        // this is default from the DescriptionScreen
+        this.props.description === "Add description here..."
+      ) {
+        alert("A description is required");
+      } else {
+        this.navigateToNext();
+      }
+    } else {
+      if (this.props.email === "" || this.props.email === undefined) {
+        alert("An email is required");
+      } else {
+        this.navigateToNext();
+      }
+    }
+  }
+
   nextPageOrSubmit() {
     if (this.props.text == "Submit") {
       this.setState({ loading: true });
@@ -196,19 +233,11 @@ export default class HeaderNext extends React.Component {
       // Residential_Pickup__c (text/10)
       // Urban_Service_Area__c (text/10)
     } else {
-      this.props.navigation.navigate(this.props.nav_link, {
-        category: this.props.category,
-        location: this.props.location,
-        latitude: this.props.latitude,
-        longitude: this.props.longitude,
-        description: this.props.description,
-        image1: this.props.image1,
-        image2: this.props.image2,
-        firstName: this.props.firstName,
-        lastName: this.props.lastName,
-        email: this.props.email,
-        phone: this.props.phone,
-      });
+      if (this.props.nav_link === "Photo" || this.props.nav_link === "Review") {
+        this.checkRequiredData(this.props.nav_link);
+      } else {
+        this.navigateToNext();
+      }
     }
   }
 
