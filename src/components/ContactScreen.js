@@ -295,7 +295,7 @@ export default class ContactScreen extends React.Component {
                 icon={summary_pencil}
                 heading={"Enter Contact Info"}
                 content={
-                  "Add your contact info so we can follow up with you if needed.  Email is required to receive alerts."
+                  "Add your contact info so we can follow up with you if needed.  An email is required."
                 }
               />
             </View>
