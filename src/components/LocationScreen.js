@@ -12,7 +12,6 @@ import {
 import WebView from "react-native-webview";
 
 import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
 
 import Autocomplete from "react-native-autocomplete-input";
 import Modal from "react-native-modal";
@@ -316,7 +315,7 @@ export default class LocationScreen extends React.Component {
   }
 
   getMyLocation = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    let { status } = await Location.requestForegroundPermissionsAsync();
     if (status == "granted") {
       // check if phone location is turned on
       let locationEnabled = await Location.getProviderStatusAsync();

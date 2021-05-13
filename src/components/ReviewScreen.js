@@ -137,7 +137,12 @@ export default class ReviewScreen extends React.Component {
             Description: {report.description}{" "}
           </Text>
           <Text style={styles.review_item}>
-            Images Submitted: {report.image1 !== undefined ? "yes" : "none"}
+            Images Submitted:{" "}
+            {report.image1 === undefined
+              ? "none"
+              : report.image1 === null
+              ? "none"
+              : "yes"}
           </Text>
           <Image
             source={this.getCategoryIcon(report.category)}
@@ -153,6 +158,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    justifyContent: "space-around",
   },
   header: {
     height: 190,
@@ -166,10 +172,10 @@ const styles = StyleSheet.create({
   },
   review_item: {
     fontSize: 18,
-    padding: 10,
+    padding: 5,
   },
   category_icon: {
     alignSelf: "center",
-    marginTop: 20,
+    marginTop: 5,
   },
 });

@@ -21,7 +21,8 @@ import summary_camera_img from "../assets/images/summary_icon_camera.png";
 import camera_img from "../assets/images/icon_camera.png";
 
 import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 
 export default class PhotoScreen extends React.Component {
   constructor(props) {
@@ -125,8 +126,8 @@ export default class PhotoScreen extends React.Component {
   };
 
   askCameraPermissions = async () => {
-    await Permissions.askAsync(Permissions.CAMERA);
-    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    await Camera.requestPermissionsAsync();
+    await MediaLibrary.requestPermissionsAsync();
   };
 
   camera = async () => {
