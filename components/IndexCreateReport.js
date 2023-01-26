@@ -1,36 +1,35 @@
-import React from 'react';
 import { 
-  StyleSheet, 
-  Text, 
-  View, 
   Image, 
   Platform, 
+  StyleSheet, 
+  Text, 
   TouchableOpacity,
-} from 'react-native';
-import pencil_img from '../assets/images/icon_pencil-alt.png';
+  View, 
+} from 'react-native'
+import pencil_img from '../assets/images/icon_pencil-alt.png'
 
-export default class IndexCreateReport extends React.Component {
-
-  render() {
-
-    return (
-      <TouchableOpacity 
-        style={styles.container}
-        activeOpacity={.8}
-        onPress={() => this.props.navigation.navigate('Category')}
-      >
-        <View style={styles.wrap}>
-          <Image 
-            source={pencil_img} 
-            style={styles.pencil_img}
-          />
-          <Text style={styles.text}>
-            Create a New 311 Report
-          </Text>
-        </View>
-      </TouchableOpacity>
-    )
-  }
+const IndexCreateReport =({
+  navigation
+}) => {
+  return (
+    <TouchableOpacity 
+      style={styles.container}
+      activeOpacity={.8}
+      onPress={() => {
+        navigation.navigate('Category')
+      }}
+    >
+      <View style={styles.wrap}>
+        <Image 
+          source={pencil_img} 
+          style={styles.pencil_img}
+        />
+        <Text style={styles.text}>
+          Create a New 311 Report
+        </Text>
+      </View>
+    </TouchableOpacity>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -71,3 +70,4 @@ const styles = StyleSheet.create({
   },
 })
 
+export default IndexCreateReport

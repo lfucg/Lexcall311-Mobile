@@ -1,11 +1,23 @@
 {
   "expo": {
-    "orientation": "portrait",
     "name": "LexCall 311",
-    "icon": "./src/assets/images/app-icon.png",
-    "version": "3.0.0",
     "slug": "lexcall311",
+    "version": "3.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/app-icon.png",
+    "userInterfaceStyle": "light",
     "primaryColor": "#0057a8",
+    "splash": {
+      "image": "./assets/images/loading.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#0057a8"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.apaxsoftware.Lexcall",
       "buildNumber": "3.0.0",
@@ -19,12 +31,12 @@
     },
     "android": {
       "package": "com.apaxsoftware.LexCall311App",
-      "versionCode": 8
-    },
-    "splash": {
-      "image": "./src/assets/images/loading.png",
-      "backgroundColor": "#0057a8",
-      "resizeMode": "cover"
+      "versionCode": 8,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/app-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": ["CAMERA"]
     }
   }
 }
