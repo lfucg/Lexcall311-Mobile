@@ -1,21 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 
-export default class Summary extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.wrap}>
-          <View style={styles.img_wrap}>
-            <Image source={this.props.icon} style={styles.icon} />
-          </View>
-
-          <Text style={styles.heading}>{this.props.heading}</Text>
-          <Text style={styles.content}>{this.props.content}</Text>
+const Summary = ({ icon, heading, content }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.wrap}>
+        <View style={styles.img_wrap}>
+          <Image source={icon} style={styles.icon} />
         </View>
+
+        <Text style={styles.heading}>{heading}</Text>
+        <Text style={styles.content}>{content}</Text>
       </View>
-    );
-  }
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -50,4 +48,6 @@ const styles = StyleSheet.create({
     color: "#585858",
     textAlign: "center",
   },
-});
+})
+
+export default Summary

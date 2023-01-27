@@ -1,27 +1,23 @@
-import React from "react";
-import { StyleSheet, Text, View, Platform, Image } from "react-native";
+import { StyleSheet, Text, View, Platform, Image } from "react-native"
 
-import horse_img from "../assets/images/header_logo-horse-blue.png";
+import horse_img from "../assets/images/header_logo-horse-blue.png"
 
-export default class HeaderTitle extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.wrap}>
-          {<Image source={horse_img} style={styles.horse} />}
-          <Text style={styles.title}>{this.props.text}</Text>
-        </View>
+const HeaderTitle = ({ text }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.wrap}>
+        <Image source={horse_img} style={styles.horse} />
+        <Text style={styles.title}>{text}</Text>
       </View>
-    );
-  }
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
   },
   wrap: {
-    flex: 1,
+    position: 'relative',
     flexDirection: "row",
     alignSelf: "center",
     ...Platform.select({
@@ -56,4 +52,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-});
+})
+
+export default HeaderTitle
