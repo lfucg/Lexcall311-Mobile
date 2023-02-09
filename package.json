@@ -4,9 +4,13 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "android": "expo start --android",
+    "android-build-release": "eas build --platform android --profile release",
+    "disintegrate": "./buildTools/disintegrate.sh",
     "ios": "expo start --ios",
+    "ios-build-release": "eas build --platform ios --profile release",
     "start": "expo start",
-    "test": "jest"
+    "test": "jest",
+    "versionup": "node buildtools/versionUp.mjs"
   },
   "dependencies": {
     "@react-native-community/clipboard": "^1.5.1",
