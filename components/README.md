@@ -30,11 +30,12 @@ The mobile (react-native) front-end for LexCall 311
 ### TROUBLE 
 * $ `nvm run disintegrate`
 
-## Deployment
+## Deployment 
+### Deploy Start:
 1. Update to latest
   * $ `git pull master`
   * $ `npm i`
-2. copy contents of .env_prod into .env
+2. copy contents of .env_prod into .env !!!IMPORTANT!!!
 3. Increment versions in app.json
   * $ `npm run versionup`
     This will increment the following:
@@ -52,10 +53,32 @@ The mobile (react-native) front-end for LexCall 311
   * user: stellar_tech
   * pass: ********
 3. $ `npm run ios-build-release`
+  * select team Lexington Fayette urban County Government (if you're not part of that team then you need an invite)
+  * select provider Lexington Fayette urban County Government
 4. When the build finishes, click the link in terminal to download the build
 5. Use Transporter to push downloaded build to App Store (Transporter can be downloaded from App Store)
   * Login using Apple Developer account
   * Add downloaded build from downloads folder
   * Click deliver
-6. Wait for confirmation email
+6. Wait for confirmation email (I'm not sure who this email is going to - might check the store if it's been awhile)
+7. App Store Connect:  https://appstoreconnect.apple.com/apps
+  * TestFlight tab:
+    * Go to newest build and click 'missing compliance' - select 'None of the algorithms mentioned above'
+    * Test build on phone using TestFlight
+  * App Store tab:
+    
+
+
+### Deploy to Android store:
+
+
+### Deploy Finish
+1. Tag master branch (git)
+  * List tags:  $ `git tag -n`
+  * Create tag: $ `git tag -a vX.X.X -m "<description>"` (X.X.X == the incremented version)
+  * Push tag: $ `git push origin --tags`
+2. copy contents of .env_stage into .env !!!IMPORTANT!!!
+3. save, commit, and push to master
+
+
 
