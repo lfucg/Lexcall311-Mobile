@@ -2,7 +2,7 @@
   "expo": {
     "name": "LexCall 311",
     "slug": "lexcall311",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.apaxsoftware.Lexcall",
-      "buildNumber": "3.0.1",
+      "buildNumber": "3.0.2",
       "supportsTablet": false,
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "LexCall 311 needs access to image gallery to include photographs of your issue.",
@@ -31,7 +31,7 @@
     },
     "android": {
       "package": "com.apaxsoftware.LexCall311App",
-      "versionCode": 9,
+      "versionCode": 10,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon.png",
         "backgroundColor": "#FFFFFF"
