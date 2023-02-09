@@ -39,6 +39,11 @@
       "permissions": [
         "CAMERA"
       ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4723f386-2826-49f0-8a64-26fdb0ccc7cc"
+      }
     }
   }
 }

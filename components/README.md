@@ -44,3 +44,18 @@ The mobile (react-native) front-end for LexCall 311
 4. Save and commit - no need to push
   * $ `git add .`
   * $ `git commit -m "deploying version X.X.X"`
+
+### Deploy to iOS store:
+(Skip step 1 and 2 if already logged in as stellar_tech)
+1. $ `expo logout`
+2. $ `expo login`
+  * user: stellar_tech
+  * pass: ********
+3. $ `npm run ios-build-release`
+4. When the build finishes, click the link in terminal to download the build
+5. Use Transporter to push downloaded build to App Store (Transporter can be downloaded from App Store)
+  * Login using Apple Developer account
+  * Add downloaded build from downloads folder
+  * Click deliver
+6. Wait for confirmation email
+
