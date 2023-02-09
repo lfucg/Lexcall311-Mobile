@@ -17,9 +17,11 @@ The mobile (react-native) front-end for LexCall 311
 ## Installation
 * $ `nvm use` 
 * $ `npm install`
-* create .env file
-  * see .env_example for info needed
-  * you'll need two sets of info - one for stage and one for prod
+* handle .env
+  * create .env, .env_prod, and .env_stage files
+    * see .env_example for info needed
+    * fill .env_prod with prod info and .env_stage with stage info
+    * copy .env_stage info into .env
 
 ## Local Dev
 * $ `nvm use`
@@ -35,6 +37,10 @@ The mobile (react-native) front-end for LexCall 311
 2. copy contents of .env_prod into .env
 3. Increment versions in app.json
   * $ `npm run versionup`
+    This will increment the following:
+    * android.versionCode
+    * ios.buildNumber
+    * version
 4. Save and commit - no need to push
   * $ `git add .`
   * $ `git commit -m "deploying version X.X.X"`

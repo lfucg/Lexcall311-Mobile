@@ -7,17 +7,17 @@ import {readFileSync,writeFileSync} from 'fs'
 const loadAppJson = () => {
     const file = readFileSync('app.json')
     const asJson = JSON.parse(file)
-    const versionCode = asJson.android.versionCode
-    const buildNumber = asJson.ios.buildNumber
-    const version = asJson.version
+    const versionCode = asJson.expo.android.versionCode
+    const buildNumber = asJson.expo.ios.buildNumber
+    const version = asJson.expo.version
     return {versionCode, buildNumber, version}
 }
 const writeAppJson = ({versionCode, buildNumber, version}) => {
     const file = readFileSync('app.json')
     const asJson = JSON.parse(file)
-    asJson.android.versionCode = versionCode
-    asJson.ios.buildNumber = buildNumber
-    asJson.version = version
+    asJson.expo.android.versionCode = versionCode
+    asJson.expo.ios.buildNumber = buildNumber
+    asJson.expo.version = version
     const newFile = JSON.stringify(asJson, null, 2)
     writeFileSync('app.json', newFile+'\n')
 }
