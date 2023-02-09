@@ -12,7 +12,7 @@
     "release": {}
   },
   "cli": {
-    "version": ">= 0.44.1",
+    "version": ">= 1.0.0",
     "requireCommit": true
   }
 }
