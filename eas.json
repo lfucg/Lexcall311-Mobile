@@ -1,10 +1,23 @@
 {
   "build": {
+    "base": {
+      "env": {},
+      "android": {
+        "image": "ubuntu-18.04-jdk-11-ndk-r19c",
+        "node": "16.13.0"
+      },
+      "ios": {
+        "cocoapods": "1.11.2",
+        "image": "macos-monterey-12.6-xcode-14.0",
+        "node": "16.13.0"
+      }
+    },
     "release": {
       "distribution": "store",
       "env": {
         "ENVIRONMENT": "production"
       },
+      "extends": "base",
       "releaseChannel": "production"
     }
   },
