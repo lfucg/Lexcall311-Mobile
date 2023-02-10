@@ -18,11 +18,10 @@ The mobile (react-native) front-end for LexCall 311
 * $ `nvm use` 
 * $ `npm install`
 * handle .env
-  * create .env, .env_prod, and .env_stage files
+  * create .env files at top level
     * see .env_example for info needed
-    * fill .env_prod with prod info and .env_stage with stage info
-    * copy .env_stage info into .env
-
+    * fill with stage info
+    
 ## Local Dev
 * $ `nvm use`
 * $ `npm run start`
@@ -35,14 +34,13 @@ The mobile (react-native) front-end for LexCall 311
 1. Update to latest
   * $ `git pull master`
   * $ `npm i`
-2. copy contents of .env_prod into .env !!!IMPORTANT!!!
-3. Increment versions in app.json
+2. Increment versions in app.json
   * $ `npm run versionup`
     This will increment the following:
     * android.versionCode
     * ios.buildNumber
     * version
-4. Save and commit - no need to push
+3. Save and commit - no need to push
   * $ `git add .`
   * $ `git commit -m "deploying version X.X.X"`
 
@@ -84,21 +82,12 @@ The mobile (react-native) front-end for LexCall 311
   * select provider Lexington Fayette urban County Government
 4. Wait for the build to finish
 5. $ `eas submit -p android --latest`
-
-
-
-5. Play Store:  https://play.google.com/console
-6. Select LexCall 311 app
-7. Side menu: Release: Production:  click "Create new release"
-8. upload the app bundle
+6. Play Store:  https://play.google.com/console
+7. Select LexCall 311 app
 
 ### Deploy Finish
 1. Tag master branch (git)
   * List tags:  $ `git tag -n`
   * Create tag: $ `git tag -a vX.X.X -m "<description>"` (X.X.X == the incremented version)
   * Push tag: $ `git push origin --tags`
-2. copy contents of .env_stage into .env !!!IMPORTANT!!!
 3. save, commit, and push to master
-
-
-
