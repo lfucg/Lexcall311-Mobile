@@ -2,12 +2,12 @@
   "build": {
     "base": {
       "env": {
-        "client_id": "",
-        "client_secret": "",
-        "username": "",
-        "password": "",
-        "token": "",
-        "url": ""
+        "client_id": "placeholder",
+        "client_secret": "placeholder",
+        "username": "placeholder",
+        "password": "placeholder",
+        "token": "placeholder",
+        "url": "placeholder"
       },
       "android": {
         "image": "ubuntu-18.04-jdk-11-ndk-r19c",
