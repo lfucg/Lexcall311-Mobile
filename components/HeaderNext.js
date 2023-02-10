@@ -9,15 +9,6 @@ import {
   Image,
 } from 'react-native'
 
-import {
-  client_id,
-  client_secret,
-  password,
-  token,
-  username,
-  url,
-} from '@env'
-
 import chevron_right_img from '../assets/images/icon_chevron-right.png'
 
 import { 
@@ -27,6 +18,27 @@ import {
   setLongitude,
   setTrackingId,
 } from '../actions/report'
+
+import {
+  client_id,
+  client_secret,
+  password,
+  token,
+  username,
+  url,
+} from '@env'
+const PROD_CLIENT_ID = process.env.client_id
+const PROD_CLIENT_SECRET = process.env.client_secret
+const PROD_PASSWORD = process.env.password
+const PROD_TOKEN = process.env.token
+const PROD_USERNAME = process.env.username
+const PROD_URL = process.env.url
+const prodOrStage_client_id = PROD_CLIENT_ID ? PROD_CLIENT_ID : client_id
+const prodOrStage_client_secret = PROD_CLIENT_SECRET ? PROD_CLIENT_SECRET : client_secret
+const prodOrStage_password = PROD_PASSWORD ? PROD_PASSWORD : password
+const prodOrStage_token = PROD_TOKEN ? PROD_TOKEN : token
+const prodOrStage_username = PROD_USERNAME ? PROD_USERNAME : username
+const prodOrStage_url = PROD_URL ? PROD_URL : url
 
 const HeaderNext = ({ 
   category,
@@ -85,17 +97,17 @@ const HeaderNext = ({
       }
 
       const auth_params =
-        'username=' + username +
-        '&password=' + password +
-        token +
+        'username=' + prodOrStage_username +
+        '&password=' + prodOrStage_password +
+        prodOrStage_token +
         '&grant_type=password' +
-        '&client_id=' + client_id +
-        '&client_secret=' + client_secret
+        '&client_id=' + prodOrStage_client_id +
+        '&client_secret=' + prodOrStage_client_secret
 
       try {
         // get authorization
         // to change environments, change .env information 
-        fetch(`${url}/services/oauth2/token`, {
+        fetch(`${prodOrStage_url}/services/oauth2/token`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',

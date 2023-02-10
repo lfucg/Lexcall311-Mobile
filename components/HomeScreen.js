@@ -4,10 +4,6 @@ import {
   StyleSheet, 
   View, 
 } from 'react-native'
-import {
-  password,
-  url,
-} from '@env'
 
 // components
 import HeaderTitle from './HeaderTitle.js'
@@ -25,10 +21,14 @@ import external_link_alt_img from '../assets/images/icon_external-link-alt.png'
 import bell_img from '../assets/images/icon_bell.png'
 import map_img from '../assets/images/icon_map.png'
 
-
+import {
+  url,
+} from '@env'
+const PROD_URL = process.env.url
+const prodOrStage_url = PROD_URL ? PROD_URL : url
 
 const HomeScreen = ({ navigation }) => {
-  console.log(url == 'https://lexcall--uat.sandbox.my.salesforce.com' ? 'STAGE' : 'PRODUCTION')
+  console.log(prodOrStage_url == 'https://lexcall--uat.sandbox.my.salesforce.com' ? 'STAGE' : 'PRODUCTION')
   
   useEffect(() => {
     navigation.setOptions({

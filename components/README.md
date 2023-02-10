@@ -66,11 +66,31 @@ The mobile (react-native) front-end for LexCall 311
     * Go to newest build and click 'missing compliance' - select 'None of the algorithms mentioned above'
     * Test build on phone using TestFlight
   * App Store tab:
-    
-
+    * Click "+" next to "iOS App" in side menu - enter the version number just uploaded
+    * Enter "Bug fixes and improvements." in the field for What's New in This Version.
+    * Select version in the "Build" section. 
+    * "Save"
+    * "Add for Review"
+    * "Submit to App Review"
 
 ### Deploy to Android store:
+(Skip step 1 and 2 if already logged in as stellar_tech)
+1. $ `expo logout`
+2. $ `expo login`
+  * user: stellar_tech
+  * pass: ********
+3. $ `npm run android-build-release`
+  * select team Lexington Fayette urban County Government (if you're not part of that team then you need an invite)
+  * select provider Lexington Fayette urban County Government
+4. Wait for the build to finish
+5. $ `eas submit -p android --latest`
 
+
+
+5. Play Store:  https://play.google.com/console
+6. Select LexCall 311 app
+7. Side menu: Release: Production:  click "Create new release"
+8. upload the app bundle
 
 ### Deploy Finish
 1. Tag master branch (git)
