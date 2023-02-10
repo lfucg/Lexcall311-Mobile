@@ -84,6 +84,12 @@ The mobile (react-native) front-end for LexCall 311
 5. $ `eas submit -p android --latest`
 6. Play Store:  https://play.google.com/console
 7. Select LexCall 311 app
+8. Side Menu: Testing: Internal Testing
+  * "Promote release" to "closed testing Alpha"
+  * "Next"
+  * "Start rollout to Closed testing Alpha
+  * test app build
+  * "promote release" to "Production"
 
 ### Deploy Finish
 1. Tag master branch (git)
