@@ -2,12 +2,12 @@
   "build": {
     "base": {
       "env": {
-        "client_id": "3MVG9jfQT7vUue.F1LIMNmoTmeEO88LoHo3Xq3iN8ya2iy4dKfw.VJWTOanbSpDjeTwXUPhrEa55UCPnjsR7E",
-        "client_secret": "80EDD3BF9EE4D2474675AB3EE3E5BE5D1CCE3C1D566D021AC7053E527778FBA9",
-        "username": "lexcallmobile@lexingtonky.gov.lexcall.uat",
-        "password": "efL:KJ3oifJKL$@$lkj4",
-        "token": "0Ad2429xcwvOj8XkaBPnsIERN",
-        "url": "https://lexcall--uat.sandbox.my.salesforce.com"
+        "client_id": "",
+        "client_secret": "",
+        "username": "",
+        "password": "",
+        "token": "",
+        "url": ""
       },
       "android": {
         "image": "ubuntu-18.04-jdk-11-ndk-r19c",
